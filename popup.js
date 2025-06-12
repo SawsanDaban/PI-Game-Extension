@@ -11,6 +11,10 @@ let streakMode = false;
 let streakCountdown = STREAK_IDLE_LIMIT;
 let streakCountdownInterval = null;
 
+let speedrunCleanup = null;
+let speedrunMode = false;
+let speedrunHighScore = Number(localStorage.getItem('pi_speedrun_highscore')) || 0;
+
 const piSequenceElem = document.getElementById('pi-sequence');
 const piInputElem = document.getElementById('pi-input');
 const scoreElem = document.getElementById('score');
@@ -261,11 +265,17 @@ function stopStreakCountdown() {
 }
 
 function updateHighestScoreDisplay() {
-  if (streakMode) {
+  if (speedrunMode) {
+    updateSpeedrunHighScoreDisplay();
+  } else if (streakMode) {
     highestScoreElem.textContent = "Highest Streak: " + highestStreak;
   } else {
     highestScoreElem.textContent = "Highest Score: " + highestScore;
   }
+}
+
+function updateSpeedrunHighScoreDisplay() {
+  highestScoreElem.textContent = "Speedrun High Score: " + speedrunHighScore;
 }
 
 function updateDailyChallengeUI() {
@@ -325,6 +335,34 @@ function resetGame() {
     startTimer();
   } else {
     timerElem.style.display = 'none';
+  }
+  if (speedrunCleanup) {
+    speedrunCleanup();
+    speedrunCleanup = null;
+  }
+  speedrunMode = modeSelectElem.value === 'speedrun';
+  if (speedrunMode) {
+    scoreElem.style.display = "";
+    if (window.startSpeedrun) {
+      speedrunCleanup = window.startSpeedrun({
+        piInputElem,
+        piSequenceElem,
+        scoreElem,
+        timerElem,
+        timerValueElem,
+        progressElem,
+        onEnd: (score) => {
+          messageElem.textContent = "Speedrun Over! Score: " + score;
+          if (score > speedrunHighScore) {
+            speedrunHighScore = score;
+            localStorage.setItem('pi_speedrun_highscore', speedrunHighScore);
+          }
+          updateSpeedrunHighScoreDisplay();
+        }
+      });
+    }
+    updateSpeedrunHighScoreDisplay();
+    return;
   }
   showStreakUI(streakMode);
   piInputElem.focus();
@@ -481,6 +519,7 @@ function handleInput() {
 modeSelectElem.addEventListener('change', () => {
   timedMode = modeSelectElem.value === 'timed';
   streakMode = modeSelectElem.value === 'streak';
+  speedrunMode = modeSelectElem.value === 'speedrun';
   resetGame();
 });
 

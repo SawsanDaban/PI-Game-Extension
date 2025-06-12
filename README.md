@@ -93,3 +93,4 @@ Open source. See [LICENSE](LICENSE) for details.
 - **Add export/import feature** so users can back up and restore their progress and settings.
 - **Add daily/weekly/monthly leaderboards** so users can compare their scores and streaks with others.
 - **Add themes & customization** so users can unlock or choose different color themes, backgrounds, or PI digit fonts.
+- **Add speedrun mode** where users must type as many digits as possible within a time limit.
