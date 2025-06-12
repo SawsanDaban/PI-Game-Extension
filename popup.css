@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  width: 250px;
+  padding: 16px;
+  background: #f9f9f9;
+}
+
+h1 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+#pi-sequence {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+
+#pi-input {
+  width: 100%;
+  font-size: 1em;
+  padding: 6px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+#score {
+  margin-bottom: 8px;
+}
+
+#message {
+  color: red;
+  margin-bottom: 8px;
+}
+
+#restart-btn {
+  padding: 6px 12px;
+  font-size: 1em;
+}
