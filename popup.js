@@ -19,6 +19,10 @@ const timerValueElem = document.getElementById('timer-value');
 const emojiFeedbackElem = document.getElementById('emoji-feedback');
 const motivationElem = document.getElementById('motivation');
 const confettiCanvas = document.getElementById('confetti-canvas');
+const achievementsBtn = document.getElementById('achievements-btn');
+const achievementsModal = document.getElementById('achievements-modal');
+const closeAchievements = document.getElementById('close-achievements');
+const achievementsList = document.getElementById('achievements-list');
 
 const MOTIVATION = [
   "Keep going! 🚀",
@@ -85,6 +89,27 @@ function showRandomPIFact() {
 
 function getUnlockedAchievements(maxScore) {
   return ACHIEVEMENTS.filter(a => maxScore >= a.digits);
+}
+
+// Show achievements modal
+function showAchievementsModal() {
+  // Get unlocked achievements based on highestScore
+  const unlocked = getUnlockedAchievements(highestScore);
+  achievementsList.innerHTML = "";
+  ACHIEVEMENTS.forEach(a => {
+    const unlockedBadge = unlocked.some(u => u.digits === a.digits);
+    const row = document.createElement('div');
+    row.className = 'arcade-achievement-row' + (unlockedBadge ? '' : ' locked');
+    row.innerHTML = `<span class="arcade-badge">${a.badge}</span>
+      <span class="arcade-achievement-label">${a.label}</span>`;
+    achievementsList.appendChild(row);
+  });
+  achievementsModal.style.display = "flex";
+}
+
+// Hide achievements modal
+function hideAchievementsModal() {
+  achievementsModal.style.display = "none";
 }
 
 function getNewAchievement(score, prevScore) {
@@ -295,6 +320,13 @@ modeSelectElem.addEventListener('change', () => {
 
 piInputElem.addEventListener('input', handleInput);
 restartBtn.addEventListener('click', resetGame);
+achievementsBtn.addEventListener('click', showAchievementsModal);
+closeAchievements.addEventListener('click', hideAchievementsModal);
+
+// Optional: close modal when clicking outside content
+achievementsModal.addEventListener('click', function(e) {
+  if (e.target === achievementsModal) hideAchievementsModal();
+});
 
 timedMode = modeSelectElem.value === 'timed';
 resetGame();
