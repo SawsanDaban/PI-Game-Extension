@@ -21,13 +21,6 @@
         <option value="streak">Streak</option>
       </select>
     </div>
-    <div class="arcade-row">
-      <label for="theme-select" class="arcade-label">Theme:</label>
-      <select id="theme-select" class="arcade-select">
-        <option value="neon">Neon</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div>
     <div id="timer" class="arcade-timer" style="display:none;">⏱ <span id="timer-value">0</span>s</div>
     <div id="pi-sequence" class="arcade-sequence">3.</div>
     <progress id="pi-progress" value="0" max="100" class="arcade-progress"></progress>
@@ -41,6 +34,29 @@
     <button id="achievements-btn" class="arcade-btn" type="button" style="margin-top:10px;">Achievements</button>
     <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
     <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;">Settings</button>
+    <div id="settings-modal" class="arcade-modal" style="display:none;">
+      <div class="arcade-modal-content">
+        <span id="close-settings" class="arcade-modal-close">&times;</span>
+        <h2 class="arcade-modal-title">Settings</h2>
+        <div class="arcade-settings-list">
+          <label class="arcade-settings-row">
+            <input type="checkbox" id="setting-sound" />
+            <span>Enable Sound Effects</span>
+          </label>
+          <label class="arcade-settings-row">
+            <input type="checkbox" id="setting-animations" />
+            <span>Enable Animations</span>
+          </label>
+          <label class="arcade-settings-row">
+            <span>Theme:</span>
+            <select id="theme-select" class="arcade-select" style="margin-left:8px;">
+              <option value="neon">Neon</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="achievements-modal" class="arcade-modal" style="display:none;">
     <div class="arcade-modal-content">
@@ -59,22 +75,6 @@
       <button id="next-trivia-btn" class="arcade-btn" style="margin-top:12px;display:none;">Next Question</button>
     </div>
   </div>
-  <div id="settings-modal" class="arcade-modal" style="display:none;">
-    <div class="arcade-modal-content">
-      <span id="close-settings" class="arcade-modal-close">&times;</span>
-      <h2 class="arcade-modal-title">Settings</h2>
-      <div class="arcade-settings-list">
-        <label class="arcade-settings-row">
-          <input type="checkbox" id="setting-sound" />
-          <span>Enable Sound Effects</span>
-        </label>
-        <label class="arcade-settings-row">
-          <input type="checkbox" id="setting-animations" />
-          <span>Enable Animations</span>
-        </label>
-      </div>
-    </div>
-  </div>
   <div class="arcade-actions">
     <button id="share-btn" class="arcade-action-btn share-btn">Share Score</button>
     <hr class="arcade-actions-separator">
@@ -86,6 +86,7 @@
   <script src="dailyChallenge.js"></script>
   <script src="ui.js"></script>
   <script src="trivia.js"></script>
+  <script src="settings.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

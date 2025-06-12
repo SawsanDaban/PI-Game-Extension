@@ -39,68 +39,9 @@ const triviaOptionsElem = document.getElementById('trivia-options');
 const triviaFeedbackElem = document.getElementById('trivia-feedback');
 const nextTriviaBtn = document.getElementById('next-trivia-btn');
 
-const themeSelectElem = document.getElementById('theme-select');
-
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettings = document.getElementById('close-settings');
-const settingSound = document.getElementById('setting-sound');
-const settingAnimations = document.getElementById('setting-animations');
-
-// Settings logic
-window.PI_SETTINGS = {
-  sound: true,
-  animations: true
-};
-
-function loadSettings() {
-  const saved = JSON.parse(localStorage.getItem('pi_settings') || '{}');
-  window.PI_SETTINGS.sound = saved.sound !== false;
-  window.PI_SETTINGS.animations = saved.animations !== false;
-  settingSound.checked = window.PI_SETTINGS.sound;
-  settingAnimations.checked = window.PI_SETTINGS.animations;
-}
-
-function saveSettings() {
-  localStorage.setItem('pi_settings', JSON.stringify(window.PI_SETTINGS));
-}
-
-settingSound.addEventListener('change', () => {
-  window.PI_SETTINGS.sound = settingSound.checked;
-  saveSettings();
-});
-settingAnimations.addEventListener('change', () => {
-  window.PI_SETTINGS.animations = settingAnimations.checked;
-  saveSettings();
-});
-
-settingsBtn.addEventListener('click', () => {
-  loadSettings();
-  settingsModal.style.display = "flex";
-});
-closeSettings.addEventListener('click', () => {
-  settingsModal.style.display = "none";
-});
-settingsModal.addEventListener('click', function(e) {
-  if (e.target === settingsModal) settingsModal.style.display = "none";
-});
-
-// Theme logic
-function applyTheme(theme) {
-  document.body.classList.remove('theme-neon', 'theme-dark');
-  document.body.classList.add('theme-' + theme);
-  localStorage.setItem('pi_theme', theme);
-}
-
-function loadTheme() {
-  const saved = localStorage.getItem('pi_theme') || 'neon';
-  themeSelectElem.value = saved;
-  applyTheme(saved);
-}
-
-themeSelectElem.addEventListener('change', () => {
-  applyTheme(themeSelectElem.value);
-});
 
 let timer = null;
 let timeElapsed = 0;
@@ -640,5 +581,5 @@ window.addEventListener('beforeunload', () => {
 timedMode = modeSelectElem.value === 'timed';
 streakMode = modeSelectElem.value === 'streak';
 resetGame();
-loadTheme();
-loadSettings();
+if (window.initSettingsUI) window.initSettingsUI();
+if (window.loadSettings) window.loadSettings();
