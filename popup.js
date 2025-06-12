@@ -13,6 +13,13 @@ const messageElem = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
 const progressElem = document.getElementById('pi-progress');
 const hintElem = document.getElementById('hint');
+const modeSelectElem = document.getElementById('mode-select');
+const timerElem = document.getElementById('timer');
+const timerValueElem = document.getElementById('timer-value');
+
+let timer = null;
+let timeElapsed = 0;
+let timedMode = false;
 
 const highestScoreElem = document.createElement('div');
 highestScoreElem.id = 'highest-score';
@@ -30,6 +37,23 @@ function updateHighestScoreDisplay() {
   highestScoreElem.textContent = "Highest Score: " + highestScore;
 }
 
+function startTimer() {
+  timeElapsed = 0;
+  timerValueElem.textContent = timeElapsed;
+  timerElem.style.display = 'block';
+  timer = setInterval(() => {
+    timeElapsed++;
+    timerValueElem.textContent = timeElapsed;
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+}
+
 function resetGame() {
   currentIndex = 0;
   score = 0;
@@ -42,12 +66,22 @@ function resetGame() {
   restartBtn.style.display = "none";
   progressElem.value = 0;
   hintElem.textContent = "";
+  stopTimer();
+  timeElapsed = 0;
+  timerValueElem.textContent = "0";
+  if (timedMode) {
+    timerElem.style.display = 'block';
+    startTimer();
+  } else {
+    timerElem.style.display = 'none';
+  }
   piInputElem.focus();
   updateHighestScoreDisplay();
 }
 
 function handleInput() {
   if (gameOver) return;
+  if (timedMode && !timer) startTimer();
   const input = piInputElem.value;
   let correct = true;
   for (let i = 0; i < input.length; i++) {
@@ -69,6 +103,10 @@ function handleInput() {
       localStorage.setItem('pi_highest_score', highestScore);
       updateHighestScoreDisplay();
     }
+    if (timedMode) {
+      stopTimer();
+      messageElem.textContent += ` Time: ${timeElapsed}s.`;
+    }
     return;
   }
   // Update sequence and score
@@ -83,6 +121,10 @@ function handleInput() {
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
     gameOver = true;
+    if (timedMode) {
+      stopTimer();
+      messageElem.textContent += ` Time: ${timeElapsed}s.`;
+    }
     return;
   }
   if (input.length > 0) {
@@ -102,7 +144,13 @@ function handleInput() {
   }
 }
 
+modeSelectElem.addEventListener('change', () => {
+  timedMode = modeSelectElem.value === 'timed';
+  resetGame();
+});
+
 piInputElem.addEventListener('input', handleInput);
 restartBtn.addEventListener('click', resetGame);
 
+timedMode = modeSelectElem.value === 'timed';
 resetGame();
