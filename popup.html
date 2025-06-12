@@ -40,6 +40,7 @@
     <button id="restart-btn" class="arcade-btn" style="display:none;">Restart</button>
     <button id="achievements-btn" class="arcade-btn" type="button" style="margin-top:10px;">Achievements</button>
     <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
+    <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;">Settings</button>
   </div>
   <div id="achievements-modal" class="arcade-modal" style="display:none;">
     <div class="arcade-modal-content">
@@ -56,6 +57,22 @@
       <div id="trivia-options" class="arcade-trivia-options"></div>
       <div id="trivia-feedback" class="arcade-trivia-feedback"></div>
       <button id="next-trivia-btn" class="arcade-btn" style="margin-top:12px;display:none;">Next Question</button>
+    </div>
+  </div>
+  <div id="settings-modal" class="arcade-modal" style="display:none;">
+    <div class="arcade-modal-content">
+      <span id="close-settings" class="arcade-modal-close">&times;</span>
+      <h2 class="arcade-modal-title">Settings</h2>
+      <div class="arcade-settings-list">
+        <label class="arcade-settings-row">
+          <input type="checkbox" id="setting-sound" />
+          <span>Enable Sound Effects</span>
+        </label>
+        <label class="arcade-settings-row">
+          <input type="checkbox" id="setting-animations" />
+          <span>Enable Animations</span>
+        </label>
+      </div>
     </div>
   </div>
   <div class="arcade-actions">
