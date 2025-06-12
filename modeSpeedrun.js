@@ -12,6 +12,7 @@ window.PIModeSpeedrun = function({
   let timeLeft = 30;
   let interval = null;
   let ended = false;
+  let started = false;
 
   function endSpeedrun() {
     if (ended) return;
@@ -29,8 +30,24 @@ window.PIModeSpeedrun = function({
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 
+  function startCountdown() {
+    if (interval) return;
+    interval = setInterval(() => {
+      if (ended) return;
+      timeLeft--;
+      timerValueElem.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        endSpeedrun();
+      }
+    }, 1000);
+  }
+
   function handleInput() {
     if (ended) return;
+    if (!started) {
+      started = true;
+      startCountdown();
+    }
     const input = piInputElem.value;
     if (input.length === 0) return;
 
@@ -75,14 +92,6 @@ window.PIModeSpeedrun = function({
   updateUI();
 
   piInputElem.addEventListener('input', handleInput);
-
-  interval = setInterval(() => {
-    timeLeft--;
-    timerValueElem.textContent = timeLeft;
-    if (timeLeft <= 0) {
-      endSpeedrun();
-    }
-  }, 1000);
 
   return function cleanup() {
     clearInterval(interval);
