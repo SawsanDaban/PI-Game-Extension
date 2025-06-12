@@ -10,9 +10,18 @@ window.MOTIVATION = [
 ];
 
 window.showEmoji = function(type, emojiFeedbackElem) {
-  if (type === "correct") emojiFeedbackElem.textContent = "😃";
-  else if (type === "wrong") emojiFeedbackElem.textContent = "😢";
-  else if (type === "win") emojiFeedbackElem.textContent = "🎉";
+  if (type === "correct") {
+    emojiFeedbackElem.textContent = "😃";
+    // if (window.PISound) window.PISound.play('correct');
+  }
+  else if (type === "wrong") {
+    emojiFeedbackElem.textContent = "😢";
+    // if (window.PISound) window.PISound.play('wrong');
+  }
+  else if (type === "win") {
+    emojiFeedbackElem.textContent = "🎉";
+    // if (window.PISound) window.PISound.play('gameover');
+  }
   else emojiFeedbackElem.textContent = "";
 };
 

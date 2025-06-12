@@ -706,6 +706,52 @@ triviaModal.addEventListener('click', function(e) {
   if (e.target === triviaModal) hideTriviaModal();
 });
 
+// Keyboard shortcuts for navigation and actions
+document.addEventListener('keydown', function(e) {
+  // Only trigger if popup is focused and not inside an input/modal
+  if (
+    document.activeElement.tagName === 'INPUT' ||
+    document.querySelector('.arcade-modal[style*="display: flex"]')
+  ) return;
+
+  // R: Restart game
+  if (e.key === 'r' || e.key === 'R') {
+    resetGame();
+    e.preventDefault();
+  }
+  // A: Open Achievements
+  else if (e.key === 'a' || e.key === 'A') {
+    showAchievementsModal();
+    e.preventDefault();
+  }
+  // T: Open Trivia
+  else if (e.key === 't' || e.key === 'T') {
+    showTriviaModal();
+    e.preventDefault();
+  }
+  // C: Open Challenges
+  else if (e.key === 'c' || e.key === 'C') {
+    renderChallengesList();
+    challengesModal.style.display = "flex";
+    e.preventDefault();
+  }
+  // S: Open Settings
+  else if (e.key === 's' || e.key === 'S') {
+    if (window.loadSettings) window.loadSettings();
+    settingsModal.style.display = "flex";
+    e.preventDefault();
+  }
+  // M: Switch mode (cycles through modes)
+  else if (e.key === 'm' || e.key === 'M') {
+    const select = modeSelectElem;
+    let idx = select.selectedIndex;
+    idx = (idx + 1) % select.options.length;
+    select.selectedIndex = idx;
+    select.dispatchEvent(new Event('change'));
+    e.preventDefault();
+  }
+});
+
 // When the popup is closed/unloaded, clear the idle timer
 window.addEventListener('beforeunload', () => {
   clearIdleTimer();
