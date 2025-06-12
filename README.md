@@ -15,18 +15,18 @@ Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
 ## 🚀 Features
 
 - 🎮 **Arcade-style UI** with neon colors and retro fonts
-- ⏱ **Normal and Timed Modes**: Play at your own pace or race against the clock
+- ⏱ **Normal, Timed, Streak, and Speedrun Modes**: Play at your own pace, race against the clock, keep a streak alive, or type as many digits as possible in 30 seconds!
 - 🏅 **Achievements & Badges**: Unlock badges for reaching digit milestones (10, 25, 50, 75, 100)
-- 📈 **Score Tracking**: Your highest score is saved locally
-- 🔥 **Streak Counter**: See how many digits you get right in a row!
+- 📈 **Score Tracking**: Your highest score, streak, and speedrun high score are saved locally
+- 🔥 **Streak Counter & Countdown**: See how many digits you get right in a row and race against a 5-second timer in Streak mode
 - 🏆 **Achievements Modal**: View all badges and your progress at any time
-- 🎯 **Daily Challenge**: Reach a new random digit target every day!
+- 🎯 **Daily & Weekly Challenge**: Reach a new random digit target every day and week!
 - 💬 **Motivational Messages**: Get encouragement as you play
 - 🧠 **Fun PI Facts**: Learn a random PI fact after each game over or win
 - ❓ **PI Trivia**: Test your knowledge with PI-related trivia questions!
 - 🎉 **Confetti & Emoji Feedback**: Celebrate your progress with effects and emoji
 - 📤 **Share Score**: Copy your score and achievements to share with friends
-- ☕ **Donate & ⭐ Contribute Buttons**: Support or contribute to the project
+- ⚙️ **Settings**: Toggle sound, animations, and switch between neon and dark themes
 - 📴 **Offline Ready**: All features work without internet
 
 ---
@@ -34,10 +34,11 @@ Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
 ## 🕹 How It Works
 
 1. Open the extension popup to start the PI Game.
-2. Type the digits of PI one by one.
-3. The extension checks each digit as you type.
-4. The game ends when you enter a wrong digit—your score is displayed.
-5. Unlock achievements, see your best score, and learn fun facts and trivia!
+2. Choose a mode: **Normal**, **Timed**, **Streak**, or **Speedrun**.
+3. Type the digits of PI one by one.
+4. The extension checks each digit as you type.
+5. The game ends when you enter a wrong digit—your score is displayed.
+6. Unlock achievements, see your best score, and learn fun facts and trivia!
 
 ---
 
@@ -81,9 +82,8 @@ Open source. See [LICENSE](LICENSE) for details.
 ## 🛠️ Next Step
 
 - **Add sound effects** for correct answers, wrong answers, and game over to enhance the arcade experience.
-- **Add a settings menu** to let users toggle sound, animations, and difficulty options.
+- **Add more settings** for customizing gameplay and appearance.
 - **Add keyboard shortcuts** for faster navigation (e.g., restart, achievements, trivia, mode switch).
-- **Add dark/light theme toggle** so users can choose their preferred appearance.
 - **Add localization/multi-language support** so users can play in their preferred language.
 - **Add statistics/history page** to let users view their progress, best streaks, and daily challenge history.
 - **Add cloud sync** so users can save their progress and settings across devices.
@@ -93,4 +93,8 @@ Open source. See [LICENSE](LICENSE) for details.
 - **Add export/import feature** so users can back up and restore their progress and settings.
 - **Add daily/weekly/monthly leaderboards** so users can compare their scores and streaks with others.
 - **Add themes & customization** so users can unlock or choose different color themes, backgrounds, or PI digit fonts.
-- **Add speedrun mode** where users must type as many digits as possible within a time limit.
+- **Add a "Practice Mode"** where users can practice specific digit ranges or get hints after mistakes.
+- **Add a "Review Mistakes"** feature to help users learn from errors and improve memory.
+- **Add mobile browser support** for a better experience on mobile devices.
+- **Add animated transitions** for UI elements to enhance the retro arcade feel.
+- **Add a "Fun Facts" section** with more PI trivia and history.
