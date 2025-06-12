@@ -4,6 +4,7 @@ const PI_DIGITS = "1415926535897932384626433832795028841971693993751058209749445
 let currentIndex = 0;
 let score = 0;
 let gameOver = false;
+let highestScore = Number(localStorage.getItem('pi_highest_score')) || 0;
 
 const piSequenceElem = document.getElementById('pi-sequence');
 const piInputElem = document.getElementById('pi-input');
@@ -13,11 +14,20 @@ const restartBtn = document.getElementById('restart-btn');
 const progressElem = document.getElementById('pi-progress');
 const hintElem = document.getElementById('hint');
 
+const highestScoreElem = document.createElement('div');
+highestScoreElem.id = 'highest-score';
+highestScoreElem.style.marginBottom = '8px';
+scoreElem.parentNode.insertBefore(highestScoreElem, scoreElem.nextSibling);
+
 function animateCorrectInput() {
   piSequenceElem.style.background = "#d4ffd4";
   setTimeout(() => {
     piSequenceElem.style.background = "";
   }, 150);
+}
+
+function updateHighestScoreDisplay() {
+  highestScoreElem.textContent = "Highest Score: " + highestScore;
 }
 
 function resetGame() {
@@ -33,6 +43,7 @@ function resetGame() {
   progressElem.value = 0;
   hintElem.textContent = "";
   piInputElem.focus();
+  updateHighestScoreDisplay();
 }
 
 function handleInput() {
@@ -52,6 +63,12 @@ function handleInput() {
     restartBtn.style.display = "inline-block";
     // Show the correct next digit as a hint
     hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
+    // Update highest score if needed
+    if (score > highestScore) {
+      highestScore = score;
+      localStorage.setItem('pi_highest_score', highestScore);
+      updateHighestScoreDisplay();
+    }
     return;
   }
   // Update sequence and score
@@ -70,6 +87,11 @@ function handleInput() {
   }
   if (input.length > 0) {
     score = currentIndex + input.length;
+    if (score > highestScore) {
+      highestScore = score;
+      localStorage.setItem('pi_highest_score', highestScore);
+      updateHighestScoreDisplay();
+    }
   }
   // If input is correct so far, but not finished, wait for more input
   if (input.length > 0 && input.length + currentIndex < PI_DIGITS.length) {
