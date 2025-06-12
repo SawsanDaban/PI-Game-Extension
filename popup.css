@@ -50,7 +50,7 @@ body {
   border: 2px solid #39ff14;
   border-radius: 12px;
   margin: 18px 12px 0 12px;
-  padding: 18px 14px 14px 14px;
+  padding: 14px 6px 10px 6px; /* further reduced horizontal padding */
   box-shadow: 0 0 16px #39ff14a0, 0 0 32px #ff2fd680;
   position: relative;
 }
@@ -111,23 +111,24 @@ body {
 .arcade-input {
   width: 100%;
   font-size: 1em;
-  padding: 8px;
+  padding: 6px;
   margin-bottom: 12px;
-  border: 2px solid #39ff14;
+  border: 1.5px solid #39ff14;
   border-radius: 8px;
   background: #181828;
   color: #fff;
   outline: none;
-  box-shadow: 0 0 8px #39ff14a0;
+  box-shadow: 0 0 6px #39ff14a0;
   font-family: inherit;
   letter-spacing: 2px;
   text-align: center;
   transition: border 0.2s;
+  box-sizing: border-box; /* ensure border and padding are included in width */
 }
 
 .arcade-input:focus {
-  border: 2px solid #ff2fd6;
-  box-shadow: 0 0 12px #ff2fd6a0;
+  border: 1.5px solid #ff2fd6;
+  box-shadow: 0 0 10px #ff2fd6a0;
 }
 
 .arcade-score, .arcade-highscore {
