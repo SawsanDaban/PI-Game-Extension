@@ -19,6 +19,7 @@ Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
 - 🏅 **Achievements & Badges**: Unlock badges for reaching digit milestones (10, 25, 50, 75, 100)
 - 📈 **Score Tracking**: Your highest score is saved locally
 - 🏆 **Achievements Modal**: View all badges and your progress at any time
+- 🎯 **Daily Challenge**: Reach a new random digit target every day!
 - 💬 **Motivational Messages**: Get encouragement as you play
 - 🧠 **Fun PI Facts**: Learn a random PI fact after each game over or win
 - 🎉 **Confetti & Emoji Feedback**: Celebrate your progress with effects and emoji

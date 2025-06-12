@@ -64,6 +64,39 @@ let lastScoreForAchievement = 0;
 const highestScoreElem = document.getElementById('highest-score');
 highestScoreElem.style.marginBottom = '8px';
 
+// Daily Challenge logic
+const DAILY_CHALLENGE_KEY = 'pi_daily_challenge';
+const DAILY_CHALLENGE_DATE_KEY = 'pi_daily_challenge_date';
+const DAILY_CHALLENGE_MIN = 10;
+const DAILY_CHALLENGE_MAX = 50;
+
+function getTodayString() {
+  const now = new Date();
+  return now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate();
+}
+
+function getOrCreateDailyChallenge() {
+  const today = getTodayString();
+  let challengeDate = localStorage.getItem(DAILY_CHALLENGE_DATE_KEY);
+  let challenge = Number(localStorage.getItem(DAILY_CHALLENGE_KEY));
+  if (challengeDate !== today || !challenge) {
+    // Pick a new challenge for today
+    challenge = Math.floor(Math.random() * (DAILY_CHALLENGE_MAX - DAILY_CHALLENGE_MIN + 1)) + DAILY_CHALLENGE_MIN;
+    localStorage.setItem(DAILY_CHALLENGE_KEY, challenge);
+    localStorage.setItem(DAILY_CHALLENGE_DATE_KEY, today);
+    localStorage.removeItem('pi_daily_challenge_completed');
+  }
+  return challenge;
+}
+
+function markDailyChallengeCompleted() {
+  localStorage.setItem('pi_daily_challenge_completed', '1');
+}
+
+function isDailyChallengeCompleted() {
+  return localStorage.getItem('pi_daily_challenge_completed') === '1';
+}
+
 function showEmoji(type) {
   if (type === "correct") emojiFeedbackElem.textContent = "😃";
   else if (type === "wrong") emojiFeedbackElem.textContent = "😢";
@@ -187,6 +220,20 @@ function updateHighestScoreDisplay() {
   highestScoreElem.textContent = "Highest Score: " + highestScore;
 }
 
+// Add daily challenge UI
+const dailyChallengeElem = document.createElement('div');
+dailyChallengeElem.id = 'daily-challenge';
+dailyChallengeElem.className = 'arcade-daily-challenge';
+document.querySelector('.arcade-panel').insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
+
+function updateDailyChallengeUI() {
+  const challenge = getOrCreateDailyChallenge();
+  const completed = isDailyChallengeCompleted();
+  dailyChallengeElem.innerHTML = completed
+    ? `🌟 <b>Daily Challenge:</b> ${challenge} digits <span style="color:#39ff14;">(Completed!)</span>`
+    : `🎯 <b>Daily Challenge:</b> Reach <b>${challenge}</b> digits today!`;
+}
+
 function startTimer() {
   timeElapsed = 0;
   timerValueElem.textContent = timeElapsed;
@@ -232,6 +279,7 @@ function resetGame() {
   }
   piInputElem.focus();
   updateHighestScoreDisplay();
+  updateDailyChallengeUI();
 }
 
 function handleInput() {
@@ -263,6 +311,7 @@ function handleInput() {
     }
     showRandomPIFact();
     lastScoreForAchievement = 0;
+    updateDailyChallengeUI();
     return;
   }
   piSequenceElem.textContent = "3." + PI_DIGITS.substring(0, currentIndex + input.length);
@@ -279,6 +328,19 @@ function handleInput() {
     showAchievement(achievement);
   }
   lastScoreForAchievement = newScore;
+
+  // Daily challenge check
+  const challenge = getOrCreateDailyChallenge();
+  if (!isDailyChallengeCompleted() && newScore >= challenge) {
+    markDailyChallengeCompleted();
+    updateDailyChallengeUI();
+    messageElem.textContent = `🎉 Daily Challenge Complete! (${challenge} digits)`;
+    messageElem.style.color = "#39ff14";
+    setTimeout(() => {
+      messageElem.textContent = "";
+      messageElem.style.color = "#ff2fd6";
+    }, 2500);
+  }
 
   if (newScore === PI_DIGITS.length) {
     messageElem.textContent = "Congratulations! You completed all available digits!";

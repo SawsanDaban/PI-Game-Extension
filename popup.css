@@ -377,3 +377,12 @@ body {
   color: #fff;
   text-shadow: 0 0 4px #ff2fd6;
 }
+
+.arcade-daily-challenge {
+  font-size: 1em;
+  color: #ffb347;
+  text-shadow: 0 0 8px #ffb347, 0 0 4px #23234a;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
