@@ -283,6 +283,28 @@ body {
   align-items: stretch;
 }
 
+.arcade-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  color: #ff2fd6;
+  font-size: 2.2em;         /* larger size */
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 0 0 12px #ff2fd6, 0 0 8px #fff;
+  z-index: 101;
+  background: none;
+  border: none;
+  line-height: 1;
+  padding: 0 8px;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.arcade-modal-close:hover {
+  color: #39ff14;
+  transform: scale(1.15);
+}
+
 .arcade-achievements-list {
   display: flex;
   flex-direction: column;
