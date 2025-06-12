@@ -501,8 +501,23 @@ function resetGame() {
     });
     return;
   }
-  if (mode === "streak") {
-    modeCleanup = startStreakMode();
+  if (mode === "streak" && window.PIModeStreak) {
+    modeCleanup = window.PIModeStreak({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      streakCountdownElem: document.getElementById('streak-countdown'),
+      onEnd: (finalScore) => {
+        messageElem.textContent = "Streak Over! Score: " + finalScore;
+        if (finalScore > highestStreak) {
+          highestStreak = finalScore;
+          localStorage.setItem('pi_highest_streak', highestStreak);
+        }
+        updateHighestScoreDisplay("streak");
+        restartBtn.style.display = "inline-block";
+      }
+    });
     return;
   }
   if (mode === "speedrun") {
