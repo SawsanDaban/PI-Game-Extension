@@ -23,202 +23,12 @@ const achievementsBtn = document.getElementById('achievements-btn');
 const achievementsModal = document.getElementById('achievements-modal');
 const closeAchievements = document.getElementById('close-achievements');
 const achievementsList = document.getElementById('achievements-list');
-
-const MOTIVATION = [
-  "Keep going! 🚀",
-  "You're on fire! 🔥",
-  "Amazing memory! 🧠",
-  "Impressive! 🌟",
-  "Wow, keep it up! 💪",
-  "Math wizard! 🧙‍♂️",
-  "Unstoppable! 🏆",
-  "Legend! 👑"
-];
-
-const PI_FACTS = [
-  "Did you know? PI has been calculated to over 62 trillion digits!",
-  "PI Day is celebrated on March 14th (3/14).",
-  "The symbol π was first used for PI in 1706.",
-  "PI is an irrational number, meaning it never ends or repeats.",
-  "The world record for memorizing PI is over 70,000 digits!",
-  "PI appears in many formulas in physics and engineering.",
-  "The first 6 digits of PI are 3.14159.",
-  "PI is the ratio of a circle's circumference to its diameter.",
-  "No exact fraction equals PI, but 22/7 is a common approximation.",
-  "PI is used in probability, statistics, and even music theory!"
-];
-
-const ACHIEVEMENTS = [
-  { digits: 10, badge: "🥉", label: "Bronze: 10 Digits" },
-  { digits: 25, badge: "🥈", label: "Silver: 25 Digits" },
-  { digits: 50, badge: "🥇", label: "Gold: 50 Digits" },
-  { digits: 75, badge: "🏅", label: "Platinum: 75 Digits" },
-  { digits: 100, badge: "🏆", label: "Pi Master: 100 Digits" }
-];
+const shareBtn = document.getElementById('share-btn');
 
 let timer = null;
 let timeElapsed = 0;
 let timedMode = false;
 let lastScoreForAchievement = 0;
-
-const highestScoreElem = document.getElementById('highest-score');
-highestScoreElem.style.marginBottom = '8px';
-
-// Daily Challenge logic
-const DAILY_CHALLENGE_KEY = 'pi_daily_challenge';
-const DAILY_CHALLENGE_DATE_KEY = 'pi_daily_challenge_date';
-const DAILY_CHALLENGE_MIN = 10;
-const DAILY_CHALLENGE_MAX = 50;
-
-function getTodayString() {
-  const now = new Date();
-  return now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate();
-}
-
-function getOrCreateDailyChallenge() {
-  const today = getTodayString();
-  let challengeDate = localStorage.getItem(DAILY_CHALLENGE_DATE_KEY);
-  let challenge = Number(localStorage.getItem(DAILY_CHALLENGE_KEY));
-  if (challengeDate !== today || !challenge) {
-    // Pick a new challenge for today
-    challenge = Math.floor(Math.random() * (DAILY_CHALLENGE_MAX - DAILY_CHALLENGE_MIN + 1)) + DAILY_CHALLENGE_MIN;
-    localStorage.setItem(DAILY_CHALLENGE_KEY, challenge);
-    localStorage.setItem(DAILY_CHALLENGE_DATE_KEY, today);
-    localStorage.removeItem('pi_daily_challenge_completed');
-  }
-  return challenge;
-}
-
-function markDailyChallengeCompleted() {
-  localStorage.setItem('pi_daily_challenge_completed', '1');
-}
-
-function isDailyChallengeCompleted() {
-  return localStorage.getItem('pi_daily_challenge_completed') === '1';
-}
-
-function showEmoji(type) {
-  if (type === "correct") emojiFeedbackElem.textContent = "😃";
-  else if (type === "wrong") emojiFeedbackElem.textContent = "😢";
-  else if (type === "win") emojiFeedbackElem.textContent = "🎉";
-  else emojiFeedbackElem.textContent = "";
-}
-
-function showMotivation(score) {
-  if (score > 0 && score % 10 === 0) {
-    motivationElem.textContent = MOTIVATION[(score / 10 - 1) % MOTIVATION.length];
-    motivationElem.style.opacity = 1;
-  } else {
-    motivationElem.textContent = "";
-    motivationElem.style.opacity = 0;
-  }
-}
-
-function showRandomPIFact() {
-  const fact = PI_FACTS[Math.floor(Math.random() * PI_FACTS.length)];
-  motivationElem.textContent = fact;
-  motivationElem.style.opacity = 1;
-}
-
-function getUnlockedAchievements(maxScore) {
-  return ACHIEVEMENTS.filter(a => maxScore >= a.digits);
-}
-
-// Show achievements modal
-function showAchievementsModal() {
-  // Get unlocked achievements based on highestScore
-  const unlocked = getUnlockedAchievements(highestScore);
-  achievementsList.innerHTML = "";
-  ACHIEVEMENTS.forEach(a => {
-    const unlockedBadge = unlocked.some(u => u.digits === a.digits);
-    const row = document.createElement('div');
-    row.className = 'arcade-achievement-row' + (unlockedBadge ? '' : ' locked');
-    row.innerHTML = `<span class="arcade-badge">${a.badge}</span>
-      <span class="arcade-achievement-label">${a.label}</span>`;
-    achievementsList.appendChild(row);
-  });
-  achievementsModal.style.display = "flex";
-}
-
-// Hide achievements modal
-function hideAchievementsModal() {
-  achievementsModal.style.display = "none";
-}
-
-function getNewAchievement(score, prevScore) {
-  return ACHIEVEMENTS.find(a => score >= a.digits && prevScore < a.digits);
-}
-
-function showAchievement(achievement) {
-  if (!achievement) return;
-  messageElem.textContent = `Achievement Unlocked! ${achievement.badge} ${achievement.label}`;
-  messageElem.style.color = "#FFD700";
-  setTimeout(() => {
-    messageElem.textContent = "";
-    messageElem.style.color = "#ff2fd6";
-  }, 2500);
-}
-
-// --- Confetti animation ---
-function launchConfetti() {
-  confettiCanvas.width = 250;
-  confettiCanvas.height = 200;
-  confettiCanvas.style.display = 'block';
-  const ctx = confettiCanvas.getContext('2d');
-  const confettiCount = 80;
-  const confetti = [];
-  for (let i = 0; i < confettiCount; i++) {
-    confetti.push({
-      x: Math.random() * confettiCanvas.width,
-      y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-      r: Math.random() * 6 + 4,
-      d: Math.random() * confettiCount,
-      color: `hsl(${Math.random()*360},70%,60%)`,
-      tilt: Math.random() * 10 - 10
-    });
-  }
-  let angle = 0;
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-    angle += 0.01;
-    for (let i = 0; i < confettiCount; i++) {
-      let c = confetti[i];
-      ctx.beginPath();
-      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
-      ctx.fillStyle = c.color;
-      ctx.fill();
-      c.y += Math.cos(angle + c.d) + 1 + c.r / 2;
-      c.x += Math.sin(angle) * 2;
-      if (c.y > confettiCanvas.height) {
-        c.y = -10;
-        c.x = Math.random() * confettiCanvas.width;
-      }
-    }
-    frame++;
-    if (frame < 80) {
-      requestAnimationFrame(draw);
-    } else {
-      confettiCanvas.style.display = 'none';
-    }
-  }
-  draw();
-}
-// --- End confetti ---
-
-function animateCorrectInput() {
-  piSequenceElem.style.transition = "transform 0.15s";
-  piSequenceElem.style.transform = "scale(1.08)";
-  showEmoji("correct");
-  setTimeout(() => {
-    piSequenceElem.style.transform = "scale(1)";
-    showEmoji("");
-  }, 150);
-}
-
-function updateHighestScoreDisplay() {
-  highestScoreElem.textContent = "Highest Score: " + highestScore;
-}
 
 // Add daily challenge UI
 const dailyChallengeElem = document.createElement('div');
@@ -226,9 +36,13 @@ dailyChallengeElem.id = 'daily-challenge';
 dailyChallengeElem.className = 'arcade-daily-challenge';
 document.querySelector('.arcade-panel').insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
 
+function updateHighestScoreDisplay() {
+  highestScoreElem.textContent = "Highest Score: " + highestScore;
+}
+
 function updateDailyChallengeUI() {
-  const challenge = getOrCreateDailyChallenge();
-  const completed = isDailyChallengeCompleted();
+  const challenge = window.getOrCreateDailyChallenge();
+  const completed = window.isDailyChallengeCompleted();
   dailyChallengeElem.innerHTML = completed
     ? `🌟 <b>Daily Challenge:</b> ${challenge} digits <span style="color:#39ff14;">(Completed!)</span>`
     : `🎯 <b>Daily Challenge:</b> Reach <b>${challenge}</b> digits today!`;
@@ -267,7 +81,7 @@ function resetGame() {
   stopTimer();
   timeElapsed = 0;
   timerValueElem.textContent = "0";
-  showEmoji("");
+  window.showEmoji("", emojiFeedbackElem);
   motivationElem.textContent = "";
   motivationElem.style.opacity = 0;
   confettiCanvas.style.display = 'none';
@@ -298,7 +112,7 @@ function handleInput() {
     messageElem.textContent = "Wrong digit! Game over.";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
-    showEmoji("wrong");
+    window.showEmoji("wrong", emojiFeedbackElem);
     hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
     if (score > highestScore) {
       highestScore = score;
@@ -309,7 +123,7 @@ function handleInput() {
       stopTimer();
       messageElem.textContent += ` Time: ${timeElapsed}s.`;
     }
-    showRandomPIFact();
+    window.showRandomPIFact(motivationElem);
     lastScoreForAchievement = 0;
     updateDailyChallengeUI();
     return;
@@ -319,20 +133,20 @@ function handleInput() {
   progressElem.value = currentIndex + input.length;
   progressElem.max = PI_DIGITS.length;
   hintElem.textContent = "";
-  animateCorrectInput();
-  showMotivation(currentIndex + input.length);
+  window.animateCorrectInput(piSequenceElem, emojiFeedbackElem);
+  window.showMotivation(currentIndex + input.length, motivationElem);
 
   const newScore = currentIndex + input.length;
-  const achievement = getNewAchievement(newScore, lastScoreForAchievement);
+  const achievement = window.getNewAchievement(newScore, lastScoreForAchievement);
   if (achievement) {
-    showAchievement(achievement);
+    window.showAchievement(achievement, messageElem);
   }
   lastScoreForAchievement = newScore;
 
   // Daily challenge check
-  const challenge = getOrCreateDailyChallenge();
-  if (!isDailyChallengeCompleted() && newScore >= challenge) {
-    markDailyChallengeCompleted();
+  const challenge = window.getOrCreateDailyChallenge();
+  if (!window.isDailyChallengeCompleted() && newScore >= challenge) {
+    window.markDailyChallengeCompleted();
     updateDailyChallengeUI();
     messageElem.textContent = `🎉 Daily Challenge Complete! (${challenge} digits)`;
     messageElem.style.color = "#39ff14";
@@ -347,15 +161,15 @@ function handleInput() {
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
     gameOver = true;
-    showEmoji("win");
-    launchConfetti();
+    window.showEmoji("win", emojiFeedbackElem);
+    window.launchConfetti(confettiCanvas);
     if (timedMode) {
       stopTimer();
       messageElem.textContent += ` Time: ${timeElapsed}s.`;
     }
     motivationElem.textContent = "You did it! 🎊";
     motivationElem.style.opacity = 1;
-    setTimeout(showRandomPIFact, 2000);
+    setTimeout(() => window.showRandomPIFact(motivationElem), 2000);
     lastScoreForAchievement = 0;
     return;
   }
@@ -390,11 +204,28 @@ achievementsModal.addEventListener('click', function(e) {
   if (e.target === achievementsModal) hideAchievementsModal();
 });
 
-// Select the existing Share button by its ID
-const shareBtn = document.getElementById('share-btn');
+// Achievements modal logic
+function showAchievementsModal() {
+  const unlocked = window.getUnlockedAchievements(highestScore);
+  achievementsList.innerHTML = "";
+  window.ACHIEVEMENTS.forEach(a => {
+    const unlockedBadge = unlocked.some(u => u.digits === a.digits);
+    const row = document.createElement('div');
+    row.className = 'arcade-achievement-row' + (unlockedBadge ? '' : ' locked');
+    row.innerHTML = `<span class="arcade-badge">${a.badge}</span>
+      <span class="arcade-achievement-label">${a.label}</span>`;
+    achievementsList.appendChild(row);
+  });
+  achievementsModal.style.display = "flex";
+}
 
+function hideAchievementsModal() {
+  achievementsModal.style.display = "none";
+}
+
+// Share button logic
 function getShareMessage() {
-  const unlocked = getUnlockedAchievements(highestScore);
+  const unlocked = window.getUnlockedAchievements(highestScore);
   const badges = unlocked.map(a => a.badge).join(' ');
   return `I scored ${highestScore} digits in the PI Game! ${badges ? 'Achievements: ' + badges : ''} Try it: https://github.com/SawsanDaban/PI-Game-Extension`;
 }
