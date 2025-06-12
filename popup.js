@@ -328,5 +328,24 @@ achievementsModal.addEventListener('click', function(e) {
   if (e.target === achievementsModal) hideAchievementsModal();
 });
 
+// Select the existing Share button by its ID
+const shareBtn = document.getElementById('share-btn');
+
+function getShareMessage() {
+  const unlocked = getUnlockedAchievements(highestScore);
+  const badges = unlocked.map(a => a.badge).join(' ');
+  return `I scored ${highestScore} digits in the PI Game! ${badges ? 'Achievements: ' + badges : ''} Try it: https://github.com/SawsanDaban/PI-Game-Extension`;
+}
+
+shareBtn.addEventListener('click', () => {
+  const msg = getShareMessage();
+  navigator.clipboard.writeText(msg).then(() => {
+    shareBtn.textContent = 'Copied!';
+    setTimeout(() => {
+      shareBtn.textContent = 'Share Score';
+    }, 1500);
+  });
+});
+
 timedMode = modeSelectElem.value === 'timed';
 resetGame();

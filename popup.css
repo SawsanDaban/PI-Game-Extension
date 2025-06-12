@@ -194,9 +194,10 @@ body {
 
 .arcade-actions {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
   margin: 20px 16px 0 16px;
-  gap: 12px;
+  gap: 0;
 }
 
 .arcade-action-btn {
@@ -216,6 +217,32 @@ body {
   outline: none;
   cursor: pointer;
   display: inline-block;
+}
+
+.share-btn {
+  background: linear-gradient(90deg, #2fd6ff 0%, #ff2fd6 100%);
+  color: #181828;
+  order: -1;
+  margin-bottom: 16px;
+}
+
+.share-btn:hover {
+  background: linear-gradient(90deg, #ff2fd6 0%, #2fd6ff 100%);
+  color: #fff;
+}
+
+/* Separator for donation/contribution buttons */
+.arcade-actions-separator {
+  border: none;
+  border-top: 2px dashed #39ff14;
+  margin: 16px 0 12px 0;
+  width: 100%;
+  opacity: 0.5;
+}
+
+.donate-btn,
+.contribute-btn {
+  margin-bottom: 8px;
 }
 
 .donate-btn {
