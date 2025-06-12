@@ -39,6 +39,25 @@ const triviaOptionsElem = document.getElementById('trivia-options');
 const triviaFeedbackElem = document.getElementById('trivia-feedback');
 const nextTriviaBtn = document.getElementById('next-trivia-btn');
 
+const themeSelectElem = document.getElementById('theme-select');
+
+// Theme logic
+function applyTheme(theme) {
+  document.body.classList.remove('theme-neon', 'theme-dark');
+  document.body.classList.add('theme-' + theme);
+  localStorage.setItem('pi_theme', theme);
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem('pi_theme') || 'neon';
+  themeSelectElem.value = saved;
+  applyTheme(saved);
+}
+
+themeSelectElem.addEventListener('change', () => {
+  applyTheme(themeSelectElem.value);
+});
+
 let timer = null;
 let timeElapsed = 0;
 let timedMode = false;
@@ -577,3 +596,4 @@ window.addEventListener('beforeunload', () => {
 timedMode = modeSelectElem.value === 'timed';
 streakMode = modeSelectElem.value === 'streak';
 resetGame();
+loadTheme();

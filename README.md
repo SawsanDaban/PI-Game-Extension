@@ -75,3 +75,21 @@ If you enjoy the PI Game, consider [donating a coffee](https://www.buymeacoffee.
 ## 📄 License
 
 Open source. See [LICENSE](LICENSE) for details.
+
+---
+
+## 🛠️ Next Step
+
+- **Add sound effects** for correct answers, wrong answers, and game over to enhance the arcade experience.
+- **Add a settings menu** to let users toggle sound, animations, and difficulty options.
+- **Add keyboard shortcuts** for faster navigation (e.g., restart, achievements, trivia, mode switch).
+- **Add dark/light theme toggle** so users can choose their preferred appearance.
+- **Add localization/multi-language support** so users can play in their preferred language.
+- **Add statistics/history page** to let users view their progress, best streaks, and daily challenge history.
+- **Add cloud sync** so users can save their progress and settings across devices.
+- **Add challenge mode** where users can compete with friends or global leaderboards.
+- **Add accessibility improvements** to ensure the game is usable with screen readers and keyboard navigation.
+- **Add custom PI digit sets** so users can practice with different mathematical constants (e.g., e, √2).
+- **Add export/import feature** so users can back up and restore their progress and settings.
+- **Add daily/weekly/monthly leaderboards** so users can compare their scores and streaks with others.
+- **Add themes & customization** so users can unlock or choose different color themes, backgrounds, or PI digit fonts.

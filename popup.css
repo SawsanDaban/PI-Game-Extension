@@ -12,6 +12,11 @@ body {
   overflow: hidden;
 }
 
+body.theme-dark {
+  background: #111;
+  color: #eee;
+}
+
 .arcade-header {
   display: flex;
   align-items: center;
@@ -21,6 +26,11 @@ body {
   border-bottom: 3px solid #39ff14;
   box-shadow: 0 2px 8px #000a;
   position: relative;
+}
+
+body.theme-dark .arcade-header {
+  background: #181818;
+  border-bottom: 3px solid #444;
 }
 
 .arcade-logo {
@@ -39,6 +49,17 @@ body {
   font-weight: bold;
 }
 
+body.theme-dark .arcade-title,
+body.theme-dark .arcade-label,
+body.theme-dark .arcade-highscore,
+body.theme-dark .arcade-score,
+body.theme-dark .arcade-streak,
+body.theme-dark .arcade-streak-time,
+body.theme-dark .arcade-daily-challenge {
+  color: #eee !important;
+  text-shadow: none !important;
+}
+
 #emoji-feedback {
   font-size: 1.7em;
   margin-left: 12px;
@@ -53,6 +74,12 @@ body {
   padding: 18px 10px 12px 10px;
   box-shadow: 0 0 20px #39ff14a0, 0 0 40px #ff2fd680;
   position: relative;
+}
+
+body.theme-dark .arcade-panel {
+  background: #181818;
+  border-color: #444;
+  box-shadow: 0 0 20px #444a, 0 0 40px #222a;
 }
 
 .arcade-row {
@@ -78,6 +105,14 @@ body {
   padding: 4px 12px;
   outline: none;
   box-shadow: 0 0 10px #ff2fd6a0;
+}
+
+body.theme-dark .arcade-input,
+body.theme-dark .arcade-select {
+  background: #222;
+  color: #eee;
+  border-color: #444;
+  box-shadow: 0 0 6px #222a;
 }
 
 .arcade-timer {
@@ -202,8 +237,21 @@ body {
   margin-top: 4px;
 }
 
+body.theme-dark .arcade-btn,
+body.theme-dark .arcade-action-btn {
+  background: #222;
+  color: #eee;
+  box-shadow: 0 0 10px #222a;
+}
+
 .arcade-btn:hover {
   background: linear-gradient(90deg, #39ff14 0%, #ff2fd6 100%);
+  color: #fff;
+}
+
+body.theme-dark .arcade-btn:hover,
+body.theme-dark .arcade-action-btn:hover {
+  background: #333;
   color: #fff;
 }
 
@@ -323,6 +371,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+
+body.theme-dark .arcade-modal-content {
+  background: #181818;
+  border-color: #444;
+  box-shadow: 0 0 24px #222a, 0 0 40px #111a;
 }
 
 .arcade-modal-close {
