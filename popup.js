@@ -16,20 +16,98 @@ const hintElem = document.getElementById('hint');
 const modeSelectElem = document.getElementById('mode-select');
 const timerElem = document.getElementById('timer');
 const timerValueElem = document.getElementById('timer-value');
+const emojiFeedbackElem = document.getElementById('emoji-feedback');
+const motivationElem = document.getElementById('motivation');
+const confettiCanvas = document.getElementById('confetti-canvas');
+
+const MOTIVATION = [
+  "Keep going! 🚀",
+  "You're on fire! 🔥",
+  "Amazing memory! 🧠",
+  "Impressive! 🌟",
+  "Wow, keep it up! 💪",
+  "Math wizard! 🧙‍♂️",
+  "Unstoppable! 🏆",
+  "Legend! 👑"
+];
 
 let timer = null;
 let timeElapsed = 0;
 let timedMode = false;
 
-const highestScoreElem = document.createElement('div');
-highestScoreElem.id = 'highest-score';
+const highestScoreElem = document.getElementById('highest-score');
 highestScoreElem.style.marginBottom = '8px';
-scoreElem.parentNode.insertBefore(highestScoreElem, scoreElem.nextSibling);
+
+function showEmoji(type) {
+  if (type === "correct") emojiFeedbackElem.textContent = "😃";
+  else if (type === "wrong") emojiFeedbackElem.textContent = "😢";
+  else if (type === "win") emojiFeedbackElem.textContent = "🎉";
+  else emojiFeedbackElem.textContent = "";
+}
+
+function showMotivation(score) {
+  if (score > 0 && score % 10 === 0) {
+    motivationElem.textContent = MOTIVATION[(score / 10 - 1) % MOTIVATION.length];
+    motivationElem.style.opacity = 1;
+  } else {
+    motivationElem.textContent = "";
+    motivationElem.style.opacity = 0;
+  }
+}
+
+// --- Confetti animation ---
+function launchConfetti() {
+  confettiCanvas.width = 250;
+  confettiCanvas.height = 200;
+  confettiCanvas.style.display = 'block';
+  const ctx = confettiCanvas.getContext('2d');
+  const confettiCount = 80;
+  const confetti = [];
+  for (let i = 0; i < confettiCount; i++) {
+    confetti.push({
+      x: Math.random() * confettiCanvas.width,
+      y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * confettiCount,
+      color: `hsl(${Math.random()*360},70%,60%)`,
+      tilt: Math.random() * 10 - 10
+    });
+  }
+  let angle = 0;
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    angle += 0.01;
+    for (let i = 0; i < confettiCount; i++) {
+      let c = confetti[i];
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+      ctx.fillStyle = c.color;
+      ctx.fill();
+      c.y += Math.cos(angle + c.d) + 1 + c.r / 2;
+      c.x += Math.sin(angle) * 2;
+      if (c.y > confettiCanvas.height) {
+        c.y = -10;
+        c.x = Math.random() * confettiCanvas.width;
+      }
+    }
+    frame++;
+    if (frame < 80) {
+      requestAnimationFrame(draw);
+    } else {
+      confettiCanvas.style.display = 'none';
+    }
+  }
+  draw();
+}
+// --- End confetti ---
 
 function animateCorrectInput() {
   piSequenceElem.style.background = "#d4ffd4";
+  showEmoji("correct");
   setTimeout(() => {
     piSequenceElem.style.background = "";
+    showEmoji("");
   }, 150);
 }
 
@@ -69,6 +147,10 @@ function resetGame() {
   stopTimer();
   timeElapsed = 0;
   timerValueElem.textContent = "0";
+  showEmoji("");
+  motivationElem.textContent = "";
+  motivationElem.style.opacity = 0;
+  confettiCanvas.style.display = 'none';
   if (timedMode) {
     timerElem.style.display = 'block';
     startTimer();
@@ -95,6 +177,7 @@ function handleInput() {
     messageElem.textContent = "Wrong digit! Game over.";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
+    showEmoji("wrong");
     // Show the correct next digit as a hint
     hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
     // Update highest score if needed
@@ -107,6 +190,8 @@ function handleInput() {
       stopTimer();
       messageElem.textContent += ` Time: ${timeElapsed}s.`;
     }
+    motivationElem.textContent = "Try again! 💡";
+    motivationElem.style.opacity = 1;
     return;
   }
   // Update sequence and score
@@ -116,15 +201,20 @@ function handleInput() {
   progressElem.max = PI_DIGITS.length;
   hintElem.textContent = "";
   animateCorrectInput();
+  showMotivation(currentIndex + input.length);
   if (input.length + currentIndex === PI_DIGITS.length) {
     messageElem.textContent = "Congratulations! You completed all available digits!";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
     gameOver = true;
+    showEmoji("win");
+    launchConfetti();
     if (timedMode) {
       stopTimer();
       messageElem.textContent += ` Time: ${timeElapsed}s.`;
     }
+    motivationElem.textContent = "You did it! 🎊";
+    motivationElem.style.opacity = 1;
     return;
   }
   if (input.length > 0) {

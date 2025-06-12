@@ -1,60 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
-  width: 250px;
-  padding: 16px;
-  background: #f9f9f9;
+  font-family: 'Press Start 2P', 'Consolas', monospace;
+  background: #181828;
+  color: #39ff14;
+  width: 270px;
+  min-height: 370px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-h1 {
-  font-size: 1.2em;
+.arcade-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222244;
+  padding: 12px 0 8px 0;
+  border-bottom: 3px solid #39ff14;
+  box-shadow: 0 2px 8px #000a;
+  position: relative;
+}
+
+.arcade-logo {
+  font-size: 2.2em;
+  color: #ff2fd6;
+  text-shadow: 0 0 8px #ff2fd6, 0 0 16px #fff;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.arcade-title {
+  font-size: 1.1em;
+  letter-spacing: 2px;
+  color: #39ff14;
+  text-shadow: 0 0 8px #39ff14, 0 0 16px #fff;
+  font-weight: bold;
+}
+
+#emoji-feedback {
+  font-size: 1.5em;
+  margin-left: 12px;
+  filter: drop-shadow(0 0 4px #fff);
+}
+
+.arcade-panel {
+  background: #23234a;
+  border: 2px solid #39ff14;
+  border-radius: 12px;
+  margin: 18px 12px 0 12px;
+  padding: 18px 14px 14px 14px;
+  box-shadow: 0 0 16px #39ff14a0, 0 0 32px #ff2fd680;
+  position: relative;
+}
+
+.arcade-row {
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-#pi-sequence {
+.arcade-label {
+  font-size: 0.8em;
+  margin-right: 8px;
+  color: #fff;
+  text-shadow: 0 0 4px #39ff14;
+}
+
+.arcade-select {
+  background: #181828;
+  color: #39ff14;
+  border: 2px solid #ff2fd6;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9em;
+  padding: 2px 8px;
+  outline: none;
+  box-shadow: 0 0 8px #ff2fd6a0;
+}
+
+.arcade-timer {
+  font-size: 0.9em;
+  color: #ff2fd6;
+  margin-bottom: 10px;
+  text-shadow: 0 0 6px #ff2fd6;
+}
+
+.arcade-sequence {
   font-size: 1.1em;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: #fff;
+  letter-spacing: 1px;
   word-break: break-all;
+  text-shadow: 0 0 8px #39ff14;
 }
 
-#pi-progress {
-  height: 12px;
-  margin-bottom: 8px;
+.arcade-progress {
+  width: 100%;
+  height: 14px;
+  margin-bottom: 12px;
+  accent-color: #ff2fd6;
+  background: #181828;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ff2fd6a0;
 }
 
-#pi-input {
+.arcade-input {
   width: 100%;
   font-size: 1em;
-  padding: 6px;
-  margin-bottom: 8px;
-  box-sizing: border-box;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 2px solid #39ff14;
+  border-radius: 8px;
+  background: #181828;
+  color: #fff;
+  outline: none;
+  box-shadow: 0 0 8px #39ff14a0;
+  font-family: inherit;
+  letter-spacing: 2px;
+  text-align: center;
+  transition: border 0.2s;
 }
 
-#score {
-  margin-bottom: 8px;
+.arcade-input:focus {
+  border: 2px solid #ff2fd6;
+  box-shadow: 0 0 12px #ff2fd6a0;
 }
 
-#message {
-  color: red;
+.arcade-score, .arcade-highscore {
+  font-size: 0.9em;
   margin-bottom: 8px;
+  color: #39ff14;
+  text-shadow: 0 0 4px #39ff14;
 }
 
-#hint {
+.arcade-highscore {
+  color: #ff2fd6;
+  text-shadow: 0 0 8px #ff2fd6;
+}
+
+.arcade-message {
+  color: #ff2fd6;
   font-size: 0.95em;
   margin-bottom: 8px;
+  min-height: 18px;
+  text-shadow: 0 0 6px #ff2fd6;
 }
 
-#restart-btn {
-  padding: 6px 12px;
-  font-size: 1em;
-}
-
-#mode-select {
-  font-size: 1em;
-  margin-left: 4px;
-}
-
-#timer {
-  font-weight: bold;
-  color: #333;
+.arcade-hint {
+  font-size: 0.9em;
+  color: #39ff14;
   margin-bottom: 8px;
+  min-height: 18px;
+  text-shadow: 0 0 4px #39ff14;
+}
+
+.arcade-motivation {
+  font-size: 0.95em;
+  margin-bottom: 10px;
+  color: #fff;
+  text-shadow: 0 0 8px #ff2fd6;
+  min-height: 20px;
+  transition: opacity 0.3s;
+}
+
+.arcade-btn {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 1em;
+  font-family: inherit;
+  background: linear-gradient(90deg, #ff2fd6 0%, #39ff14 100%);
+  color: #181828;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 0 12px #ff2fd6a0, 0 0 12px #39ff14a0;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.arcade-btn:hover {
+  background: linear-gradient(90deg, #39ff14 0%, #ff2fd6 100%);
+  color: #fff;
+}
+
+#confetti-canvas {
+  width: 270px;
+  height: 370px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10;
 }

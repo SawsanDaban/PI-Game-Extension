@@ -6,22 +6,31 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <h1>PI Game</h1>
-  <div style="margin-bottom:8px;">
-    <label for="mode-select">Mode:</label>
-    <select id="mode-select">
-      <option value="normal">Normal</option>
-      <option value="timed">Timed</option>
-    </select>
+  <div class="arcade-header">
+    <span class="arcade-logo">π</span>
+    <span class="arcade-title">PI GAME</span>
+    <span id="emoji-feedback" aria-label="emoji"></span>
   </div>
-  <div id="timer" style="display:none; margin-bottom:8px;">Time: <span id="timer-value">0</span>s</div>
-  <div id="pi-sequence">3.</div>
-  <progress id="pi-progress" value="0" max="100" style="width:100%;margin-bottom:8px;"></progress>
-  <input id="pi-input" type="text" autocomplete="off" maxlength="100" placeholder="Type next digits..." autofocus />
-  <div id="score">Score: 0</div>
-  <div id="message"></div>
-  <div id="hint" style="color: #007700; margin-bottom: 8px;"></div>
-  <button id="restart-btn" style="display:none;">Restart</button>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="arcade-panel">
+    <div class="arcade-row">
+      <label for="mode-select" class="arcade-label">Mode:</label>
+      <select id="mode-select" class="arcade-select">
+        <option value="normal">Normal</option>
+        <option value="timed">Timed</option>
+      </select>
+    </div>
+    <div id="timer" class="arcade-timer" style="display:none;">⏱ <span id="timer-value">0</span>s</div>
+    <div id="pi-sequence" class="arcade-sequence">3.</div>
+    <progress id="pi-progress" value="0" max="100" class="arcade-progress"></progress>
+    <input id="pi-input" type="text" autocomplete="off" maxlength="100" placeholder="Type next digits..." class="arcade-input" autofocus />
+    <div id="score" class="arcade-score">Score: 0</div>
+    <div id="highest-score" class="arcade-highscore"></div>
+    <div id="message" class="arcade-message"></div>
+    <div id="hint" class="arcade-hint"></div>
+    <div id="motivation" class="arcade-motivation"></div>
+    <button id="restart-btn" class="arcade-btn" style="display:none;">Restart</button>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
