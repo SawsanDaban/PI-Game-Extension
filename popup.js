@@ -10,6 +10,15 @@ const piInputElem = document.getElementById('pi-input');
 const scoreElem = document.getElementById('score');
 const messageElem = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
+const progressElem = document.getElementById('pi-progress');
+const hintElem = document.getElementById('hint');
+
+function animateCorrectInput() {
+  piSequenceElem.style.background = "#d4ffd4";
+  setTimeout(() => {
+    piSequenceElem.style.background = "";
+  }, 150);
+}
 
 function resetGame() {
   currentIndex = 0;
@@ -21,6 +30,8 @@ function resetGame() {
   scoreElem.textContent = "Score: 0";
   messageElem.textContent = "";
   restartBtn.style.display = "none";
+  progressElem.value = 0;
+  hintElem.textContent = "";
   piInputElem.focus();
 }
 
@@ -39,11 +50,17 @@ function handleInput() {
     messageElem.textContent = "Wrong digit! Game over.";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
+    // Show the correct next digit as a hint
+    hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
     return;
   }
   // Update sequence and score
   piSequenceElem.textContent = "3." + PI_DIGITS.substring(0, currentIndex + input.length);
   scoreElem.textContent = "Score: " + (currentIndex + input.length);
+  progressElem.value = currentIndex + input.length;
+  progressElem.max = PI_DIGITS.length;
+  hintElem.textContent = "";
+  animateCorrectInput();
   if (input.length + currentIndex === PI_DIGITS.length) {
     messageElem.textContent = "Congratulations! You completed all available digits!";
     piInputElem.disabled = true;
@@ -56,7 +73,6 @@ function handleInput() {
   }
   // If input is correct so far, but not finished, wait for more input
   if (input.length > 0 && input.length + currentIndex < PI_DIGITS.length) {
-    // If user typed more than one digit at once, update currentIndex and clear input
     if (input.length > 0) {
       currentIndex += input.length;
       piInputElem.value = "";

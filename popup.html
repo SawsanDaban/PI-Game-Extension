@@ -8,9 +8,11 @@
 <body>
   <h1>PI Game</h1>
   <div id="pi-sequence">3.</div>
+  <progress id="pi-progress" value="0" max="100" style="width:100%;margin-bottom:8px;"></progress>
   <input id="pi-input" type="text" autocomplete="off" maxlength="100" placeholder="Type next digits..." autofocus />
   <div id="score">Score: 0</div>
   <div id="message"></div>
+  <div id="hint" style="color: #007700; margin-bottom: 8px;"></div>
   <button id="restart-btn" style="display:none;">Restart</button>
   <script src="popup.js"></script>
 </body>
