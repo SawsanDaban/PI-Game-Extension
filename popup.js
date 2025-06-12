@@ -103,10 +103,11 @@ function launchConfetti() {
 // --- End confetti ---
 
 function animateCorrectInput() {
-  piSequenceElem.style.background = "#d4ffd4";
+  piSequenceElem.style.transition = "transform 0.15s";
+  piSequenceElem.style.transform = "scale(1.08)";
   showEmoji("correct");
   setTimeout(() => {
-    piSequenceElem.style.background = "";
+    piSequenceElem.style.transform = "scale(1)";
     showEmoji("");
   }, 150);
 }

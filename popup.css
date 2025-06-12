@@ -94,6 +94,8 @@ body {
   letter-spacing: 1px;
   word-break: break-all;
   text-shadow: 0 0 8px #39ff14;
+  background: none !important;
+  transition: transform 0.15s;
 }
 
 .arcade-progress {
