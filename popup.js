@@ -216,8 +216,9 @@ function startStreakCountdown() {
   if (streakCountdownInterval) clearInterval(streakCountdownInterval);
   streakCountdownInterval = setInterval(() => {
     streakCountdown -= 0.1;
-    updateStreakUI();
     if (streakCountdown <= 0) {
+      streakCountdown = 0; // Clamp to zero so it doesn't go negative
+      updateStreakUI();
       clearInterval(streakCountdownInterval);
       streakCountdownInterval = null;
       // End game due to timeout
@@ -246,6 +247,8 @@ function startStreakCountdown() {
         lastScoreForAchievement = 0;
         updateDailyChallengeUI();
       }
+    } else {
+      updateStreakUI();
     }
   }, 100);
 }
