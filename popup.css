@@ -270,7 +270,7 @@ body {
 .arcade-modal-content {
   background: #23234a;
   margin: 40px auto;
-  padding: 24px 18px 18px 18px;
+  padding: 24px 0 18px 0; /* remove horizontal padding */
   border: 2px solid #39ff14;
   border-radius: 14px;
   width: 90%;
@@ -278,31 +278,19 @@ body {
   box-shadow: 0 0 24px #39ff14a0, 0 0 40px #ff2fd680;
   position: relative;
   text-align: center;
-}
-
-.arcade-modal-title {
-  color: #ff2fd6;
-  font-size: 1.2em;
-  margin-bottom: 18px;
-  text-shadow: 0 0 8px #ff2fd6;
-}
-
-.arcade-modal-close {
-  position: absolute;
-  top: 10px;
-  right: 18px;
-  color: #ff2fd6;
-  font-size: 1.5em;
-  font-weight: bold;
-  cursor: pointer;
-  text-shadow: 0 0 8px #ff2fd6;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .arcade-achievements-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  align-items: center;
+  align-items: stretch; /* stretch to modal width */
+  width: 100%;
+  padding: 0 16px; /* add horizontal padding for inner spacing */
+  box-sizing: border-box;
 }
 
 .arcade-badge {
@@ -325,6 +313,9 @@ body {
   border: 1.5px solid #39ff14;
   opacity: 1;
   transition: opacity 0.2s;
+  width: 100%; /* stretch to parent */
+  box-sizing: border-box;
+  margin: 0; /* remove any default margin */
 }
 
 .arcade-achievement-row.locked {
