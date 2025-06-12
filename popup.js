@@ -1,10 +1,15 @@
 // First 100 digits of PI (excluding "3.")
 const PI_DIGITS = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
 
+const STREAK_IDLE_LIMIT = 5; // seconds for streak mode
 let currentIndex = 0;
 let score = 0;
 let gameOver = false;
 let highestScore = Number(localStorage.getItem('pi_highest_score')) || 0;
+let highestStreak = Number(localStorage.getItem('pi_highest_streak')) || 0;
+let streakMode = false;
+let streakCountdown = STREAK_IDLE_LIMIT;
+let streakCountdownInterval = null;
 
 const piSequenceElem = document.getElementById('pi-sequence');
 const piInputElem = document.getElementById('pi-input');
@@ -43,14 +48,170 @@ let currentTrivia = null;
 let triviaAnswered = false;
 let triviaAskedIndexes = []; // Track asked questions in this session
 
+let idleTimeout = null;
+const IDLE_LIMIT = 5000; // 5 seconds
+
+function resetIdleTimer() {
+  if (idleTimeout) clearTimeout(idleTimeout);
+  idleTimeout = setTimeout(() => {
+    if (!gameOver && piInputElem.value.length > 0) {
+      gameOver = true;
+      messageElem.textContent = "⏰ Time's up! You were idle for 5 seconds.";
+      piInputElem.disabled = true;
+      restartBtn.style.display = "inline-block";
+      window.showEmoji("wrong", emojiFeedbackElem);
+      hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
+      currentStreak = 0;
+      streakTime = 0;
+      streakStartTime = null;
+      stopStreakTimer();
+      updateStreakUI();
+      if (score > highestScore) {
+        highestScore = score;
+        localStorage.setItem('pi_highest_score', highestScore);
+        updateHighestScoreDisplay();
+      }
+      if (timedMode) {
+        stopTimer();
+        messageElem.textContent += ` Time: ${timeElapsed}s.`;
+      }
+      window.showRandomPIFact(motivationElem);
+      lastScoreForAchievement = 0;
+      updateDailyChallengeUI();
+    }
+  }, IDLE_LIMIT);
+}
+
+function clearIdleTimer() {
+  if (idleTimeout) {
+    clearTimeout(idleTimeout);
+    idleTimeout = null;
+  }
+}
+
 // Add daily challenge UI
 const dailyChallengeElem = document.createElement('div');
 dailyChallengeElem.id = 'daily-challenge';
 dailyChallengeElem.className = 'arcade-daily-challenge';
 document.querySelector('.arcade-panel').insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
 
+// Add streak UI element (move creation below .arcade-panel for conditional display)
+const streakElem = document.createElement('div');
+streakElem.id = 'streak';
+streakElem.className = 'arcade-streak';
+streakElem.textContent = "Streak: 0";
+
+const streakTimeElem = document.createElement('div');
+streakTimeElem.id = 'streak-time';
+streakTimeElem.className = 'arcade-streak-time';
+streakTimeElem.textContent = "Streak Time: 0.0s";
+
+const streakCountdownElem = document.createElement('div');
+streakCountdownElem.id = 'streak-countdown';
+streakCountdownElem.className = 'arcade-streak-time';
+streakCountdownElem.textContent = "";
+
+function showStreakUI(show) {
+  if (show) {
+    if (!streakElem.parentNode) document.querySelector('.arcade-panel').insertBefore(streakElem, document.getElementById('score'));
+    if (!streakTimeElem.parentNode) document.querySelector('.arcade-panel').insertBefore(streakTimeElem, document.getElementById('score'));
+    if (!streakCountdownElem.parentNode) document.querySelector('.arcade-panel').insertBefore(streakCountdownElem, document.getElementById('score'));
+    streakElem.style.display = '';
+    streakTimeElem.style.display = '';
+    streakCountdownElem.style.display = '';
+  } else {
+    streakElem.style.display = 'none';
+    streakTimeElem.style.display = 'none';
+    streakCountdownElem.style.display = 'none';
+  }
+}
+
+let currentStreak = 0;
+let streakStartTime = null;
+let streakTime = 0;
+let streakTimerInterval = null;
+
+function updateStreakUI() {
+  streakElem.textContent = "Streak: " + currentStreak;
+  streakTimeElem.textContent = "Streak Time: " + streakTime.toFixed(1) + "s";
+  if (streakMode) {
+    streakCountdownElem.textContent = "⏳ " + streakCountdown.toFixed(1) + "s left";
+  } else {
+    streakCountdownElem.textContent = "";
+  }
+}
+
+function startStreakTimer() {
+  streakStartTime = Date.now();
+  streakTime = 0;
+  if (streakTimerInterval) clearInterval(streakTimerInterval);
+  streakTimerInterval = setInterval(() => {
+    streakTime = (Date.now() - streakStartTime) / 1000;
+    streakTimeElem.textContent = "Streak Time: " + streakTime.toFixed(1) + "s";
+  }, 100);
+}
+
+function stopStreakTimer() {
+  if (streakTimerInterval) {
+    clearInterval(streakTimerInterval);
+    streakTimerInterval = null;
+  }
+}
+
+// --- Streak mode countdown logic ---
+function startStreakCountdown() {
+  streakCountdown = STREAK_IDLE_LIMIT;
+  updateStreakUI();
+  if (streakCountdownInterval) clearInterval(streakCountdownInterval);
+  streakCountdownInterval = setInterval(() => {
+    streakCountdown -= 0.1;
+    updateStreakUI();
+    if (streakCountdown <= 0) {
+      clearInterval(streakCountdownInterval);
+      streakCountdownInterval = null;
+      // End game due to timeout
+      if (!gameOver) {
+        gameOver = true;
+        messageElem.textContent = "⏰ Time's up! You didn't type in time.";
+        piInputElem.disabled = true;
+        restartBtn.style.display = "inline-block";
+        window.showEmoji("wrong", emojiFeedbackElem);
+        hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
+        currentStreak = 0;
+        streakTime = 0;
+        streakStartTime = null;
+        stopStreakTimer();
+        updateStreakUI();
+        if (score > highestScore) {
+          highestScore = score;
+          localStorage.setItem('pi_highest_score', highestScore);
+          updateHighestScoreDisplay();
+        }
+        if (timedMode) {
+          stopTimer();
+          messageElem.textContent += ` Time: ${timeElapsed}s.`;
+        }
+        window.showRandomPIFact(motivationElem);
+        lastScoreForAchievement = 0;
+        updateDailyChallengeUI();
+      }
+    }
+  }, 100);
+}
+
+function stopStreakCountdown() {
+  if (streakCountdownInterval) {
+    clearInterval(streakCountdownInterval);
+    streakCountdownInterval = null;
+  }
+}
+
 function updateHighestScoreDisplay() {
-  highestScoreElem.textContent = "Highest Score: " + highestScore;
+  if (streakMode) {
+    highestScoreElem.textContent = "Highest Streak: " + highestStreak;
+  } else {
+    highestScoreElem.textContent = "Highest Score: " + highestScore;
+  }
 }
 
 function updateDailyChallengeUI() {
@@ -83,10 +244,17 @@ function resetGame() {
   score = 0;
   gameOver = false;
   lastScoreForAchievement = 0;
+  currentStreak = 0;
+  streakTime = 0;
+  streakStartTime = null;
+  stopStreakTimer();
+  stopStreakCountdown();
+  clearIdleTimer();
   piSequenceElem.textContent = "3.";
   piInputElem.value = "";
   piInputElem.disabled = false;
   scoreElem.textContent = "Score: 0";
+  scoreElem.style.display = streakMode ? "none" : "";
   messageElem.textContent = "";
   restartBtn.style.display = "none";
   progressElem.value = 0;
@@ -104,13 +272,21 @@ function resetGame() {
   } else {
     timerElem.style.display = 'none';
   }
+  showStreakUI(streakMode);
   piInputElem.focus();
   updateHighestScoreDisplay();
   updateDailyChallengeUI();
+  updateStreakUI();
 }
 
 function handleInput() {
   if (gameOver) return;
+  if (streakMode) {
+    stopStreakCountdown();
+    startStreakCountdown();
+  } else {
+    resetIdleTimer();
+  }
   if (timedMode && !timer) startTimer();
   const input = piInputElem.value;
   let correct = true;
@@ -121,17 +297,31 @@ function handleInput() {
     }
   }
   if (!correct) {
+    if (streakMode) stopStreakCountdown();
+    else clearIdleTimer();
     gameOver = true;
     messageElem.textContent = "Wrong digit! Game over.";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
     window.showEmoji("wrong", emojiFeedbackElem);
     hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
-    if (score > highestScore) {
-      highestScore = score;
-      localStorage.setItem('pi_highest_score', highestScore);
-      updateHighestScoreDisplay();
+    if (streakMode) {
+      if (currentStreak > highestStreak) {
+        highestStreak = currentStreak;
+        localStorage.setItem('pi_highest_streak', highestStreak);
+      }
+    } else {
+      if (score > highestScore) {
+        highestScore = score;
+        localStorage.setItem('pi_highest_score', highestScore);
+      }
     }
+    updateHighestScoreDisplay();
+    currentStreak = 0;
+    streakTime = 0;
+    streakStartTime = null;
+    stopStreakTimer();
+    updateStreakUI();
     if (timedMode) {
       stopTimer();
       messageElem.textContent += ` Time: ${timeElapsed}s.`;
@@ -142,7 +332,9 @@ function handleInput() {
     return;
   }
   piSequenceElem.textContent = "3." + PI_DIGITS.substring(0, currentIndex + input.length);
-  scoreElem.textContent = "Score: " + (currentIndex + input.length);
+  if (!streakMode) {
+    scoreElem.textContent = "Score: " + (currentIndex + input.length);
+  }
   progressElem.value = currentIndex + input.length;
   progressElem.max = PI_DIGITS.length;
   hintElem.textContent = "";
@@ -170,6 +362,8 @@ function handleInput() {
   }
 
   if (newScore === PI_DIGITS.length) {
+    if (streakMode) stopStreakCountdown();
+    else clearIdleTimer();
     messageElem.textContent = "Congratulations! You completed all available digits!";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
@@ -182,16 +376,44 @@ function handleInput() {
     }
     motivationElem.textContent = "You did it! 🎊";
     motivationElem.style.opacity = 1;
+    stopStreakTimer();
+    if (streakMode) {
+      if (currentStreak > highestStreak) {
+        highestStreak = currentStreak;
+        localStorage.setItem('pi_highest_streak', highestStreak);
+      }
+    } else {
+      if (score > highestScore) {
+        highestScore = score;
+        localStorage.setItem('pi_highest_score', highestScore);
+      }
+    }
+    updateHighestScoreDisplay();
     setTimeout(() => window.showRandomPIFact(motivationElem), 2000);
     lastScoreForAchievement = 0;
     return;
   }
   if (input.length > 0) {
+    // If starting a new streak, start timer
+    if (currentStreak === 0) {
+      startStreakTimer();
+      if (streakMode) startStreakCountdown();
+    }
+    currentStreak += input.length;
+    updateStreakUI();
     score = newScore;
-    if (score > highestScore) {
-      highestScore = score;
-      localStorage.setItem('pi_highest_score', highestScore);
-      updateHighestScoreDisplay();
+    if (streakMode) {
+      if (currentStreak > highestStreak) {
+        highestStreak = currentStreak;
+        localStorage.setItem('pi_highest_streak', highestStreak);
+        updateHighestScoreDisplay();
+      }
+    } else {
+      if (score > highestScore) {
+        highestScore = score;
+        localStorage.setItem('pi_highest_score', highestScore);
+        updateHighestScoreDisplay();
+      }
     }
   }
   if (input.length > 0 && input.length + currentIndex < PI_DIGITS.length) {
@@ -204,6 +426,7 @@ function handleInput() {
 
 modeSelectElem.addEventListener('change', () => {
   timedMode = modeSelectElem.value === 'timed';
+  streakMode = modeSelectElem.value === 'streak';
   resetGame();
 });
 
@@ -345,5 +568,12 @@ triviaModal.addEventListener('click', function(e) {
   if (e.target === triviaModal) hideTriviaModal();
 });
 
+// When the popup is closed/unloaded, clear the idle timer
+window.addEventListener('beforeunload', () => {
+  clearIdleTimer();
+  stopStreakCountdown();
+});
+
 timedMode = modeSelectElem.value === 'timed';
+streakMode = modeSelectElem.value === 'streak';
 resetGame();

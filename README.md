@@ -18,6 +18,7 @@ Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
 - ⏱ **Normal and Timed Modes**: Play at your own pace or race against the clock
 - 🏅 **Achievements & Badges**: Unlock badges for reaching digit milestones (10, 25, 50, 75, 100)
 - 📈 **Score Tracking**: Your highest score is saved locally
+- 🔥 **Streak Counter**: See how many digits you get right in a row!
 - 🏆 **Achievements Modal**: View all badges and your progress at any time
 - 🎯 **Daily Challenge**: Reach a new random digit target every day!
 - 💬 **Motivational Messages**: Get encouragement as you play
