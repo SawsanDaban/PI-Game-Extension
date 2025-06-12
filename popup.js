@@ -99,6 +99,20 @@ dailyChallengeElem.id = 'daily-challenge';
 dailyChallengeElem.className = 'arcade-daily-challenge';
 document.querySelector('.arcade-panel').insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
 
+// Add weekly challenge UI
+const weeklyChallengeElem = document.createElement('div');
+weeklyChallengeElem.id = 'weekly-challenge';
+weeklyChallengeElem.className = 'arcade-daily-challenge';
+document.querySelector('.arcade-panel').insertBefore(weeklyChallengeElem, document.getElementById('pi-sequence'));
+
+function updateWeeklyChallengeUI() {
+  const challenge = window.getOrCreateWeeklyChallenge();
+  const completed = window.isWeeklyChallengeCompleted();
+  weeklyChallengeElem.innerHTML = completed
+    ? `🌟 <b>Weekly Challenge:</b> ${challenge} digits <span style="color:#39ff14;">(Completed!)</span>`
+    : `📅 <b>Weekly Challenge:</b> Reach <b>${challenge}</b> digits this week!`;
+}
+
 // Add streak UI element (move creation below .arcade-panel for conditional display)
 const streakElem = document.createElement('div');
 streakElem.id = 'streak';
@@ -178,20 +192,6 @@ function startStreakCountdown() {
         gameOver = true;
         messageElem.textContent = "⏰ Time's up! You didn't type in time.";
         piInputElem.disabled = true;
-        restartBtn.style.display = "inline-block";
-        window.showEmoji("wrong", emojiFeedbackElem);
-        hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
-        currentStreak = 0;
-        streakTime = 0;
-        streakStartTime = null;
-        stopStreakTimer();
-        updateStreakUI();
-        if (score > highestScore) {
-          highestScore = score;
-          localStorage.setItem('pi_highest_score', highestScore);
-          updateHighestScoreDisplay();
-        }
-        if (timedMode) {
           stopTimer();
           messageElem.textContent += ` Time: ${timeElapsed}s.`;
         }

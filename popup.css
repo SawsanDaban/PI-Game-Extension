@@ -456,6 +456,15 @@ body.theme-dark .arcade-modal-content {
   font-weight: bold;
 }
 
+#weekly-challenge {
+  font-size: 1em;
+  color: #2fd6ff;
+  text-shadow: 0 0 8px #2fd6ff, 0 0 4px #23234a;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
 .arcade-trivia-question {
   font-size: 1.05em;
   color: #ffb347;
