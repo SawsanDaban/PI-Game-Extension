@@ -102,9 +102,26 @@ function resetGame() {
   motivationElem.style.opacity = 0;
   confettiCanvas.style.display = 'none';
 
+  // Clean up previous mode
   if (modeCleanup) {
     modeCleanup();
     modeCleanup = null;
+  }
+
+  // --- Ensure streak countdown element is present and visible for streak mode ---
+  let streakCountdownElem = document.getElementById('streak-countdown');
+  if (modeSelectElem.value === "streak") {
+    if (!streakCountdownElem) {
+      streakCountdownElem = document.createElement('div');
+      streakCountdownElem.id = 'streak-countdown';
+      streakCountdownElem.className = 'arcade-streak-time';
+      scoreElem.parentNode.insertBefore(streakCountdownElem, scoreElem.nextSibling);
+    }
+    streakCountdownElem.style.display = "";
+    streakCountdownElem.textContent = "⏳ 5.0s left";
+  } else if (streakCountdownElem) {
+    streakCountdownElem.style.display = "none";
+    streakCountdownElem.textContent = "";
   }
 
   const mode = modeSelectElem.value;
@@ -165,6 +182,12 @@ function resetGame() {
         }
         updateHighestScoreDisplay("streak");
         restartBtn.style.display = "inline-block";
+        // Hide countdown after game ends
+        const streakElem = document.getElementById('streak-countdown');
+        if (streakElem) {
+          streakElem.textContent = "";
+          streakElem.style.display = "none";
+        }
       }
     });
     return;

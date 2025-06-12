@@ -11,12 +11,17 @@ window.PIModeStreak = function({
   let streakCountdown = 5;
   let interval = null;
   let ended = false;
+  let started = false;
 
   function endStreak() {
     if (ended) return;
     ended = true;
     clearInterval(interval);
     piInputElem.disabled = true;
+    if (streakCountdownElem) {
+      streakCountdownElem.textContent = "";
+      streakCountdownElem.style.display = "none";
+    }
     if (typeof onEnd === "function") onEnd(score);
   }
 
@@ -26,12 +31,36 @@ window.PIModeStreak = function({
     window.PIModeBase.updateProgress(progressElem, currentIndex);
     if (streakCountdownElem) {
       streakCountdownElem.textContent = "⏳ " + streakCountdown.toFixed(1) + "s left";
+      streakCountdownElem.style.display = "";
     }
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 
+  function startCountdown() {
+    if (interval) return;
+    interval = setInterval(() => {
+      if (ended) return;
+      streakCountdown -= 0.1;
+      if (streakCountdownElem) {
+        streakCountdownElem.textContent = "⏳ " + streakCountdown.toFixed(1) + "s left";
+        streakCountdownElem.style.display = "";
+      }
+      if (streakCountdown <= 0) {
+        streakCountdown = 0;
+        updateUI();
+        endStreak();
+      } else {
+        updateUI();
+      }
+    }, 100);
+  }
+
   function handleInput() {
     if (ended) return;
+    if (!started) {
+      started = true;
+      startCountdown();
+    }
     streakCountdown = 5;
     const input = piInputElem.value;
     if (input.length === 0) return;
@@ -71,25 +100,21 @@ window.PIModeStreak = function({
 
   piInputElem.value = "";
   piInputElem.disabled = false;
+  if (streakCountdownElem) {
+    streakCountdownElem.style.display = "";
+    streakCountdownElem.textContent = "⏳ 5.0s left";
+  }
   if (document.activeElement !== piInputElem) piInputElem.focus();
   updateUI();
 
   piInputElem.addEventListener('input', handleInput);
 
-  interval = setInterval(() => {
-    streakCountdown -= 0.1;
-    if (streakCountdown <= 0) {
-      streakCountdown = 0;
-      updateUI();
-      endStreak();
-    } else {
-      updateUI();
-    }
-  }, 100);
-
   return function cleanup() {
     clearInterval(interval);
     piInputElem.removeEventListener('input', handleInput);
-    if (streakCountdownElem) streakCountdownElem.textContent = "";
+    if (streakCountdownElem) {
+      streakCountdownElem.textContent = "";
+      streakCountdownElem.style.display = "none";
+    }
   };
 };
