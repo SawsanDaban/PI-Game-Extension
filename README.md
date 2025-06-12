@@ -22,6 +22,7 @@ Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
 - 🎯 **Daily Challenge**: Reach a new random digit target every day!
 - 💬 **Motivational Messages**: Get encouragement as you play
 - 🧠 **Fun PI Facts**: Learn a random PI fact after each game over or win
+- ❓ **PI Trivia**: Test your knowledge with PI-related trivia questions!
 - 🎉 **Confetti & Emoji Feedback**: Celebrate your progress with effects and emoji
 - 📤 **Share Score**: Copy your score and achievements to share with friends
 - ☕ **Donate & ⭐ Contribute Buttons**: Support or contribute to the project
@@ -35,7 +36,7 @@ Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
 2. Type the digits of PI one by one.
 3. The extension checks each digit as you type.
 4. The game ends when you enter a wrong digit—your score is displayed.
-5. Unlock achievements, see your best score, and learn fun facts!
+5. Unlock achievements, see your best score, and learn fun facts and trivia!
 
 ---
 

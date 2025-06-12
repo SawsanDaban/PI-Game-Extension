@@ -386,3 +386,47 @@ body {
   text-align: center;
   font-weight: bold;
 }
+
+.arcade-trivia-question {
+  font-size: 1.05em;
+  color: #ffb347;
+  margin-bottom: 16px;
+  text-shadow: 0 0 8px #ffb347, 0 0 4px #23234a;
+  font-weight: bold;
+}
+
+.arcade-trivia-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.arcade-trivia-option-btn {
+  background: #181828;
+  color: #39ff14;
+  border: 2px solid #39ff14;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  text-shadow: 0 0 4px #39ff14;
+}
+
+.arcade-trivia-option-btn:hover {
+  background: #39ff14;
+  color: #181828;
+  border: 2px solid #ff2fd6;
+}
+
+.arcade-trivia-feedback {
+  min-height: 24px;
+  font-size: 1em;
+  color: #ff2fd6;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px #ff2fd6;
+  font-weight: bold;
+  transition: color 0.2s;
+}

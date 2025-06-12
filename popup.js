@@ -24,11 +24,23 @@ const achievementsModal = document.getElementById('achievements-modal');
 const closeAchievements = document.getElementById('close-achievements');
 const achievementsList = document.getElementById('achievements-list');
 const shareBtn = document.getElementById('share-btn');
+const highestScoreElem = document.getElementById('highest-score');
+
+const triviaBtn = document.getElementById('trivia-btn');
+const triviaModal = document.getElementById('trivia-modal');
+const closeTrivia = document.getElementById('close-trivia');
+const triviaQuestionElem = document.getElementById('trivia-question');
+const triviaOptionsElem = document.getElementById('trivia-options');
+const triviaFeedbackElem = document.getElementById('trivia-feedback');
+const nextTriviaBtn = document.getElementById('next-trivia-btn');
 
 let timer = null;
 let timeElapsed = 0;
 let timedMode = false;
 let lastScoreForAchievement = 0;
+
+let currentTrivia = null;
+let triviaAnswered = false;
 
 // Add daily challenge UI
 const dailyChallengeElem = document.createElement('div');
@@ -238,6 +250,63 @@ shareBtn.addEventListener('click', () => {
       shareBtn.textContent = 'Share Score';
     }, 1500);
   });
+});
+
+// Trivia modal logic
+function showTriviaModal() {
+  loadTriviaQuestion();
+  triviaModal.style.display = "flex";
+}
+
+function hideTriviaModal() {
+  triviaModal.style.display = "none";
+}
+
+function loadTriviaQuestion() {
+  currentTrivia = window.getRandomTrivia();
+  triviaAnswered = false;
+  triviaQuestionElem.textContent = currentTrivia.question;
+  triviaFeedbackElem.textContent = "";
+  nextTriviaBtn.style.display = "none";
+  triviaOptionsElem.innerHTML = "";
+  currentTrivia.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'arcade-trivia-option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleTriviaAnswer(idx, btn);
+    triviaOptionsElem.appendChild(btn);
+  });
+}
+
+function handleTriviaAnswer(idx, btn) {
+  if (triviaAnswered) return;
+  triviaAnswered = true;
+  if (idx === currentTrivia.answer) {
+    triviaFeedbackElem.textContent = "✅ Correct!";
+    triviaFeedbackElem.style.color = "#39ff14";
+    btn.style.background = "#39ff14";
+    btn.style.color = "#181828";
+  } else {
+    triviaFeedbackElem.textContent = "❌ Incorrect! The correct answer is: " + currentTrivia.options[currentTrivia.answer];
+    triviaFeedbackElem.style.color = "#ff2fd6";
+    btn.style.background = "#ff2fd6";
+    btn.style.color = "#fff";
+    // Highlight correct answer
+    Array.from(triviaOptionsElem.children).forEach((b, i) => {
+      if (i === currentTrivia.answer) {
+        b.style.background = "#39ff14";
+        b.style.color = "#181828";
+      }
+    });
+  }
+  nextTriviaBtn.style.display = "block";
+}
+
+nextTriviaBtn.addEventListener('click', loadTriviaQuestion);
+triviaBtn.addEventListener('click', showTriviaModal);
+closeTrivia.addEventListener('click', hideTriviaModal);
+triviaModal.addEventListener('click', function(e) {
+  if (e.target === triviaModal) hideTriviaModal();
 });
 
 timedMode = modeSelectElem.value === 'timed';

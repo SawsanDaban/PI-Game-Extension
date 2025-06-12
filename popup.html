@@ -31,12 +31,23 @@
     <div id="motivation" class="arcade-motivation"></div>
     <button id="restart-btn" class="arcade-btn" style="display:none;">Restart</button>
     <button id="achievements-btn" class="arcade-btn" type="button" style="margin-top:10px;">Achievements</button>
+    <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
   </div>
   <div id="achievements-modal" class="arcade-modal" style="display:none;">
     <div class="arcade-modal-content">
       <span id="close-achievements" class="arcade-modal-close">&times;</span>
       <h2 class="arcade-modal-title">Achievements</h2>
       <div id="achievements-list" class="arcade-achievements-list"></div>
+    </div>
+  </div>
+  <div id="trivia-modal" class="arcade-modal" style="display:none;">
+    <div class="arcade-modal-content">
+      <span id="close-trivia" class="arcade-modal-close">&times;</span>
+      <h2 class="arcade-modal-title">PI Trivia</h2>
+      <div id="trivia-question" class="arcade-trivia-question"></div>
+      <div id="trivia-options" class="arcade-trivia-options"></div>
+      <div id="trivia-feedback" class="arcade-trivia-feedback"></div>
+      <button id="next-trivia-btn" class="arcade-btn" style="margin-top:12px;display:none;">Next Question</button>
     </div>
   </div>
   <div class="arcade-actions">
@@ -49,6 +60,7 @@
   <script src="achievements.js"></script>
   <script src="dailyChallenge.js"></script>
   <script src="ui.js"></script>
+  <script src="trivia.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
