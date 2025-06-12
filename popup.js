@@ -44,9 +44,18 @@ const PI_FACTS = [
   "PI is used in probability, statistics, and even music theory!"
 ];
 
+const ACHIEVEMENTS = [
+  { digits: 10, badge: "🥉", label: "Bronze: 10 Digits" },
+  { digits: 25, badge: "🥈", label: "Silver: 25 Digits" },
+  { digits: 50, badge: "🥇", label: "Gold: 50 Digits" },
+  { digits: 75, badge: "🏅", label: "Platinum: 75 Digits" },
+  { digits: 100, badge: "🏆", label: "Pi Master: 100 Digits" }
+];
+
 let timer = null;
 let timeElapsed = 0;
 let timedMode = false;
+let lastScoreForAchievement = 0;
 
 const highestScoreElem = document.getElementById('highest-score');
 highestScoreElem.style.marginBottom = '8px';
@@ -72,6 +81,24 @@ function showRandomPIFact() {
   const fact = PI_FACTS[Math.floor(Math.random() * PI_FACTS.length)];
   motivationElem.textContent = fact;
   motivationElem.style.opacity = 1;
+}
+
+function getUnlockedAchievements(maxScore) {
+  return ACHIEVEMENTS.filter(a => maxScore >= a.digits);
+}
+
+function getNewAchievement(score, prevScore) {
+  return ACHIEVEMENTS.find(a => score >= a.digits && prevScore < a.digits);
+}
+
+function showAchievement(achievement) {
+  if (!achievement) return;
+  messageElem.textContent = `Achievement Unlocked! ${achievement.badge} ${achievement.label}`;
+  messageElem.style.color = "#FFD700";
+  setTimeout(() => {
+    messageElem.textContent = "";
+    messageElem.style.color = "#ff2fd6";
+  }, 2500);
 }
 
 // --- Confetti animation ---
@@ -156,6 +183,7 @@ function resetGame() {
   currentIndex = 0;
   score = 0;
   gameOver = false;
+  lastScoreForAchievement = 0;
   piSequenceElem.textContent = "3.";
   piInputElem.value = "";
   piInputElem.disabled = false;
@@ -198,9 +226,7 @@ function handleInput() {
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
     showEmoji("wrong");
-    // Show the correct next digit as a hint
     hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
-    // Update highest score if needed
     if (score > highestScore) {
       highestScore = score;
       localStorage.setItem('pi_highest_score', highestScore);
@@ -210,11 +236,10 @@ function handleInput() {
       stopTimer();
       messageElem.textContent += ` Time: ${timeElapsed}s.`;
     }
-    // Show a random PI fact
     showRandomPIFact();
+    lastScoreForAchievement = 0;
     return;
   }
-  // Update sequence and score
   piSequenceElem.textContent = "3." + PI_DIGITS.substring(0, currentIndex + input.length);
   scoreElem.textContent = "Score: " + (currentIndex + input.length);
   progressElem.value = currentIndex + input.length;
@@ -222,7 +247,15 @@ function handleInput() {
   hintElem.textContent = "";
   animateCorrectInput();
   showMotivation(currentIndex + input.length);
-  if (input.length + currentIndex === PI_DIGITS.length) {
+
+  const newScore = currentIndex + input.length;
+  const achievement = getNewAchievement(newScore, lastScoreForAchievement);
+  if (achievement) {
+    showAchievement(achievement);
+  }
+  lastScoreForAchievement = newScore;
+
+  if (newScore === PI_DIGITS.length) {
     messageElem.textContent = "Congratulations! You completed all available digits!";
     piInputElem.disabled = true;
     restartBtn.style.display = "inline-block";
@@ -235,19 +268,18 @@ function handleInput() {
     }
     motivationElem.textContent = "You did it! 🎊";
     motivationElem.style.opacity = 1;
-    // Show a random PI fact after a short delay
     setTimeout(showRandomPIFact, 2000);
+    lastScoreForAchievement = 0;
     return;
   }
   if (input.length > 0) {
-    score = currentIndex + input.length;
+    score = newScore;
     if (score > highestScore) {
       highestScore = score;
       localStorage.setItem('pi_highest_score', highestScore);
       updateHighestScoreDisplay();
     }
   }
-  // If input is correct so far, but not finished, wait for more input
   if (input.length > 0 && input.length + currentIndex < PI_DIGITS.length) {
     if (input.length > 0) {
       currentIndex += input.length;

@@ -149,6 +149,8 @@ body {
   margin-bottom: 8px;
   min-height: 18px;
   text-shadow: 0 0 8px #ff2fd6;
+  font-weight: bold;
+  transition: color 0.3s;
 }
 
 .arcade-hint {
