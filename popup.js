@@ -41,6 +41,7 @@ let lastScoreForAchievement = 0;
 
 let currentTrivia = null;
 let triviaAnswered = false;
+let triviaAskedIndexes = []; // Track asked questions in this session
 
 // Add daily challenge UI
 const dailyChallengeElem = document.createElement('div');
@@ -254,6 +255,7 @@ shareBtn.addEventListener('click', () => {
 
 // Trivia modal logic
 function showTriviaModal() {
+  triviaAskedIndexes = [];
   loadTriviaQuestion();
   triviaModal.style.display = "flex";
 }
@@ -263,17 +265,32 @@ function hideTriviaModal() {
 }
 
 function loadTriviaQuestion() {
-  currentTrivia = window.getRandomTrivia();
+  // Get all available indexes
+  const total = window.PI_TRIVIA.length;
+  // If all questions have been asked, reset the session
+  if (triviaAskedIndexes.length === total) {
+    triviaAskedIndexes = [];
+  }
+  // Get available indexes
+  const available = [];
+  for (let i = 0; i < total; i++) {
+    if (!triviaAskedIndexes.includes(i)) available.push(i);
+  }
+  // Pick a random available index
+  const idx = available[Math.floor(Math.random() * available.length)];
+  currentTrivia = window.PI_TRIVIA[idx];
+  triviaAskedIndexes.push(idx);
+
   triviaAnswered = false;
   triviaQuestionElem.textContent = currentTrivia.question;
   triviaFeedbackElem.textContent = "";
   nextTriviaBtn.style.display = "none";
   triviaOptionsElem.innerHTML = "";
-  currentTrivia.options.forEach((opt, idx) => {
+  currentTrivia.options.forEach((opt, oidx) => {
     const btn = document.createElement('button');
     btn.className = 'arcade-trivia-option-btn';
     btn.textContent = opt;
-    btn.onclick = () => handleTriviaAnswer(idx, btn);
+    btn.onclick = () => handleTriviaAnswer(oidx, btn);
     triviaOptionsElem.appendChild(btn);
   });
 }
