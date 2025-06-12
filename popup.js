@@ -481,8 +481,24 @@ function resetGame() {
     });
     return;
   }
-  if (mode === "timed") {
-    modeCleanup = startTimedMode();
+  if (mode === "timed" && window.PIModeTimed) {
+    modeCleanup = window.PIModeTimed({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      timerElem,
+      timerValueElem,
+      onEnd: (finalScore, finalTime) => {
+        messageElem.textContent = "Game Over! Score: " + finalScore + " | Time: " + (finalTime || 0) + "s";
+        if (finalScore > highestScore) {
+          highestScore = finalScore;
+          localStorage.setItem('pi_highest_score', highestScore);
+        }
+        updateHighestScoreDisplay("timed");
+        restartBtn.style.display = "inline-block";
+      }
+    });
     return;
   }
   if (mode === "streak") {
