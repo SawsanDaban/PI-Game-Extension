@@ -43,6 +43,39 @@ const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettings = document.getElementById('close-settings');
 
+const challengesBtn = document.getElementById('challenges-btn');
+const challengesModal = document.getElementById('challenges-modal');
+const closeChallenges = document.getElementById('close-challenges');
+const challengesList = document.getElementById('challenges-list');
+
+function renderChallengesList() {
+  const daily = window.getOrCreateDailyChallenge();
+  const dailyDone = window.isDailyChallengeCompleted();
+  const weekly = window.getOrCreateWeeklyChallenge();
+  const weeklyDone = window.isWeeklyChallengeCompleted();
+  challengesList.innerHTML = `
+    <div>
+      <b>Daily Challenge:</b> Reach <b>${daily}</b> digits today.<br>
+      Status: ${dailyDone ? '<span style="color:#39ff14;">Completed</span>' : '<span style="color:#ffb347;">Incomplete</span>'}
+    </div>
+    <div>
+      <b>Weekly Challenge:</b> Reach <b>${weekly}</b> digits this week.<br>
+      Status: ${weeklyDone ? '<span style="color:#39ff14;">Completed</span>' : '<span style="color:#2fd6ff;">Incomplete</span>'}
+    </div>
+  `;
+}
+
+challengesBtn.addEventListener('click', () => {
+  renderChallengesList();
+  challengesModal.style.display = "flex";
+});
+closeChallenges.addEventListener('click', () => {
+  challengesModal.style.display = "none";
+});
+challengesModal.addEventListener('click', function(e) {
+  if (e.target === challengesModal) challengesModal.style.display = "none";
+});
+
 let timer = null;
 let timeElapsed = 0;
 let timedMode = false;
@@ -192,6 +225,20 @@ function startStreakCountdown() {
         gameOver = true;
         messageElem.textContent = "⏰ Time's up! You didn't type in time.";
         piInputElem.disabled = true;
+        restartBtn.style.display = "inline-block";
+        window.showEmoji("wrong", emojiFeedbackElem);
+        hintElem.textContent = `The next digit was: ${PI_DIGITS[currentIndex]}`;
+        currentStreak = 0;
+        streakTime = 0;
+        streakStartTime = null;
+        stopStreakTimer();
+        updateStreakUI();
+        if (score > highestScore) {
+          highestScore = score;
+          localStorage.setItem('pi_highest_score', highestScore);
+          updateHighestScoreDisplay();
+        }
+        if (timedMode) {
           stopTimer();
           messageElem.textContent += ` Time: ${timeElapsed}s.`;
         }

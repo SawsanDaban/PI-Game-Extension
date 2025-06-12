@@ -34,6 +34,7 @@
     <button id="achievements-btn" class="arcade-btn" type="button" style="margin-top:10px;">Achievements</button>
     <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
     <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;">Settings</button>
+    <button id="challenges-btn" class="arcade-btn" type="button" style="margin-top:10px;">View Challenges</button>
     <div id="settings-modal" class="arcade-modal" style="display:none;">
       <div class="arcade-modal-content">
         <span id="close-settings" class="arcade-modal-close">&times;</span>
@@ -55,6 +56,13 @@
             </select>
           </label>
         </div>
+      </div>
+    </div>
+    <div id="challenges-modal" class="arcade-modal" style="display:none;">
+      <div class="arcade-modal-content">
+        <span id="close-challenges" class="arcade-modal-close">&times;</span>
+        <h2 class="arcade-modal-title">Challenges</h2>
+        <div id="challenges-list" class="arcade-challenges-list"></div>
       </div>
     </div>
   </div>
