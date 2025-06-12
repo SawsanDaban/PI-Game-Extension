@@ -520,8 +520,24 @@ function resetGame() {
     });
     return;
   }
-  if (mode === "speedrun") {
-    modeCleanup = startSpeedrunMode();
+  if (mode === "speedrun" && window.PIModeSpeedrun) {
+    modeCleanup = window.PIModeSpeedrun({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      timerElem,
+      timerValueElem,
+      onEnd: (finalScore) => {
+        messageElem.textContent = "Speedrun Over! Score: " + finalScore;
+        if (finalScore > speedrunHighScore) {
+          speedrunHighScore = finalScore;
+          localStorage.setItem('pi_speedrun_highscore', speedrunHighScore);
+        }
+        updateHighestScoreDisplay("speedrun");
+        restartBtn.style.display = "inline-block";
+      }
+    });
     return;
   }
 }
