@@ -463,8 +463,22 @@ function resetGame() {
   if (window.updateDailyChallengeUI) window.updateDailyChallengeUI();
   if (window.updateWeeklyChallengeUI) window.updateWeeklyChallengeUI();
 
-  if (mode === "normal") {
-    modeCleanup = startNormalMode();
+  if (mode === "normal" && window.PIModeNormal) {
+    modeCleanup = window.PIModeNormal({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      onEnd: (finalScore) => {
+        messageElem.textContent = "Game Over! Score: " + finalScore;
+        if (finalScore > highestScore) {
+          highestScore = finalScore;
+          localStorage.setItem('pi_highest_score', highestScore);
+        }
+        updateHighestScoreDisplay("normal");
+        restartBtn.style.display = "inline-block";
+      }
+    });
     return;
   }
   if (mode === "timed") {

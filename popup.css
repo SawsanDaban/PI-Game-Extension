@@ -573,3 +573,16 @@ body.theme-dark .arcade-settings-row {
 body.theme-dark .arcade-challenges-list {
   color: #eee;
 }
+
+#restart-btn {
+  background: linear-gradient(90deg, #ffb347 0%, #ff2fd6 100%) !important;
+  color: #181828 !important;
+  border: 2px solid #ffb347 !important;
+  box-shadow: 0 0 14px #ffb347a0, 0 0 14px #ff2fd6a0 !important;
+}
+
+#restart-btn:hover {
+  background: linear-gradient(90deg, #ff2fd6 0%, #ffb347 100%) !important;
+  color: #fff !important;
+  border: 2px solid #ff2fd6 !important;
+}
