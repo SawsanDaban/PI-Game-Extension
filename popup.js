@@ -11,6 +11,7 @@ let streakMode = false;
 let streakCountdown = STREAK_IDLE_LIMIT;
 let streakCountdownInterval = null;
 
+let modeCleanup = null;
 let speedrunCleanup = null;
 let speedrunMode = false;
 let speedrunHighScore = Number(localStorage.getItem('pi_speedrun_highscore')) || 0;
@@ -330,38 +331,82 @@ function resetGame() {
   motivationElem.textContent = "";
   motivationElem.style.opacity = 0;
   confettiCanvas.style.display = 'none';
-  if (timedMode) {
-    timerElem.style.display = 'block';
-    startTimer();
-  } else {
-    timerElem.style.display = 'none';
+  if (modeCleanup) {
+    modeCleanup();
+    modeCleanup = null;
   }
-  if (speedrunCleanup) {
-    speedrunCleanup();
-    speedrunCleanup = null;
-  }
-  speedrunMode = modeSelectElem.value === 'speedrun';
-  if (speedrunMode) {
-    scoreElem.style.display = "";
-    if (window.startSpeedrun) {
-      speedrunCleanup = window.startSpeedrun({
-        piInputElem,
-        piSequenceElem,
-        scoreElem,
-        timerElem,
-        timerValueElem,
-        progressElem,
-        onEnd: (score) => {
-          messageElem.textContent = "Speedrun Over! Score: " + score;
-          if (score > speedrunHighScore) {
-            speedrunHighScore = score;
-            localStorage.setItem('pi_speedrun_highscore', speedrunHighScore);
-          }
-          updateSpeedrunHighScoreDisplay();
+  const mode = modeSelectElem.value;
+  if (mode === "normal" && window.PIModeNormal) {
+    modeCleanup = window.PIModeNormal({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      onEnd: (score) => {
+        messageElem.textContent = "Game Over! Score: " + score;
+        if (score > highestScore) {
+          highestScore = score;
+          localStorage.setItem('pi_highest_score', highestScore);
         }
-      });
-    }
-    updateSpeedrunHighScoreDisplay();
+        updateHighestScoreDisplay();
+      }
+    });
+    return;
+  }
+  if (mode === "timed" && window.PIModeTimed) {
+    modeCleanup = window.PIModeTimed({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      timerElem,
+      timerValueElem,
+      onEnd: (score) => {
+        messageElem.textContent = "Timed Over! Score: " + score;
+        if (score > highestScore) {
+          highestScore = score;
+          localStorage.setItem('pi_highest_score', highestScore);
+        }
+        updateHighestScoreDisplay();
+      }
+    });
+    return;
+  }
+  if (mode === "streak" && window.PIModeStreak) {
+    modeCleanup = window.PIModeStreak({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      streakCountdownElem: document.getElementById('streak-countdown'),
+      onEnd: (score) => {
+        messageElem.textContent = "Streak Over! Score: " + score;
+        if (score > highestStreak) {
+          highestStreak = score;
+          localStorage.setItem('pi_highest_streak', highestStreak);
+        }
+        updateHighestScoreDisplay();
+      }
+    });
+    return;
+  }
+  if (mode === "speedrun" && window.PIModeSpeedrun) {
+    modeCleanup = window.PIModeSpeedrun({
+      piInputElem,
+      piSequenceElem,
+      scoreElem,
+      progressElem,
+      timerElem,
+      timerValueElem,
+      onEnd: (score) => {
+        messageElem.textContent = "Speedrun Over! Score: " + score;
+        if (score > speedrunHighScore) {
+          speedrunHighScore = score;
+          localStorage.setItem('pi_speedrun_highscore', speedrunHighScore);
+        }
+        updateSpeedrunHighScoreDisplay();
+      }
+    });
     return;
   }
   showStreakUI(streakMode);
