@@ -278,8 +278,27 @@ function loadTriviaQuestion() {
   }
   // Pick a random available index
   const idx = available[Math.floor(Math.random() * available.length)];
-  currentTrivia = window.PI_TRIVIA[idx];
+  const originalTrivia = window.PI_TRIVIA[idx];
   triviaAskedIndexes.push(idx);
+
+  // Shuffle options and track the new answer index
+  const optionObjs = originalTrivia.options.map((opt, i) => ({
+    text: opt,
+    isCorrect: i === originalTrivia.answer
+  }));
+  for (let i = optionObjs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [optionObjs[i], optionObjs[j]] = [optionObjs[j], optionObjs[i]];
+  }
+  const shuffledOptions = optionObjs.map(o => o.text);
+  const newAnswerIdx = optionObjs.findIndex(o => o.isCorrect);
+
+  // Store the shuffled trivia for this round
+  currentTrivia = {
+    question: originalTrivia.question,
+    options: shuffledOptions,
+    answer: newAnswerIdx
+  };
 
   triviaAnswered = false;
   triviaQuestionElem.textContent = currentTrivia.question;
