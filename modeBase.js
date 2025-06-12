@@ -12,8 +12,13 @@ window.PIModeBase = {
     progressElem.value = currentIndex;
     progressElem.max = this.getPiDigits().length;
   },
-  checkDigit(input, currentIndex) {
+  // Only check the last digit typed
+  checkLastDigit(input, currentIndex) {
     const PI_DIGITS = this.getPiDigits();
-    return input[0] === PI_DIGITS[currentIndex];
+    if (!input.length) return true;
+    // Only check the last character typed
+    const lastTyped = input[input.length - 1];
+    const expected = PI_DIGITS[currentIndex + input.length - 1];
+    return lastTyped === expected;
   }
 };
