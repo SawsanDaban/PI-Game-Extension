@@ -5,7 +5,7 @@ body {
   background: #181828;
   color: #39ff14;
   width: 270px;
-  min-height: 370px;
+  min-height: 400px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -17,22 +17,22 @@ body {
   align-items: center;
   justify-content: center;
   background: #222244;
-  padding: 12px 0 8px 0;
+  padding: 10px 0 6px 0;
   border-bottom: 3px solid #39ff14;
   box-shadow: 0 2px 8px #000a;
   position: relative;
 }
 
 .arcade-logo {
-  font-size: 2.2em;
+  font-size: 2em;
   color: #ff2fd6;
   text-shadow: 0 0 8px #ff2fd6, 0 0 16px #fff;
-  margin-right: 10px;
+  margin-right: 8px;
   font-weight: bold;
 }
 
 .arcade-title {
-  font-size: 1.1em;
+  font-size: 1em;
   letter-spacing: 2px;
   color: #39ff14;
   text-shadow: 0 0 8px #39ff14, 0 0 16px #fff;
@@ -40,8 +40,8 @@ body {
 }
 
 #emoji-feedback {
-  font-size: 1.5em;
-  margin-left: 12px;
+  font-size: 1.3em;
+  margin-left: 8px;
   filter: drop-shadow(0 0 4px #fff);
 }
 
@@ -49,8 +49,8 @@ body {
   background: #23234a;
   border: 2px solid #39ff14;
   border-radius: 12px;
-  margin: 18px 12px 0 12px;
-  padding: 14px 6px 10px 6px; /* further reduced horizontal padding */
+  margin: 16px 8px 0 8px;
+  padding: 12px 6px 8px 6px;
   box-shadow: 0 0 16px #39ff14a0, 0 0 32px #ff2fd680;
   position: relative;
 }
@@ -58,12 +58,12 @@ body {
 .arcade-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .arcade-label {
-  font-size: 0.8em;
-  margin-right: 8px;
+  font-size: 0.7em;
+  margin-right: 6px;
   color: #fff;
   text-shadow: 0 0 4px #39ff14;
 }
@@ -74,22 +74,22 @@ body {
   border: 2px solid #ff2fd6;
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 2px 8px;
   outline: none;
   box-shadow: 0 0 8px #ff2fd6a0;
 }
 
 .arcade-timer {
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: #ff2fd6;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-shadow: 0 0 6px #ff2fd6;
 }
 
 .arcade-sequence {
-  font-size: 1.1em;
-  margin-bottom: 10px;
+  font-size: 1em;
+  margin-bottom: 8px;
   color: #fff;
   letter-spacing: 1px;
   word-break: break-all;
@@ -100,8 +100,8 @@ body {
 
 .arcade-progress {
   width: 100%;
-  height: 14px;
-  margin-bottom: 12px;
+  height: 12px;
+  margin-bottom: 10px;
   accent-color: #ff2fd6;
   background: #181828;
   border-radius: 8px;
@@ -110,9 +110,9 @@ body {
 
 .arcade-input {
   width: 100%;
-  font-size: 1em;
-  padding: 6px;
-  margin-bottom: 12px;
+  font-size: 0.95em;
+  padding: 5px;
+  margin-bottom: 10px;
   border: 1.5px solid #39ff14;
   border-radius: 8px;
   background: #181828;
@@ -123,7 +123,7 @@ body {
   letter-spacing: 2px;
   text-align: center;
   transition: border 0.2s;
-  box-sizing: border-box; /* ensure border and padding are included in width */
+  box-sizing: border-box;
 }
 
 .arcade-input:focus {
@@ -132,8 +132,8 @@ body {
 }
 
 .arcade-score, .arcade-highscore {
-  font-size: 0.9em;
-  margin-bottom: 8px;
+  font-size: 0.8em;
+  margin-bottom: 6px;
   color: #39ff14;
   text-shadow: 0 0 4px #39ff14;
 }
@@ -145,33 +145,33 @@ body {
 
 .arcade-message {
   color: #ff2fd6;
-  font-size: 0.95em;
-  margin-bottom: 8px;
-  min-height: 18px;
+  font-size: 0.85em;
+  margin-bottom: 6px;
+  min-height: 16px;
   text-shadow: 0 0 6px #ff2fd6;
 }
 
 .arcade-hint {
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: #39ff14;
-  margin-bottom: 8px;
-  min-height: 18px;
+  margin-bottom: 6px;
+  min-height: 16px;
   text-shadow: 0 0 4px #39ff14;
 }
 
 .arcade-motivation {
-  font-size: 0.95em;
-  margin-bottom: 10px;
+  font-size: 0.85em;
+  margin-bottom: 8px;
   color: #fff;
   text-shadow: 0 0 8px #ff2fd6;
-  min-height: 20px;
+  min-height: 18px;
   transition: opacity 0.3s;
 }
 
 .arcade-btn {
   width: 100%;
-  padding: 10px 0;
-  font-size: 1em;
+  padding: 8px 0;
+  font-size: 0.95em;
   font-family: inherit;
   background: linear-gradient(90deg, #ff2fd6 0%, #39ff14 100%);
   color: #181828;
@@ -182,6 +182,7 @@ body {
   cursor: pointer;
   letter-spacing: 2px;
   transition: background 0.2s, color 0.2s;
+  margin-top: 2px;
 }
 
 .arcade-btn:hover {
@@ -189,9 +190,55 @@ body {
   color: #fff;
 }
 
+.arcade-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 8px 0 8px;
+  gap: 8px;
+}
+
+.arcade-action-btn {
+  flex: 1;
+  text-align: center;
+  padding: 7px 0;
+  font-size: 0.8em;
+  font-family: inherit;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 1px;
+  box-shadow: 0 0 8px #39ff14a0;
+  transition: background 0.2s, color 0.2s;
+  margin: 0 1px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.donate-btn {
+  background: linear-gradient(90deg, #ff2fd6 0%, #ffb347 100%);
+  color: #181828;
+}
+
+.donate-btn:hover {
+  background: linear-gradient(90deg, #ffb347 0%, #ff2fd6 100%);
+  color: #fff;
+}
+
+.contribute-btn {
+  background: linear-gradient(90deg, #39ff14 0%, #2fd6ff 100%);
+  color: #181828;
+}
+
+.contribute-btn:hover {
+  background: linear-gradient(90deg, #2fd6ff 0%, #39ff14 100%);
+  color: #fff;
+}
+
 #confetti-canvas {
   width: 270px;
-  height: 370px;
+  height: 400px;
   position: absolute;
   top: 0;
   left: 0;
