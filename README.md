@@ -7,6 +7,21 @@
 
 ---
 
+<!-- Donation Buttons -->
+<div align="center" style="margin-bottom: 18px;">
+  <a href="https://www.paypal.com/paypalme/IrisSmile" target="_blank" style="display:inline-block;margin:4px;">
+    <img src="https://img.shields.io/badge/Donate%20with-PayPal-003087?logo=paypal&logoColor=white&style=for-the-badge" alt="Donate with PayPal">
+  </a>
+  <a href="https://ko-fi.com/IrisSmile" target="_blank" style="display:inline-block;margin:4px;">
+    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-29abe0?logo=kofi&logoColor=white&style=for-the-badge" alt="Support me on Ko-fi">
+  </a>
+  <a href="https://www.buymeacoffee.com/IrisSmile" target="_blank" style="display:inline-block;margin:4px;">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?logo=buy-me-a-coffee&logoColor=white&style=for-the-badge" alt="Buy Me a Coffee">
+  </a>
+</div>
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -97,6 +112,16 @@ PI-Game-Extension/
    - Enable "Developer mode"
    - Click "Load unpacked" and select this folder
 3. **Click the extension icon** to open the PI Game popup and start playing!
+
+---
+
+## 🌐 API Endpoint
+
+This extension uses a public leaderboard API hosted at:
+
+- **https://pigame.irissmile.studio/api/leaderboard**
+
+Your scores (for streak mode) and the leaderboard are sent to and loaded from this secure endpoint.
 
 ---
 

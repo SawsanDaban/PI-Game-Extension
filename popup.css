@@ -615,6 +615,42 @@ body.theme-dark .arcade-action-btn:hover {
   color: #fff;
 }
 
+.donate-btn-paypal {
+  background: linear-gradient(90deg, #003087 0%, #009cde 100%);
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 8px;
+  border: none;
+}
+.donate-btn-paypal:hover {
+  background: linear-gradient(90deg, #009cde 0%, #003087 100%);
+  color: #fff;
+}
+
+.donate-btn-kofi {
+  background: linear-gradient(90deg, #29abe0 0%, #f5e0dc 100%);
+  color: #3d3d3d;
+  font-weight: bold;
+  margin-bottom: 8px;
+  border: none;
+}
+.donate-btn-kofi:hover {
+  background: linear-gradient(90deg, #f5e0dc 0%, #29abe0 100%);
+  color: #222;
+}
+
+.donate-btn-buymecoffee {
+  background: linear-gradient(90deg, #ffdd00 0%, #ffb347 100%);
+  color: #222;
+  font-weight: bold;
+  margin-bottom: 8px;
+  border: none;
+}
+.donate-btn-buymecoffee:hover {
+  background: linear-gradient(90deg, #ffb347 0%, #ffdd00 100%);
+  color: #181828;
+}
+
 #confetti-canvas {
   width: 340px;
   height: 520px;
