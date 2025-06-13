@@ -137,6 +137,8 @@ window.initSettingsUI = function() {
 
 // --- SOUND SETTINGS UI ---
 function createSoundSettingsUI() {
+  // Commented out for future use to avoid errors if soundManager is not loaded yet
+  /*
   const container = document.createElement('div');
   container.className = 'settings-section';
 
@@ -173,6 +175,7 @@ function createSoundSettingsUI() {
   if (settingsModal) {
     settingsModal.appendChild(container);
   }
+  */
 }
 
 // --- INITIALIZE SETTINGS ON DOM READY ---

@@ -595,10 +595,13 @@ function applyTranslations(lang) {
       { value: 'dark', key: 'themeDark', fallback: 'Dark' },
       { value: 'light', key: 'themeLight', fallback: 'Light' }
     ];
-    themeMap.forEach(({ value, key, fallback }) => {
-      const opt = themeSelect.querySelector(`option[value="${value}"]`);
-      if (opt) opt.textContent = dict[key] || fallback;
-    });
+    // Fix: Only call forEach if themeMap is an array and themeSelect.options exists and is iterable
+    if (Array.isArray(themeMap) && themeSelect && typeof themeSelect.querySelector === 'function') {
+      themeMap.forEach(({ value, key, fallback }) => {
+        const opt = themeSelect.querySelector(`option[value="${value}"]`);
+        if (opt) opt.textContent = dict[key] || fallback;
+      });
+    }
   }
 
   // Buttons
@@ -698,10 +701,11 @@ achievementsModal.addEventListener('click', function(e) {
   if (e.target === achievementsModal) hideAchievementsModal();
 });
 function showAchievementsModal() {
-  const unlocked = window.getUnlockedAchievements(highestScore);
+  // Use window.getUnlockedAchievements to get unlocked achievements
+  const unlocked = window.getUnlockedAchievements();
   achievementsList.innerHTML = "";
-  window.ACHIEVEMENTS.forEach(a => {
-    const unlockedBadge = unlocked.some(u => u.digits === a.digits);
+  window.PI_ACHIEVEMENTS.forEach(a => {
+    const unlockedBadge = unlocked.some(u => u.id === a.id);
     const row = document.createElement('div');
     row.className = 'arcade-achievement-row' + (unlockedBadge ? '' : ' locked');
     row.innerHTML = `<span class="arcade-badge">${a.badge}</span>
