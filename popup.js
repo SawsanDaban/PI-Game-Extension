@@ -65,6 +65,7 @@ const statisticsModal = document.getElementById('statistics-modal');
 const closeStatistics = document.getElementById('close-statistics');
 const statisticsContent = document.getElementById('statistics-content');
 const resetStatsBtn = document.getElementById('reset-stats-btn');
+const languageSelect = document.getElementById('language-select');
 
 // Prevent pasting in the digit input
 if (piInputElem) {
@@ -535,6 +536,49 @@ if (themeSelectElem) {
   // fallback: apply saved theme on load
   const savedTheme = localStorage.getItem('pi_theme');
   if (savedTheme) applyTheme(savedTheme);
+}
+
+// --- Localization logic ---
+// Simple translation dictionary
+const TRANSLATIONS = {
+  en: {
+    settingsTitle: "Settings",
+    languageLabel: "Language:",
+    // Add more keys as needed
+  },
+  ar: {
+    settingsTitle: "الإعدادات",
+    languageLabel: "اللغة:",
+    // Add more keys as needed
+  }
+  // Only English and Arabic
+};
+
+function setLanguage(lang) {
+  localStorage.setItem('pi_language', lang);
+  applyTranslations(lang);
+}
+
+function applyTranslations(lang) {
+  const dict = TRANSLATIONS[lang] || TRANSLATIONS['en'];
+  document.querySelectorAll('[data-i18n]').forEach(elem => {
+    const key = elem.getAttribute('data-i18n');
+    if (dict[key]) elem.textContent = dict[key];
+  });
+}
+
+// On language change
+if (languageSelect) {
+  languageSelect.value = localStorage.getItem('pi_language') || 'en';
+  languageSelect.addEventListener('change', () => {
+    setLanguage(languageSelect.value);
+  });
+  // Apply on load
+  applyTranslations(languageSelect.value);
+} else {
+  // fallback: apply saved language on load
+  const lang = localStorage.getItem('pi_language') || 'en';
+  applyTranslations(lang);
 }
 
 // --- Event Listeners ---

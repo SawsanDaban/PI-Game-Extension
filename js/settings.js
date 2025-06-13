@@ -20,10 +20,12 @@ window.loadSettings = function() {
   const settingAnimations = document.getElementById('setting-animations');
   const settingLeaderboard = document.getElementById('setting-leaderboard'); // new
   const themeSelect = document.getElementById('theme-select');
+  const languageSelect = document.getElementById('language-select');
   if (settingSound) settingSound.checked = window.PI_SETTINGS.sound;
   if (settingAnimations) settingAnimations.checked = window.PI_SETTINGS.animations;
   if (settingLeaderboard) settingLeaderboard.checked = window.PI_SETTINGS.leaderboard; // new
   if (themeSelect) themeSelect.value = window.PI_SETTINGS.theme;
+  if (languageSelect) languageSelect.value = localStorage.getItem('pi_language') || 'en';
 };
 
 window.saveSettings = function() {
@@ -51,6 +53,7 @@ window.initSettingsUI = function() {
   const settingsModal = document.getElementById('settings-modal');
   const closeSettings = document.getElementById('close-settings');
   const themeSelect = document.getElementById('theme-select');
+  const languageSelect = document.getElementById('language-select');
 
   if (settingSound) {
     settingSound.addEventListener('change', () => {
@@ -73,6 +76,14 @@ window.initSettingsUI = function() {
   if (themeSelect) {
     themeSelect.addEventListener('change', () => {
       window.applyTheme(themeSelect.value);
+    });
+  }
+  if (languageSelect) {
+    languageSelect.addEventListener('change', () => {
+      localStorage.setItem('pi_language', languageSelect.value);
+      if (typeof window.applyTranslations === 'function') {
+        window.applyTranslations(languageSelect.value);
+      }
     });
   }
   if (settingsBtn && settingsModal) {
