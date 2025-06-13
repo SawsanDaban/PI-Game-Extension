@@ -584,6 +584,8 @@ body.theme-dark .arcade-modal-content {
   align-items: flex-start;
   margin: 18px 0 0 0;
   padding: 0 18px;
+  text-align: left;
+  width: 100%;
 }
 
 .arcade-settings-row {
@@ -594,10 +596,8 @@ body.theme-dark .arcade-modal-content {
   gap: 10px;
   cursor: pointer;
   user-select: none;
-}
-
-body.theme-dark .arcade-settings-row {
-  color: #eee;
+  text-align: left;
+  width: 100%;
 }
 
 .arcade-challenges-list {
@@ -691,6 +691,29 @@ body.theme-dark .arcade-challenges-list {
 .arcade-powerup-btn:hover:not(:disabled) {
   background: linear-gradient(90deg, #ff2fd6 0%, #2fd6ff 100%);
   color: #fff;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 0.95em;
+  font-family: inherit;
+  background: #23234a;
+  color: #39ff14;
+  border: 1.5px solid #39ff14;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px #0006;
+  margin-right: 4px;
+  margin-left: 2px;
+  vertical-align: middle;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+body.theme-dark kbd {
+  background: #181818;
+  color: #ffb347;
+  border-color: #ffb347;
 }
 
 .arcade-title,
