@@ -430,6 +430,7 @@ body.theme-dark .arcade-modal-content {
   flex-direction: column;
   gap: 14px;
   align-items: stretch; /* stretch to modal width */
+  text-align: left;
   width: 100%;
   padding: 0 16px; /* add horizontal padding for inner spacing */
   box-sizing: border-box;
@@ -456,6 +457,7 @@ body.theme-dark .arcade-modal-content {
   opacity: 1;
   transition: opacity 0.2s;
   width: 100%; /* stretch to parent */
+  text-align: left;
   box-sizing: border-box;
   margin: 0; /* remove any default margin */
 }
@@ -587,7 +589,8 @@ body.theme-dark .arcade-settings-row {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  align-items: flex-start;
+  align-items: stretch;
+  text-align: left;
   margin: 18px 0 0 0;
   padding: 0 18px;
   color: #39ff14;
