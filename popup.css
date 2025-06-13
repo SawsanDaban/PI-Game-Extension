@@ -1112,6 +1112,7 @@ html[lang="ar"] {
   font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Arial', sans-serif !important;
   letter-spacing: 0 !important;
   direction: rtl;
+  font-size: 1em; /* slightly larger for Arabic */
 }
 
 html[lang="ar"] .arcade-title,
@@ -1138,6 +1139,7 @@ html[lang="ar"] .arcade-challenges-list,
 html[lang="ar"] .arcade-badge {
   font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Arial', sans-serif !important;
   letter-spacing: 0 !important;
+  font-size: 1em !important; /* slightly larger for Arabic UI elements */
 }
 
 .shake {
