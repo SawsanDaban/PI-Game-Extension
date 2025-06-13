@@ -81,7 +81,10 @@ window.initSettingsUI = function() {
   if (languageSelect) {
     languageSelect.addEventListener('change', () => {
       localStorage.setItem('pi_language', languageSelect.value);
-      if (typeof window.applyTranslations === 'function') {
+      // Use setLanguage from popup.js to update lang/dir and translations
+      if (typeof window.setLanguage === 'function') {
+        window.setLanguage(languageSelect.value);
+      } else if (typeof window.applyTranslations === 'function') {
         window.applyTranslations(languageSelect.value);
       }
     });

@@ -542,29 +542,138 @@ if (themeSelectElem) {
 // Use window.PI_TRANSLATIONS from js/i18n.js
 function setLanguage(lang) {
   localStorage.setItem('pi_language', lang);
+  // Set <html lang="..."> and dir for RTL languages
+  document.documentElement.setAttribute('lang', lang);
+  if (lang === 'ar') {
+    document.documentElement.setAttribute('dir', 'rtl');
+  } else {
+    document.documentElement.setAttribute('dir', 'ltr');
+  }
   applyTranslations(lang);
 }
 
 function applyTranslations(lang) {
   const dict = (window.PI_TRANSLATIONS && window.PI_TRANSLATIONS[lang]) || (window.PI_TRANSLATIONS && window.PI_TRANSLATIONS['en']) || {};
+
+  // Translate elements with data-i18n
   document.querySelectorAll('[data-i18n]').forEach(elem => {
     const key = elem.getAttribute('data-i18n');
     if (dict[key]) elem.textContent = dict[key];
   });
+
+  // Translate static labels and buttons (by id/class or label text)
+  // Mode select options
+  const modeSelect = document.getElementById('mode-select');
+  if (modeSelect) {
+    const modeMap = [
+      { value: 'normal', key: 'modeNormal' },
+      { value: 'timed', key: 'modeTimed' },
+      { value: 'streak', key: 'modeStreak' },
+      { value: 'speedrun', key: 'modeSpeedrun' }
+    ];
+    modeMap.forEach(({ value, key }) => {
+      const opt = modeSelect.querySelector(`option[value="${value}"]`);
+      if (opt && dict[key]) opt.textContent = dict[key];
+    });
+  }
+
+  // Settings modal
+  const settingSound = document.querySelector('label[for="setting-sound"] span, #setting-sound + span');
+  if (settingSound && dict.soundLabel) settingSound.textContent = dict.soundLabel;
+  const settingAnimations = document.querySelector('label[for="setting-animations"] span, #setting-animations + span');
+  if (settingAnimations && dict.animationsLabel) settingAnimations.textContent = dict.animationsLabel;
+  const settingLeaderboard = document.querySelector('label[for="setting-leaderboard"] span, #setting-leaderboard + span');
+  if (settingLeaderboard && dict.leaderboardLabel) settingLeaderboard.textContent = dict.leaderboardLabel;
+  const themeLabel = document.querySelector('label.arcade-settings-row > span:not([data-i18n]):not(:has(select))');
+  if (themeLabel && dict.themeLabel) themeLabel.textContent = dict.themeLabel;
+
+  // Theme select options
+  const themeSelect = document.getElementById('theme-select');
+  if (themeSelect) {
+    const themeMap = [
+      { value: 'neon', key: 'themeNeon', fallback: 'Neon' },
+      { value: 'dark', key: 'themeDark', fallback: 'Dark' },
+      { value: 'light', key: 'themeLight', fallback: 'Light' }
+    ];
+    themeMap.forEach(({ value, key, fallback }) => {
+      const opt = themeSelect.querySelector(`option[value="${value}"]`);
+      if (opt) opt.textContent = dict[key] || fallback;
+    });
+  }
+
+  // Buttons
+  const btnMap = [
+    { id: 'restart-btn', key: 'restart' },
+    { id: 'achievements-btn', key: 'achievements' },
+    { id: 'trivia-btn', key: 'piTrivia' },
+    { id: 'settings-btn', key: 'settings' },
+    { id: 'challenges-btn', key: 'viewChallenges' },
+    { id: 'leaderboard-btn', key: 'leaderboard' },
+    { id: 'statistics-btn', key: 'statistics' },
+    { id: 'share-btn', key: 'shareScore' },
+    { id: 'copy-score-btn', key: 'copyScoreText' },
+    { id: 'reset-stats-btn', key: 'resetStatistics' },
+    { id: 'export-data-btn', key: 'exportData' },
+    { id: 'import-data-btn', key: 'importData' },
+    { id: 'next-trivia-btn', key: 'nextQuestion' }
+  ];
+  btnMap.forEach(({ id, key }) => {
+    const btn = document.getElementById(id);
+    if (btn && dict[key]) btn.textContent = dict[key];
+  });
+
+  // Modal titles
+  const modalTitleMap = [
+    { id: 'settings-title', key: 'settingsTitle' },
+    { id: 'achievements-title', key: 'achievementsTitle' },
+    { id: 'statistics-title', key: 'statisticsTitle' }
+  ];
+  modalTitleMap.forEach(({ id, key }) => {
+    const elem = document.getElementById(id);
+    if (elem && dict[key]) elem.textContent = dict[key];
+  });
+
+  // Labels
+  const modeLabel = document.querySelector('label[for="mode-select"]');
+  if (modeLabel && dict.modeLabel) modeLabel.textContent = dict.modeLabel;
+  const piLabel = document.querySelector('label[for="pi-input"]');
+  if (piLabel && dict.enterPiDigits) piLabel.textContent = dict.enterPiDigits;
+
+  // Input placeholder
+  const piInputElem = document.getElementById('pi-input');
+  if (piInputElem && dict.typeNextDigits) {
+    piInputElem.placeholder = dict.typeNextDigits;
+  }
+
+  // Score and highscore
+  if (scoreElem && dict.score) scoreElem.textContent = dict.score + " 0";
+  if (highestScoreElem) {
+    // This will be overwritten by updateHighestScoreDisplay, but set default
+    if (dict.highestScore) highestScoreElem.textContent = dict.highestScore;
+  }
+
+  // Modal section headers (if any)
+  // ...add more as needed...
+
+  // Keyboard shortcuts section
+  const shortcutsLabel = document.querySelector('.arcade-settings-row span[style*="font-weight:bold"]');
+  if (shortcutsLabel && dict.keyboardShortcuts) shortcutsLabel.textContent = dict.keyboardShortcuts;
+
+  // Optionally: translate challenge/trivia/achievement modal content dynamically if needed
 }
 
 // On language change
 if (languageSelect) {
   languageSelect.value = localStorage.getItem('pi_language') || 'en';
+  // Set lang and dir on load
+  setLanguage(languageSelect.value);
   languageSelect.addEventListener('change', () => {
     setLanguage(languageSelect.value);
   });
-  // Apply on load
-  applyTranslations(languageSelect.value);
 } else {
   // fallback: apply saved language on load
   const lang = localStorage.getItem('pi_language') || 'en';
-  applyTranslations(lang);
+  setLanguage(lang);
 }
 
 // --- Event Listeners ---
