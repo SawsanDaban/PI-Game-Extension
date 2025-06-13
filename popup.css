@@ -1151,6 +1151,10 @@ body.theme-dark kbd {
   max-width: 340px;
 }
 
+#statistics-modal .arcade-modal-content > div[style*="gap:8px"] {
+  margin-bottom: 8px;
+}
+
 #statistics-content ul {
   font-size: 1em;
   margin: 0;

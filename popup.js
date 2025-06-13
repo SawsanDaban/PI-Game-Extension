@@ -883,6 +883,81 @@ if (closeLeaderboard && leaderboardModal) {
   });
 }
 
+// --- Export/Import Data ---
+const exportDataBtn = document.getElementById('export-data-btn');
+const importDataBtn = document.getElementById('import-data-btn');
+const importDataFile = document.getElementById('import-data-file');
+
+// Keys to backup/restore
+const BACKUP_KEYS = [
+  'pi_highest_score',
+  'pi_highest_score_timed',
+  'pi_highest_streak',
+  'pi_speedrun_highscore',
+  'pi_last_game_perfect',
+  'pi_used_hint',
+  'pi_used_powerup',
+  'pi_daily_challenge_completed',
+  'pi_weekly_challenge_completed',
+  'pi_answered_trivia',
+  'pi_trivia_correct',
+  'pi_shared_score',
+  'pi_achievement_state',
+  'pi_settings',
+  'pi_theme'
+];
+
+// Export data as JSON file
+if (exportDataBtn) {
+  exportDataBtn.addEventListener('click', () => {
+    const data = {};
+    BACKUP_KEYS.forEach(k => {
+      const v = localStorage.getItem(k);
+      if (v !== null) data[k] = v;
+    });
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pi-game-backup.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  });
+}
+
+// Import data from JSON file
+if (importDataBtn && importDataFile) {
+  importDataBtn.addEventListener('click', () => {
+    importDataFile.value = '';
+    importDataFile.click();
+  });
+  importDataFile.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const data = JSON.parse(evt.target.result);
+        let imported = 0;
+        BACKUP_KEYS.forEach(k => {
+          if (data[k] !== undefined) {
+            localStorage.setItem(k, data[k]);
+            imported++;
+          }
+        });
+        alert(`Imported ${imported} items. Please reload the extension to see changes.`);
+      } catch (err) {
+        alert('Failed to import data: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
 // --- Initialize ---
 resetGame();
 if (window.initSettingsUI) window.initSettingsUI();
