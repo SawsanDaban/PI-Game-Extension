@@ -3,7 +3,7 @@
 > **A retro arcade browser extension to test your memory of PI!**  
 > <img src="https://img.shields.io/badge/Arcade%20UI-%F0%9F%8E%B8%20Neon%20Retro-blueviolet?style=flat-square">
 > <img src="https://img.shields.io/badge/PI%20Digits-3.14159...-green?style=flat-square">
-> <img src="https://img.shields.io/github/license/SawsanDaban/PI-Game-Extension?style=flat-square">
+> <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License">
 
 ---
 
