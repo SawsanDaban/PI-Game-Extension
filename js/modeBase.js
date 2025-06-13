@@ -22,3 +22,15 @@ window.PIModeBase = {
     return lastTyped === expected;
   }
 };
+
+function onCorrectInput() {
+    window.soundManager.play('correct');
+}
+
+function onWrongInput() {
+    window.soundManager.play('wrong');
+}
+
+function onGameOver() {
+    window.soundManager.play('gameover');
+}

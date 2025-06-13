@@ -167,12 +167,46 @@ Open source. See [LICENSE](LICENSE) for details.
 ## 🛠️ Next Step
 
 - **Enable and polish sound effects** for correct, wrong, and game over events (see `sound.js`).
+  - Integrate the sound system with all game modes.
+  - Add volume control and mute/unmute toggle in settings.
 - **Integrate sound settings** so users can toggle sound on/off in the settings menu.
+  - Ensure sound respects the user's preference at all times.
 - **Add more visual feedback** (animations, effects) for correct/wrong/game over.
+  - Enhance confetti and emoji feedback.
+  - Add subtle shake or flash for wrong input.
 - **Improve accessibility** (keyboard navigation, ARIA labels, color contrast).
+  - Ensure all interactive elements are keyboard accessible.
+  - Add ARIA labels and roles for screen readers.
+  - Review and improve color contrast for all themes.
 - **Add more achievements and badges** for advanced milestones.
+  - Include achievements for perfect games, streaks, trivia, and sharing.
+  - Display achievement notifications in-game.
 - **Implement statistics/history page** to track user progress over time.
+  - Show charts or tables of scores, streaks, and challenges completed.
+  - Allow users to reset their stats if desired.
 - **Add cloud sync and backup/import features** for scores and settings.
+  - Allow users to export/import their progress.
+  - Optional: sync with a cloud account for backup.
 - **Expand localization/multi-language support**.
+  - Add language selector in settings.
+  - Translate UI, achievements, facts, and trivia.
 - **Add more PI trivia and fun facts**.
+  - Expand the trivia and fact database.
+  - Rotate facts and trivia more frequently.
 - **Polish UI for mobile and small screens**.
+  - Make popup and modals responsive.
+  - Test on various device sizes.
+
+---
+
+## 🧭 Planned Features
+
+- **Sound Effects**: Fully integrated, user-controllable sound for all actions.
+- **Advanced Achievements**: More badges for expert players and special actions.
+- **Statistics Page**: Visualize your progress and history.
+- **Cloud Sync/Backup**: Never lose your scores or settings.
+- **Localization**: Play in your preferred language.
+- **Accessibility**: Full keyboard and screen reader support.
+- **UI Polish**: Even smoother experience on all devices.
+
+---

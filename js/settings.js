@@ -79,6 +79,7 @@ window.initSettingsUI = function() {
     settingsBtn.addEventListener('click', () => {
       window.loadSettings();
       settingsModal.style.display = "flex";
+      createSoundSettingsUI(); // Call to create sound settings UI
     });
   }
   if (closeSettings && settingsModal) {
@@ -90,6 +91,46 @@ window.initSettingsUI = function() {
     });
   }
 };
+
+// --- SOUND SETTINGS UI ---
+function createSoundSettingsUI() {
+  const container = document.createElement('div');
+  container.className = 'settings-section';
+
+  // Mute toggle
+  const muteLabel = document.createElement('label');
+  muteLabel.textContent = 'Mute Sound';
+  const muteCheckbox = document.createElement('input');
+  muteCheckbox.type = 'checkbox';
+  muteCheckbox.checked = window.soundManager.muted;
+  muteCheckbox.addEventListener('change', () => {
+    window.soundManager.setMuted(muteCheckbox.checked);
+  });
+  muteLabel.appendChild(muteCheckbox);
+
+  // Volume slider
+  const volumeLabel = document.createElement('label');
+  volumeLabel.textContent = 'Volume';
+  const volumeSlider = document.createElement('input');
+  volumeSlider.type = 'range';
+  volumeSlider.min = 0;
+  volumeSlider.max = 1;
+  volumeSlider.step = 0.01;
+  volumeSlider.value = window.soundManager.volume;
+  volumeSlider.addEventListener('input', () => {
+    window.soundManager.setVolume(parseFloat(volumeSlider.value));
+  });
+  volumeLabel.appendChild(volumeSlider);
+
+  container.appendChild(muteLabel);
+  container.appendChild(volumeLabel);
+
+  // Insert into settings modal
+  const settingsModal = document.getElementById('settings-modal');
+  if (settingsModal) {
+    settingsModal.appendChild(container);
+  }
+}
 
 // --- INITIALIZE SETTINGS ON DOM READY ---
 document.addEventListener('DOMContentLoaded', () => {
