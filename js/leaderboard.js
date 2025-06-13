@@ -1,6 +1,6 @@
-const LEADERBOARD_API_URL = 'https://pigame.irissmile.studio/leaderboard';
+const LEADERBOARD_API_URL = 'https://pigame.irissmile.studio/api/leaderboard';
 
-// Fetch leaderboard from backend
+// Fetch leaderboard from backend (JSON)
 window.fetchLeaderboard = async function() {
   try {
     const res = await fetch(LEADERBOARD_API_URL);
