@@ -47,6 +47,7 @@
       <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;" tabindex="0" aria-label="Open Settings">Settings</button>
       <button id="challenges-btn" class="arcade-btn" type="button" style="margin-top:10px;">View Challenges</button>
       <button id="leaderboard-btn" class="arcade-btn" type="button" style="margin-top:10px;">Leaderboard</button>
+      <button id="statistics-btn" class="arcade-btn" type="button" style="margin-top:10px;" tabindex="0" aria-label="View Statistics">Statistics</button>
     </section>
 
     <div id="settings-modal" class="arcade-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1" style="display:none;">
@@ -121,6 +122,15 @@
         <div id="trivia-options" class="arcade-trivia-options"></div>
         <div id="trivia-feedback" class="arcade-trivia-feedback"></div>
         <button id="next-trivia-btn" class="arcade-btn" style="margin-top:12px;display:none;">Next Question</button>
+      </div>
+    </div>
+
+    <div id="statistics-modal" class="arcade-modal" role="dialog" aria-modal="true" aria-labelledby="statistics-title" tabindex="-1" style="display:none;">
+      <div class="arcade-modal-content">
+        <button id="close-statistics" class="arcade-modal-close" aria-label="Close Statistics">&times;</button>
+        <h2 id="statistics-title" class="arcade-modal-title">Statistics</h2>
+        <div id="statistics-content" style="text-align:left;padding:0 12px;"></div>
+        <button id="reset-stats-btn" class="arcade-btn" style="margin-top:16px;">Reset Statistics</button>
       </div>
     </div>
   </main>

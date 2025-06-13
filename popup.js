@@ -60,6 +60,11 @@ const challengesModal = document.getElementById('challenges-modal');
 const closeChallenges = document.getElementById('close-challenges');
 const challengesList = document.getElementById('challenges-list');
 const copyScoreBtn = document.getElementById('copy-score-btn');
+const statisticsBtn = document.getElementById('statistics-btn');
+const statisticsModal = document.getElementById('statistics-modal');
+const closeStatistics = document.getElementById('close-statistics');
+const statisticsContent = document.getElementById('statistics-content');
+const resetStatsBtn = document.getElementById('reset-stats-btn');
 
 // Prevent pasting in the digit input
 if (piInputElem) {
@@ -699,6 +704,105 @@ function handleTriviaAnswer(idx, btn, currentTrivia) {
   nextTriviaBtn.style.display = "block";
 }
 nextTriviaBtn.addEventListener('click', loadTriviaQuestion);
+
+// Statistics modal logic
+function getStats() {
+  return {
+    maxDigits: Number(localStorage.getItem('pi_highest_score')) || 0,
+    timed: Number(localStorage.getItem('pi_highest_score_timed')) || 0,
+    streak: Number(localStorage.getItem('pi_highest_streak')) || 0,
+    speedrun: Number(localStorage.getItem('pi_speedrun_highscore')) || 0,
+    lastGamePerfect: !!localStorage.getItem('pi_last_game_perfect'),
+    usedHint: !!localStorage.getItem('pi_used_hint'),
+    usedPowerup: !!localStorage.getItem('pi_used_powerup'),
+    dailyChallenge: !!localStorage.getItem('pi_daily_challenge_completed'),
+    weeklyChallenge: !!localStorage.getItem('pi_weekly_challenge_completed'),
+    answeredTrivia: !!localStorage.getItem('pi_answered_trivia'),
+    triviaCorrect: Number(localStorage.getItem('pi_trivia_correct')) || 0,
+    sharedScore: !!localStorage.getItem('pi_shared_score')
+  };
+}
+
+function getAchievementsCount() {
+  if (window.PI_ACHIEVEMENTS && window.PI_ACHIEVEMENT_STATE) {
+    return Object.values(window.PI_ACHIEVEMENT_STATE).filter(Boolean).length + " / " + window.PI_ACHIEVEMENTS.length;
+  }
+  return "";
+}
+
+function renderStatistics() {
+  const stats = getStats();
+  statisticsContent.innerHTML = `
+    <ul style="list-style:none;padding:0;">
+      <li><strong>Best Digits (Normal):</strong> ${stats.maxDigits}</li>
+      <li><strong>Best Timed:</strong> ${stats.timed}</li>
+      <li><strong>Best Streak:</strong> ${stats.streak}</li>
+      <li><strong>Best Speedrun:</strong> ${stats.speedrun}</li>
+      <li><strong>Perfect Game:</strong> ${stats.lastGamePerfect ? 'Yes' : 'No'}</li>
+      <li><strong>Hints Used:</strong> ${stats.usedHint ? 'Yes' : 'No'}</li>
+      <li><strong>Powerups Used:</strong> ${stats.usedPowerup ? 'Yes' : 'No'}</li>
+      <li><strong>Daily Challenge Completed:</strong> ${stats.dailyChallenge ? 'Yes' : 'No'}</li>
+      <li><strong>Weekly Challenge Completed:</strong> ${stats.weeklyChallenge ? 'Yes' : 'No'}</li>
+      <li><strong>Trivia Answered:</strong> ${stats.answeredTrivia ? 'Yes' : 'No'}</li>
+      <li><strong>Trivia Correct:</strong> ${stats.triviaCorrect}</li>
+      <li><strong>Score Shared:</strong> ${stats.sharedScore ? 'Yes' : 'No'}</li>
+      <li><strong>Achievements Unlocked:</strong> ${getAchievementsCount()}</li>
+    </ul>
+  `;
+}
+
+if (statisticsBtn && statisticsModal) {
+  statisticsBtn.addEventListener('click', () => {
+    renderStatistics();
+    statisticsModal.style.display = "flex";
+    statisticsModal.focus();
+  });
+}
+if (closeStatistics && statisticsModal) {
+  closeStatistics.addEventListener('click', () => {
+    statisticsModal.style.display = "none";
+    statisticsBtn && statisticsBtn.focus();
+  });
+  statisticsModal.addEventListener('click', function(e) {
+    if (e.target === statisticsModal) {
+      statisticsModal.style.display = "none";
+      statisticsBtn && statisticsBtn.focus();
+    }
+  });
+  statisticsModal.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      statisticsModal.style.display = "none";
+      statisticsBtn && statisticsBtn.focus();
+    }
+  });
+}
+if (resetStatsBtn) {
+  resetStatsBtn.addEventListener('click', () => {
+    if (confirm('Reset all your statistics and achievements? This cannot be undone.')) {
+      // Clear relevant localStorage keys
+      [
+        'pi_highest_score',
+        'pi_highest_score_timed',
+        'pi_highest_streak',
+        'pi_speedrun_highscore',
+        'pi_last_game_perfect',
+        'pi_used_hint',
+        'pi_used_powerup',
+        'pi_daily_challenge_completed',
+        'pi_weekly_challenge_completed',
+        'pi_answered_trivia',
+        'pi_trivia_correct',
+        'pi_shared_score',
+        'pi_achievement_state'
+      ].forEach(k => localStorage.removeItem(k));
+      if (window.PI_ACHIEVEMENT_STATE) {
+        Object.keys(window.PI_ACHIEVEMENT_STATE).forEach(k => delete window.PI_ACHIEVEMENT_STATE[k]);
+      }
+      renderStatistics();
+      alert('Statistics and achievements reset!');
+    }
+  });
+}
 
 // Keyboard shortcuts for navigation and actions
 document.addEventListener('keydown', function(e) {
