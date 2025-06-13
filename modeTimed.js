@@ -30,6 +30,18 @@ window.PIModeTimed = function({
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 
+  function animateCorrectInput() {
+    if (window.animateCorrectInput) {
+      window.animateCorrectInput(piSequenceElem, window.emojiFeedbackElem || {});
+    } else {
+      piSequenceElem.style.transition = "transform 0.15s";
+      piSequenceElem.style.transform = "scale(1.08)";
+      setTimeout(() => {
+        piSequenceElem.style.transform = "scale(1)";
+      }, 150);
+    }
+  }
+
   function handleInput() {
     if (ended) return;
     if (!started) {
@@ -72,6 +84,7 @@ window.PIModeTimed = function({
       currentIndex += accepted;
       score += accepted;
       piInputElem.value = "";
+      animateCorrectInput();
       updateUI();
     }
   }
