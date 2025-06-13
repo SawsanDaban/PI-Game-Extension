@@ -209,6 +209,18 @@ function updateHighestScoreDisplay(mode) {
 }
 
 function resetGame() {
+  // Reset all mode-related state and UI
+  hintUses = 0;
+  powerupUses = 0;
+  powerupActive = false;
+
+  // Stop any running timers/intervals from previous mode
+  if (modeCleanup) {
+    modeCleanup();
+    modeCleanup = null;
+  }
+
+  // Reset UI and input
   piSequenceElem.textContent = "3.";
   piInputElem.value = "";
   piInputElem.disabled = false;
@@ -222,14 +234,22 @@ function resetGame() {
   motivationElem.style.opacity = 0;
   confettiCanvas.style.display = 'none';
 
-  hintUses = 0;
-  powerupUses = 0;
-  powerupActive = false;
+  // Hide timer and reset timer value
+  timerElem.style.display = "none";
+  timerValueElem.textContent = "0";
+
+  // Hide streak countdown
+  let streakCountdownElem = document.getElementById('streak-countdown');
+  if (streakCountdownElem) {
+    streakCountdownElem.style.display = "none";
+    streakCountdownElem.textContent = "";
+  }
+
+  // Reset hint/powerup buttons
   ensureHintButtons();
   updateHintPowerupButtons();
 
   // --- Ensure streak countdown element is present and visible for streak mode ---
-  let streakCountdownElem = document.getElementById('streak-countdown');
   if (modeSelectElem.value === "streak") {
     if (!streakCountdownElem) {
       streakCountdownElem = document.createElement('div');
