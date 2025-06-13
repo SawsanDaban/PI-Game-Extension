@@ -17,6 +17,269 @@ body.theme-dark {
   color: #eee;
 }
 
+body.theme-dark .arcade-logo {
+  color: #39ff14;
+  text-shadow: none;
+}
+
+body.theme-dark .arcade-title {
+  color: #eee !important;
+  text-shadow: none !important;
+}
+
+body.theme-dark .arcade-sequence {
+  color: #39ff14;
+  text-shadow: none;
+}
+
+body.theme-dark #restart-btn {
+  background: #23234a !important;
+  color: #39ff14 !important;
+  border: 2px solid #444 !important;
+  box-shadow: 0 0 8px #23234a !important;
+}
+
+body.theme-dark #restart-btn:hover {
+  background: #181828 !important;
+  color: #fff !important;
+  border: 2px solid #39ff14 !important;
+}
+
+body.theme-dark .arcade-hint-btn,
+body.theme-dark .arcade-powerup-btn {
+  background: #23234a;
+  color: #39ff14;
+  border: 1.5px solid #444;
+  box-shadow: 0 0 4px #23234a;
+}
+
+body.theme-dark .arcade-hint-btn:hover:not(:disabled),
+body.theme-dark .arcade-powerup-btn:hover:not(:disabled) {
+  background: #181828;
+  color: #fff;
+  border-color: #39ff14;
+}
+
+body.theme-dark .arcade-hint-btn:disabled,
+body.theme-dark .arcade-powerup-btn:disabled {
+  background: #181818;
+  color: #666;
+  border-color: #222;
+}
+
+body.theme-dark .arcade-hint {
+  color: #39ff14;
+  text-shadow: none;
+}
+
+body.theme-dark .arcade-message {
+  color: #ff5e5e;
+  text-shadow: none;
+}
+
+/* --- Light Theme (Calm, No Neon/Highlight Colors) --- */
+body.theme-light {
+  background: #f7f7fa;
+  color: #222;
+}
+
+body.theme-light .arcade-header {
+  background: #f5f5fa;
+  border-bottom: 2px solid #d0d0d0;
+  box-shadow: 0 2px 8px #e0e0e0;
+}
+
+body.theme-light .arcade-logo {
+  color: #3a6e8d;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-title {
+  color: #222 !important;
+  text-shadow: none !important;
+}
+
+body.theme-light .arcade-sequence {
+  color: #3a6e8d;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-btn,
+body.theme-light .arcade-action-btn {
+  background: #f5f5fa;
+  color: #222;
+  box-shadow: 0 0 6px #e0e0e0;
+  border: 1.5px solid #d0d0d0;
+  background-image: none;
+}
+
+body.theme-light .arcade-btn:hover,
+body.theme-light .arcade-action-btn:hover {
+  background: #eaeaf0;
+  color: #222;
+}
+
+body.theme-light #restart-btn {
+  background: #eaeaf0 !important;
+  color: #3a6e8d !important;
+  border: 2px solid #b3d3e6 !important;
+  box-shadow: 0 0 8px #e0e0e0 !important;
+}
+
+body.theme-light #restart-btn:hover {
+  background: #d0e6f7 !important;
+  color: #222 !important;
+  border: 2px solid #3a6e8d !important;
+}
+
+body.theme-light .arcade-hint-btn,
+body.theme-light .arcade-powerup-btn {
+  background: #eaeaf0;
+  color: #3a6e8d;
+  border: 1.5px solid #b3d3e6;
+  box-shadow: 0 0 4px #e0e0e0;
+}
+
+body.theme-light .arcade-hint-btn:hover:not(:disabled),
+body.theme-light .arcade-powerup-btn:hover:not(:disabled) {
+  background: #d0e6f7;
+  color: #222;
+  border-color: #3a6e8d;
+}
+
+body.theme-light .arcade-hint-btn:disabled,
+body.theme-light .arcade-powerup-btn:disabled {
+  background: #f5f5fa;
+  color: #aaa;
+  border-color: #e0e0e0;
+}
+
+body.theme-light .arcade-hint {
+  color: #3a6e8d;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-panel {
+  background: #fff;
+  border-color: #e0e0e0;
+  box-shadow: 0 0 12px #e0e0e0;
+}
+
+body.theme-light .arcade-title,
+body.theme-light .arcade-label,
+body.theme-light .arcade-highscore,
+body.theme-light .arcade-score,
+body.theme-light .arcade-streak,
+body.theme-light .arcade-streak-time,
+body.theme-light .arcade-daily-challenge {
+  color: #222 !important;
+  text-shadow: none !important;
+}
+
+body.theme-light .arcade-input,
+body.theme-light .arcade-select {
+  background: #fff;
+  color: #222;
+  border-color: #d0d0d0;
+  box-shadow: 0 0 4px #e0e0e0;
+}
+
+body.theme-light .arcade-modal-content {
+  background: #fff;
+  border-color: #d0d0d0;
+  box-shadow: 0 0 16px #e0e0e0;
+}
+
+body.theme-light .arcade-modal-close {
+  color: #888;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-modal-close:hover {
+  color: #222;
+}
+
+body.theme-light .arcade-achievement-row {
+  background: #f7f7fa;
+  color: #222;
+  border-color: #e0e0e0;
+  box-shadow: 0 0 6px #e0e0e0;
+}
+
+body.theme-light .arcade-achievement-label {
+  color: #222;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-daily-challenge {
+  background: #fdf6e3;
+  color: #8d6e3f;
+  border-left: 3px solid #e6d3b3;
+  box-shadow: none;
+}
+
+body.theme-light .arcade-weekly-challenge {
+  background: #e3f3fd;
+  color: #3a6e8d;
+  border-left: 3px solid #b3d3e6;
+  box-shadow: none;
+}
+
+body.theme-light .arcade-trivia-option-btn {
+  background: #fff;
+  color: #222;
+  border-color: #d0d0d0;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-trivia-option-btn:hover {
+  background: #eaeaf0;
+  color: #222;
+  border-color: #b0b0b0;
+}
+
+body.theme-light .arcade-trivia-feedback {
+  color: #8d6e3f;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-streak,
+body.theme-light .arcade-streak-time,
+body.theme-light #streak-countdown {
+  color: #8d6e3f;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-hint {
+  color: #3a6e8d;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-motivation {
+  color: #222;
+  text-shadow: none;
+}
+
+body.theme-light .arcade-challenges-list {
+  color: #222;
+  background: #fff;
+}
+
+body.theme-light .arcade-challenges-list::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+}
+
+body.theme-light kbd {
+  background: #f5f5fa;
+  color: #222;
+  border-color: #d0d0d0;
+}
+
+body.theme-light .arcade-message {
+  color: #b23b3b;
+  text-shadow: none;
+}
+
 .arcade-header {
   display: flex;
   align-items: center;

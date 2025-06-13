@@ -474,6 +474,37 @@ window.renderChallengesList = function() {
   }
 };
 
+// --- Theme switching logic (add to settings.js or here if not present) ---
+const themeSelectElem = document.getElementById('theme-select');
+function applyTheme(theme) {
+  document.body.classList.remove('theme-dark', 'theme-light');
+  if (theme === 'dark') document.body.classList.add('theme-dark');
+  else if (theme === 'light') document.body.classList.add('theme-light');
+  else document.body.classList.remove('theme-dark', 'theme-light');
+  // Save theme
+  localStorage.setItem('pi_theme', theme);
+}
+if (themeSelectElem) {
+  // Add light theme option if not present
+  if (!Array.from(themeSelectElem.options).some(opt => opt.value === 'light')) {
+    const opt = document.createElement('option');
+    opt.value = 'light';
+    opt.textContent = 'Light';
+    themeSelectElem.appendChild(opt);
+  }
+  // Load saved theme
+  const savedTheme = localStorage.getItem('pi_theme') || 'neon';
+  themeSelectElem.value = savedTheme;
+  applyTheme(savedTheme);
+  themeSelectElem.addEventListener('change', () => {
+    applyTheme(themeSelectElem.value);
+  });
+} else {
+  // fallback: apply saved theme on load
+  const savedTheme = localStorage.getItem('pi_theme');
+  if (savedTheme) applyTheme(savedTheme);
+}
+
 // --- Event Listeners ---
 modeSelectElem.addEventListener('change', resetGame);
 restartBtn.addEventListener('click', resetGame);
