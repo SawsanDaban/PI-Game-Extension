@@ -344,7 +344,7 @@ function resetGame() {
       piSequenceElem,
       scoreElem,
       progressElem,
-      onEnd: (finalScore) => {
+      onEnd: patchGameOverForLeaderboard((finalScore) => {
         showArcadeMessage(messageElem, "Game Over! Score: " + finalScore);
         if (finalScore > highestScore) {
           highestScore = finalScore;
@@ -354,7 +354,7 @@ function resetGame() {
         restartBtn.style.display = "inline-block";
         // Show a PI fact if no motivation message
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      },
+      }),
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -370,7 +370,7 @@ function resetGame() {
       progressElem,
       timerElem,
       timerValueElem,
-      onEnd: (finalScore, finalTime) => {
+      onEnd: patchGameOverForLeaderboard((finalScore, finalTime) => {
         showArcadeMessage(messageElem, "Game Over! Score: " + finalScore + " | Time: " + (finalTime || 0) + "s");
         if (finalScore > highestScore) {
           highestScore = finalScore;
@@ -379,7 +379,7 @@ function resetGame() {
         updateHighestScoreDisplay("timed");
         restartBtn.style.display = "inline-block";
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      },
+      }),
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -394,7 +394,7 @@ function resetGame() {
       scoreElem,
       progressElem,
       streakCountdownElem: document.getElementById('streak-countdown'),
-      onEnd: (finalScore) => {
+      onEnd: patchGameOverForLeaderboard((finalScore) => {
         showArcadeMessage(messageElem, "Streak Over! Score: " + finalScore);
         if (finalScore > highestStreak) {
           highestStreak = finalScore;
@@ -408,7 +408,7 @@ function resetGame() {
           streakElem.style.display = "none";
         }
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      },
+      }),
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -424,7 +424,7 @@ function resetGame() {
       progressElem,
       timerElem,
       timerValueElem,
-      onEnd: (finalScore) => {
+      onEnd: patchGameOverForLeaderboard((finalScore) => {
         showArcadeMessage(messageElem, "Speedrun Over! Score: " + finalScore);
         if (finalScore > speedrunHighScore) {
           speedrunHighScore = finalScore;
@@ -433,7 +433,7 @@ function resetGame() {
         updateHighestScoreDisplay("speedrun");
         restartBtn.style.display = "inline-block";
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      },
+      }),
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -738,6 +738,70 @@ document.addEventListener('keydown', function(e) {
 window.addEventListener('beforeunload', () => {
   if (modeCleanup) modeCleanup();
 });
+
+// --- Leaderboard logic (local/mock) ---
+const leaderboardBtn = document.getElementById('leaderboard-btn');
+const leaderboardModal = document.getElementById('leaderboard-modal');
+const closeLeaderboard = document.getElementById('close-leaderboard');
+const leaderboardList = document.getElementById('leaderboard-list');
+
+function getLeaderboard() {
+  // For demo: store top 5 scores in localStorage
+  let lb = JSON.parse(localStorage.getItem('pi_leaderboard') || '[]');
+  if (!Array.isArray(lb)) lb = [];
+  return lb;
+}
+function saveLeaderboard(lb) {
+  localStorage.setItem('pi_leaderboard', JSON.stringify(lb));
+}
+function maybeAddToLeaderboard(score) {
+  if (!window.PI_SETTINGS || !window.PI_SETTINGS.leaderboard) return;
+  let lb = getLeaderboard();
+  lb.push({ name: 'You', score, date: new Date().toISOString() });
+  lb = lb.sort((a, b) => b.score - a.score).slice(0, 5);
+  saveLeaderboard(lb);
+}
+function renderLeaderboard() {
+  const lb = getLeaderboard();
+  leaderboardList.innerHTML = '';
+  if (!lb.length) {
+    leaderboardList.innerHTML = '<div style="padding:12px;">No leaderboard entries yet.</div>';
+    return;
+  }
+  lb.forEach((entry, idx) => {
+    const div = document.createElement('div');
+    div.className = 'arcade-achievement-row';
+    div.innerHTML = `<span class="arcade-badge">${idx + 1}</span>
+      <span class="arcade-achievement-label"><strong>${entry.name}</strong> — <span style="color:#3a6e8d">${entry.score}</span> digits</span>`;
+    leaderboardList.appendChild(div);
+  });
+}
+
+// Show leaderboard modal
+if (leaderboardBtn && leaderboardModal) {
+  leaderboardBtn.addEventListener('click', () => {
+    renderLeaderboard();
+    leaderboardModal.style.display = "flex";
+  });
+}
+if (closeLeaderboard && leaderboardModal) {
+  closeLeaderboard.addEventListener('click', () => {
+    leaderboardModal.style.display = "none";
+  });
+  leaderboardModal.addEventListener('click', function(e) {
+    if (e.target === leaderboardModal) leaderboardModal.style.display = "none";
+  });
+}
+
+// --- Patch game over to maybe add to leaderboard ---
+function patchGameOverForLeaderboard(origOnEnd) {
+  return function(finalScore, ...args) {
+    if (window.PI_SETTINGS && window.PI_SETTINGS.leaderboard) {
+      maybeAddToLeaderboard(finalScore);
+    }
+    origOnEnd(finalScore, ...args);
+  };
+}
 
 // --- Initialize ---
 resetGame();
