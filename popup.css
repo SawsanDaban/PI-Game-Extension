@@ -586,3 +586,52 @@ body.theme-dark .arcade-challenges-list {
   color: #fff !important;
   border: 2px solid #ff2fd6 !important;
 }
+
+.arcade-hint-btn-row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.arcade-hint-btn,
+.arcade-powerup-btn {
+  padding: 4px 12px;
+  font-size: 0.95em;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #ffb347 0%, #2fd6ff 100%);
+  color: #181828;
+  border: 1.5px solid #ffb347;
+  font-family: inherit;
+  font-weight: bold;
+  box-shadow: 0 0 6px #ffb347a0, 0 0 6px #2fd6ffa0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin: 0;
+  min-width: 70px;
+}
+
+.arcade-hint-btn:disabled,
+.arcade-powerup-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #ccc;
+  color: #888;
+  border-color: #ccc;
+}
+
+.arcade-powerup-btn {
+  background: linear-gradient(90deg, #2fd6ff 0%, #ffb347 100%);
+  border: 1.5px solid #2fd6ff;
+}
+
+.arcade-hint-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #ffb347 0%, #ff2fd6 100%);
+  color: #fff;
+}
+
+.arcade-powerup-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #ff2fd6 0%, #2fd6ff 100%);
+  color: #fff;
+}

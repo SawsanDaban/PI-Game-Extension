@@ -3,7 +3,8 @@ window.PIModeNormal = function({
   piSequenceElem,
   scoreElem,
   progressElem,
-  onEnd
+  onEnd,
+  _currentIndexRef
 }) {
   let currentIndex = 0;
   let score = 0;
@@ -20,6 +21,8 @@ window.PIModeNormal = function({
     window.PIModeBase.updateSequence(piSequenceElem, currentIndex);
     window.PIModeBase.updateScore(scoreElem, score);
     window.PIModeBase.updateProgress(progressElem, currentIndex);
+    if (_currentIndexRef) _currentIndexRef.value = currentIndex;
+    window._currentIndex = currentIndex;
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 
@@ -63,6 +66,8 @@ window.PIModeNormal = function({
 
   piInputElem.value = "";
   piInputElem.disabled = false;
+  if (_currentIndexRef) _currentIndexRef.value = currentIndex;
+  window._currentIndex = currentIndex;
   if (document.activeElement !== piInputElem) piInputElem.focus();
   updateUI();
 

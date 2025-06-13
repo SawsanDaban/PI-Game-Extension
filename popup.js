@@ -77,6 +77,126 @@ let highestScore = Number(localStorage.getItem('pi_highest_score')) || 0;
 let highestStreak = Number(localStorage.getItem('pi_highest_streak')) || 0;
 let speedrunHighScore = Number(localStorage.getItem('pi_speedrun_highscore')) || 0;
 
+// --- Hints & Power-ups ---
+let hintUses = 0;
+let maxHints = 3;
+let powerupUses = 0;
+let maxPowerups = 2;
+let powerupActive = false;
+
+function showHint(currentIndex) {
+  const PI_DIGITS = PIModeBase.getPiDigits();
+  if (hintUses < maxHints && currentIndex < PI_DIGITS.length) {
+    hintElem.textContent = "Hint: Next digit is " + PI_DIGITS[currentIndex];
+    hintElem.style.color = "#ffb347";
+    hintUses++;
+    updateHintPowerupButtons();
+    setTimeout(() => {
+      hintElem.textContent = "";
+      hintElem.style.color = "";
+    }, 2000);
+  } else if (hintUses >= maxHints) {
+    hintElem.textContent = "No hints left!";
+    hintElem.style.color = "#ff2fd6";
+    setTimeout(() => {
+      hintElem.textContent = "";
+      hintElem.style.color = "";
+    }, 1500);
+  }
+}
+
+function activatePowerup(currentIndex) {
+  if (powerupActive || powerupUses >= maxPowerups) return;
+  powerupActive = true;
+  powerupUses++;
+  updateHintPowerupButtons();
+  const PI_DIGITS = PIModeBase.getPiDigits();
+  let reveal = "";
+  for (let i = 0; i < 3 && currentIndex + i < PI_DIGITS.length; i++) {
+    reveal += PI_DIGITS[currentIndex + i];
+  }
+  hintElem.textContent = "Power-up: Next 3 digits: " + reveal;
+  hintElem.style.color = "#2fd6ff";
+  setTimeout(() => {
+    hintElem.textContent = "";
+    hintElem.style.color = "";
+    powerupActive = false;
+    updateHintPowerupButtons();
+  }, 2500);
+}
+
+// --- Add hint/power-up buttons to UI only for normal mode ---
+function ensureHintButtons() {
+  let btnRow = document.getElementById('hint-btn-row');
+  if (modeSelectElem.value !== "normal") {
+    if (btnRow) btnRow.style.display = "none";
+    return;
+  }
+  if (!btnRow) {
+    btnRow = document.createElement('div');
+    btnRow.id = 'hint-btn-row';
+    btnRow.className = 'arcade-hint-btn-row';
+    piInputElem.parentNode.insertBefore(btnRow, piInputElem.nextSibling);
+  }
+  btnRow.style.display = "flex";
+  // Hint button
+  let hintBtn = document.getElementById('hint-btn');
+  if (!hintBtn) {
+    hintBtn = document.createElement('button');
+    hintBtn.id = 'hint-btn';
+    hintBtn.className = 'arcade-hint-btn';
+    btnRow.appendChild(hintBtn);
+  }
+  // Powerup button
+  let powerupBtn = document.getElementById('powerup-btn');
+  if (!powerupBtn) {
+    powerupBtn = document.createElement('button');
+    powerupBtn.id = 'powerup-btn';
+    powerupBtn.className = 'arcade-powerup-btn';
+    btnRow.appendChild(powerupBtn);
+  }
+  // Set handlers and update text
+  hintBtn.onclick = () => {
+    let currentIndex = 0;
+    if (modeCleanup && typeof modeCleanup.getCurrentIndex === "function") {
+      currentIndex = modeCleanup.getCurrentIndex();
+    } else if (window._currentIndex !== undefined) {
+      currentIndex = window._currentIndex;
+    }
+    showHint(currentIndex);
+  };
+  powerupBtn.onclick = () => {
+    let currentIndex = 0;
+    if (modeCleanup && typeof modeCleanup.getCurrentIndex === "function") {
+      currentIndex = modeCleanup.getCurrentIndex();
+    } else if (window._currentIndex !== undefined) {
+      currentIndex = window._currentIndex;
+    }
+    activatePowerup(currentIndex);
+  };
+  updateHintPowerupButtons();
+}
+
+function updateHintPowerupButtons() {
+  const hintBtn = document.getElementById('hint-btn');
+  const powerupBtn = document.getElementById('powerup-btn');
+  if (hintBtn) {
+    hintBtn.textContent = `Hint (${Math.max(0, maxHints - hintUses)})`;
+    hintBtn.disabled = hintUses >= maxHints;
+  }
+  if (powerupBtn) {
+    powerupBtn.textContent = `Power-up (${Math.max(0, maxPowerups - powerupUses)})`;
+    powerupBtn.disabled = powerupUses >= maxPowerups || powerupActive;
+  }
+}
+
+// --- Patch modeCleanup to expose currentIndex for hints ---
+function patchModeCleanupWithIndex(modeObj, getIndexFn) {
+  if (typeof modeObj === "function") {
+    modeObj.getCurrentIndex = getIndexFn;
+  }
+}
+
 // --- Mode Initialization ---
 function updateHighestScoreDisplay(mode) {
   if (mode === "streak") {
@@ -102,11 +222,11 @@ function resetGame() {
   motivationElem.style.opacity = 0;
   confettiCanvas.style.display = 'none';
 
-  // Clean up previous mode
-  if (modeCleanup) {
-    modeCleanup();
-    modeCleanup = null;
-  }
+  hintUses = 0;
+  powerupUses = 0;
+  powerupActive = false;
+  ensureHintButtons();
+  updateHintPowerupButtons();
 
   // --- Ensure streak countdown element is present and visible for streak mode ---
   let streakCountdownElem = document.getElementById('streak-countdown');
@@ -130,6 +250,7 @@ function resetGame() {
   if (window.updateWeeklyChallengeUI) window.updateWeeklyChallengeUI();
 
   if (mode === "normal" && window.PIModeNormal) {
+    let currentIndexRef = { value: 0 };
     modeCleanup = window.PIModeNormal({
       piInputElem,
       piSequenceElem,
@@ -143,11 +264,15 @@ function resetGame() {
         }
         updateHighestScoreDisplay("normal");
         restartBtn.style.display = "inline-block";
-      }
+      },
+      _currentIndexRef: currentIndexRef
     });
+    patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
+    window._currentIndex = 0;
     return;
   }
   if (mode === "timed" && window.PIModeTimed) {
+    let currentIndexRef = { value: 0 };
     modeCleanup = window.PIModeTimed({
       piInputElem,
       piSequenceElem,
@@ -163,11 +288,15 @@ function resetGame() {
         }
         updateHighestScoreDisplay("timed");
         restartBtn.style.display = "inline-block";
-      }
+      },
+      _currentIndexRef: currentIndexRef
     });
+    patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
+    window._currentIndex = 0;
     return;
   }
   if (mode === "streak" && window.PIModeStreak) {
+    let currentIndexRef = { value: 0 };
     modeCleanup = window.PIModeStreak({
       piInputElem,
       piSequenceElem,
@@ -188,11 +317,15 @@ function resetGame() {
           streakElem.textContent = "";
           streakElem.style.display = "none";
         }
-      }
+      },
+      _currentIndexRef: currentIndexRef
     });
+    patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
+    window._currentIndex = 0;
     return;
   }
   if (mode === "speedrun" && window.PIModeSpeedrun) {
+    let currentIndexRef = { value: 0 };
     modeCleanup = window.PIModeSpeedrun({
       piInputElem,
       piSequenceElem,
@@ -208,8 +341,11 @@ function resetGame() {
         }
         updateHighestScoreDisplay("speedrun");
         restartBtn.style.display = "inline-block";
-      }
+      },
+      _currentIndexRef: currentIndexRef
     });
+    patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
+    window._currentIndex = 0;
     return;
   }
 }

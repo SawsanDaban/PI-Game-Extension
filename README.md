@@ -81,20 +81,13 @@ Open source. See [LICENSE](LICENSE) for details.
 
 ## 🛠️ Next Step
 
-- **Add sound effects** for correct answers, wrong answers, and game over to enhance the arcade experience.
-- **Add more settings** for customizing gameplay and appearance.
-- **Add keyboard shortcuts** for faster navigation (e.g., restart, achievements, trivia, mode switch).
-- **Add localization/multi-language support** so users can play in their preferred language.
-- **Add statistics/history page** to let users view their progress, best streaks, and daily challenge history.
-- **Add cloud sync** so users can save their progress and settings across devices.
-- **Add challenge mode** where users can compete with friends or global leaderboards.
-- **Add accessibility improvements** to ensure the game is usable with screen readers and keyboard navigation.
-- **Add custom PI digit sets** so users can practice with different mathematical constants (e.g., e, √2).
-- **Add export/import feature** so users can back up and restore their progress and settings.
-- **Add daily/weekly/monthly leaderboards** so users can compare their scores and streaks with others.
-- **Add themes & customization** so users can unlock or choose different color themes, backgrounds, or PI digit fonts.
-- **Add a "Practice Mode"** where users can practice specific digit ranges or get hints after mistakes.
-- **Add a "Review Mistakes"** feature to help users learn from errors and improve memory.
-- **Add mobile browser support** for a better experience on mobile devices.
-- **Add animated transitions** for UI elements to enhance the retro arcade feel.
-- **Add a "Fun Facts" section** with more PI trivia and history.
+- **Enable and polish sound effects** for correct, wrong, and game over events (see `sound.js`).
+- **Integrate sound settings** so users can toggle sound on/off in the settings menu.
+- **Add more visual feedback** (animations, effects) for correct/wrong/game over.
+- **Improve accessibility** (keyboard navigation, ARIA labels, color contrast).
+- **Add more achievements and badges** for advanced milestones.
+- **Implement statistics/history page** to track user progress over time.
+- **Add cloud sync and backup/import features** for scores and settings.
+- **Expand localization/multi-language support**.
+- **Add more PI trivia and fun facts**.
+- **Polish UI for mobile and small screens**.
