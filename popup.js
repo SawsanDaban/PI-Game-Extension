@@ -61,6 +61,11 @@ const closeChallenges = document.getElementById('close-challenges');
 const challengesList = document.getElementById('challenges-list');
 const copyScoreBtn = document.getElementById('copy-score-btn');
 
+// Prevent pasting in the digit input
+if (piInputElem) {
+  piInputElem.addEventListener('paste', e => e.preventDefault());
+}
+
 // --- Challenge UI ---
 // Use the new class for weekly challenge
 const dailyChallengeElem = document.getElementById('daily-challenge');
