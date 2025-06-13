@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
 
 body {
   font-family: 'Press Start 2P', 'Consolas', monospace;
@@ -1103,6 +1105,39 @@ body.theme-dark kbd {
 .arcade-badge {
   text-transform: none !important;
   letter-spacing: 1px !important;
+}
+
+html[lang="ar"] body,
+html[lang="ar"] {
+  font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Arial', sans-serif !important;
+  letter-spacing: 0 !important;
+  direction: rtl;
+}
+
+html[lang="ar"] .arcade-title,
+html[lang="ar"] .arcade-label,
+html[lang="ar"] .arcade-btn,
+html[lang="ar"] .arcade-action-btn,
+html[lang="ar"] .arcade-achievement-label,
+html[lang="ar"] .arcade-modal-title,
+html[lang="ar"] .arcade-settings-row,
+html[lang="ar"] .arcade-daily-challenge,
+html[lang="ar"] #weekly-challenge,
+html[lang="ar"] .arcade-trivia-question,
+html[lang="ar"] .arcade-trivia-option-btn,
+html[lang="ar"] .arcade-message,
+html[lang="ar"] .arcade-hint,
+html[lang="ar"] .arcade-motivation,
+html[lang="ar"] .arcade-score,
+html[lang="ar"] .arcade-highscore,
+html[lang="ar"] .arcade-streak,
+html[lang="ar"] .arcade-streak-time,
+html[lang="ar"] #streak-countdown,
+html[lang="ar"] .arcade-achievement-row,
+html[lang="ar"] .arcade-challenges-list,
+html[lang="ar"] .arcade-badge {
+  font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Arial', sans-serif !important;
+  letter-spacing: 0 !important;
 }
 
 .shake {
