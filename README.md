@@ -7,6 +7,10 @@
 
 ---
 
+**PI-Game-Extension is a fun and challenging browser extension where you test how many digits of PI you can remember, compete for high scores, and unlock achievements in a retro arcade style.**
+
+---
+
 <!-- Donation Buttons -->
 <div align="center" style="margin-bottom: 18px;">
   <a href="https://www.paypal.com/paypalme/IrisSmile" target="_blank" style="display:inline-block;margin:4px;">
