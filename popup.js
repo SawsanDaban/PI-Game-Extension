@@ -739,48 +739,29 @@ window.addEventListener('beforeunload', () => {
   if (modeCleanup) modeCleanup();
 });
 
-// --- Leaderboard logic (local/mock) ---
+// --- Leaderboard logic (API-based, streak mode only for upload) ---
 const leaderboardBtn = document.getElementById('leaderboard-btn');
 const leaderboardModal = document.getElementById('leaderboard-modal');
 const closeLeaderboard = document.getElementById('close-leaderboard');
 const leaderboardList = document.getElementById('leaderboard-list');
 
-function getLeaderboard() {
-  // For demo: store top 5 scores in localStorage
-  let lb = JSON.parse(localStorage.getItem('pi_leaderboard') || '[]');
-  if (!Array.isArray(lb)) lb = [];
-  return lb;
-}
-function saveLeaderboard(lb) {
-  localStorage.setItem('pi_leaderboard', JSON.stringify(lb));
-}
-function maybeAddToLeaderboard(score) {
-  if (!window.PI_SETTINGS || !window.PI_SETTINGS.leaderboard) return;
-  let lb = getLeaderboard();
-  lb.push({ name: 'You', score, date: new Date().toISOString() });
-  lb = lb.sort((a, b) => b.score - a.score).slice(0, 5);
-  saveLeaderboard(lb);
-}
-function renderLeaderboard() {
-  const lb = getLeaderboard();
-  leaderboardList.innerHTML = '';
-  if (!lb.length) {
-    leaderboardList.innerHTML = '<div style="padding:12px;">No leaderboard entries yet.</div>';
-    return;
-  }
-  lb.forEach((entry, idx) => {
-    const div = document.createElement('div');
-    div.className = 'arcade-achievement-row';
-    div.innerHTML = `<span class="arcade-badge">${idx + 1}</span>
-      <span class="arcade-achievement-label"><strong>${entry.name}</strong> — <span style="color:#3a6e8d">${entry.score}</span> digits</span>`;
-    leaderboardList.appendChild(div);
-  });
+// Patch game over to maybe add to leaderboard (only for streak mode)
+function patchGameOverForLeaderboard(origOnEnd) {
+  return function(finalScore, ...args) {
+    const mode = modeSelectElem.value;
+    // Ensure settings are loaded before checking
+    if (typeof window.loadSettings === "function") window.loadSettings();
+    if (mode === "streak") {
+      window.submitStreakScoreToLeaderboard(finalScore);
+    }
+    origOnEnd(finalScore, ...args);
+  };
 }
 
 // Show leaderboard modal
 if (leaderboardBtn && leaderboardModal) {
   leaderboardBtn.addEventListener('click', () => {
-    renderLeaderboard();
+    window.renderLeaderboard(leaderboardList);
     leaderboardModal.style.display = "flex";
   });
 }
@@ -791,16 +772,6 @@ if (closeLeaderboard && leaderboardModal) {
   leaderboardModal.addEventListener('click', function(e) {
     if (e.target === leaderboardModal) leaderboardModal.style.display = "none";
   });
-}
-
-// --- Patch game over to maybe add to leaderboard ---
-function patchGameOverForLeaderboard(origOnEnd) {
-  return function(finalScore, ...args) {
-    if (window.PI_SETTINGS && window.PI_SETTINGS.leaderboard) {
-      maybeAddToLeaderboard(finalScore);
-    }
-    origOnEnd(finalScore, ...args);
-  };
 }
 
 // --- Initialize ---
