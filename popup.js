@@ -62,37 +62,25 @@ const challengesList = document.getElementById('challenges-list');
 const copyScoreBtn = document.getElementById('copy-score-btn');
 
 // --- Challenge UI ---
-const arcadePanel = document.querySelector('.arcade-panel');
-let dailyChallengeElem = document.getElementById('daily-challenge');
-if (!dailyChallengeElem) {
-  dailyChallengeElem = document.createElement('div');
-  dailyChallengeElem.id = 'daily-challenge';
-  dailyChallengeElem.className = 'arcade-daily-challenge';
-  arcadePanel.insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
-}
-let weeklyChallengeElem = document.getElementById('weekly-challenge');
-if (!weeklyChallengeElem) {
-  weeklyChallengeElem = document.createElement('div');
-  weeklyChallengeElem.id = 'weekly-challenge';
-  weeklyChallengeElem.className = 'arcade-daily-challenge';
-  arcadePanel.insertBefore(weeklyChallengeElem, document.getElementById('pi-sequence'));
-}
+// Use the new class for weekly challenge
+const dailyChallengeElem = document.getElementById('daily-challenge');
+const weeklyChallengeElem = document.getElementById('weekly-challenge');
 
 // --- Challenge UI Update ---
 window.updateDailyChallengeUI = function() {
   if (!window.getOrCreateDailyChallenge) return;
   const daily = window.getOrCreateDailyChallenge();
   const done = window.isDailyChallengeCompleted && window.isDailyChallengeCompleted();
-  dailyChallengeElem.innerHTML = `<strong>Daily Challenge:</strong> Type <span style="color:#ffb347">${daily}</span> digits<br>
-    <span style="color:${done ? '#39ff14' : '#ff2fd6'}">${done ? 'Completed!' : 'Not completed'}</span>`;
+  dailyChallengeElem.innerHTML = `<span style="font-weight:bold;">📅 Daily:</span> <span style="color:#ffb347">${daily}</span> digits<br>
+    <span style="color:${done ? '#39ff14' : '#ff2fd6'};font-size:0.93em;">${done ? 'Completed!' : 'Not completed'}</span>`;
 };
 
 window.updateWeeklyChallengeUI = function() {
   if (!window.getOrCreateWeeklyChallenge) return;
   const weekly = window.getOrCreateWeeklyChallenge();
   const done = window.isWeeklyChallengeCompleted && window.isWeeklyChallengeCompleted();
-  weeklyChallengeElem.innerHTML = `<strong>Weekly Challenge:</strong> Type <span style="color:#2fd6ff">${weekly}</span> digits<br>
-    <span style="color:${done ? '#39ff14' : '#ff2fd6'}">${done ? 'Completed!' : 'Not completed'}</span>`;
+  weeklyChallengeElem.innerHTML = `<span style="font-weight:bold;">📆 Weekly:</span> <span style="color:#2fd6ff">${weekly}</span> digits<br>
+    <span style="color:${done ? '#39ff14' : '#ff2fd6'};font-size:0.93em;">${done ? 'Completed!' : 'Not completed'}</span>`;
 };
 
 // --- Mode Management ---
