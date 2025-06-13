@@ -716,6 +716,17 @@ body.theme-dark kbd {
   border-color: #ffb347;
 }
 
+#copy-score-btn {
+  width: auto;
+  min-width: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 0.98em;
+  padding: 7px 18px;
+}
+
 .arcade-title,
 .arcade-label,
 .arcade-btn,

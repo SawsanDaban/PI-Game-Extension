@@ -59,6 +59,7 @@ const challengesBtn = document.getElementById('challenges-btn');
 const challengesModal = document.getElementById('challenges-modal');
 const closeChallenges = document.getElementById('close-challenges');
 const challengesList = document.getElementById('challenges-list');
+const copyScoreBtn = document.getElementById('copy-score-btn');
 
 // --- Challenge UI ---
 const arcadePanel = document.querySelector('.arcade-panel');
@@ -527,17 +528,50 @@ function hideAchievementsModal() {
 function getShareMessage() {
   const unlocked = window.getUnlockedAchievements(highestScore);
   const badges = unlocked.map(a => a.badge).join(' ');
-  return `I scored ${highestScore} digits in the PI Game! ${badges ? 'Achievements: ' + badges : ''} Try it: https://github.com/SawsanDaban/PI-Game-Extension`;
+  return `🎮 PI Game: I scored ${highestScore} digits!${badges ? ' 🏅 ' + badges : ''}\nTry it: https://github.com/SawsanDaban/PI-Game-Extension`;
 }
-shareBtn.addEventListener('click', () => {
+shareBtn.addEventListener('click', async () => {
   const msg = getShareMessage();
+  // Try Web Share API first
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "PI Game Score",
+        text: msg,
+        url: "https://github.com/SawsanDaban/PI-Game-Extension"
+      });
+      shareBtn.textContent = 'Shared!';
+      setTimeout(() => {
+        shareBtn.textContent = 'Share Score';
+      }, 1500);
+      // Mark achievement for sharing
+      localStorage.setItem('pi_shared_score', '1');
+      return;
+    } catch (e) {
+      // fallback to clipboard
+    }
+  }
+  // Fallback: copy to clipboard
   navigator.clipboard.writeText(msg).then(() => {
     shareBtn.textContent = 'Copied!';
     setTimeout(() => {
       shareBtn.textContent = 'Share Score';
     }, 1500);
+    localStorage.setItem('pi_shared_score', '1');
   });
 });
+
+if (copyScoreBtn) {
+  copyScoreBtn.onclick = function() {
+    const msg = getShareMessage();
+    navigator.clipboard.writeText(msg).then(() => {
+      copyScoreBtn.textContent = "Copied!";
+      setTimeout(() => {
+        copyScoreBtn.textContent = "Copy Score Text";
+      }, 1200);
+    });
+  };
+}
 
 // Trivia modal logic
 triviaBtn.addEventListener('click', showTriviaModal);
