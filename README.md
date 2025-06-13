@@ -14,6 +14,9 @@ PI-Game-Extension/
 │
 ├── assets/
 │   ├── pi-logo.png
+│   ├── pi16.png
+│   ├── pi48.png
+│   ├── pi128.png
 │   ├── sound/
 │   │   ├── correct.mp3
 │   │   ├── wrong.mp3
@@ -43,9 +46,11 @@ PI-Game-Extension/
 └── LICENSE
 ```
 
-- **assets/**: Images, icons, and sound files.
+- **assets/**: Images, icons, and sound files.  
+  **New:** Extension icons (`pi16.png`, `pi48.png`, `pi128.png`) are now included and referenced in the manifest.
 - **popup.html / popup.css / popup.js**: Main extension popup UI and logic.
-- **manifest.json**: Chrome/Edge extension manifest.
+- **manifest.json**: Chrome/Edge extension manifest.  
+  **New:** Now includes the `icons` field for extension branding.
 - **js/**: All JavaScript modules for game logic, modes, features, and utilities.
 - **README.md**: This file.
 - **LICENSE**: Open source license.
@@ -68,6 +73,8 @@ PI-Game-Extension/
 - 📤 **Share Score**: Copy your score and achievements to share with friends
 - ⚙️ **Settings**: Toggle sound, animations, and switch between neon and dark themes
 - 📴 **Offline Ready**: All features work without internet
+- 🛡️ **No Pasting Allowed**: For fair play, pasting is disabled in the digit input.
+- 🖼️ **Extension Icon**: Custom extension icons are now included and shown in the browser.
 
 ---
 
