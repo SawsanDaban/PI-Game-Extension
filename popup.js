@@ -539,28 +539,14 @@ if (themeSelectElem) {
 }
 
 // --- Localization logic ---
-// Simple translation dictionary
-const TRANSLATIONS = {
-  en: {
-    settingsTitle: "Settings",
-    languageLabel: "Language:",
-    // Add more keys as needed
-  },
-  ar: {
-    settingsTitle: "الإعدادات",
-    languageLabel: "اللغة:",
-    // Add more keys as needed
-  }
-  // Only English and Arabic
-};
-
+// Use window.PI_TRANSLATIONS from js/i18n.js
 function setLanguage(lang) {
   localStorage.setItem('pi_language', lang);
   applyTranslations(lang);
 }
 
 function applyTranslations(lang) {
-  const dict = TRANSLATIONS[lang] || TRANSLATIONS['en'];
+  const dict = (window.PI_TRANSLATIONS && window.PI_TRANSLATIONS[lang]) || (window.PI_TRANSLATIONS && window.PI_TRANSLATIONS['en']) || {};
   document.querySelectorAll('[data-i18n]').forEach(elem => {
     const key = elem.getAttribute('data-i18n');
     if (dict[key]) elem.textContent = dict[key];
