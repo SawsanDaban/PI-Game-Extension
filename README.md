@@ -127,8 +127,17 @@ Your scores (for streak mode) and the leaderboard are sent to and loaded from th
 
 ## 📸 Screenshots
 
-<!-- You can add screenshots here if you want -->
-<!-- ![screenshot](assets/screenshot.png) -->
+<!--
+Add your screenshots below. Example:
+![Popup UI](assets/screenshots/popup-ui.png)
+![Leaderboard](assets/screenshots/leaderboard.png)
+![Settings Modal](assets/screenshots/settings-modal.png)
+-->
+
+<!-- Screenshot placeholders -->
+![Popup UI Placeholder](assets/screenshots/popup-ui-placeholder.png)
+![Leaderboard Placeholder](assets/screenshots/leaderboard-placeholder.png)
+![Settings Modal Placeholder](assets/screenshots/settings-modal-placeholder.png)
 
 ---
 

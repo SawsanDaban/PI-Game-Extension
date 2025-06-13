@@ -7,8 +7,8 @@
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "assets/pi16.png",
-    "48": "assets/pi48.png",
-    "128": "assets/pi128.png"
+    "16": "assets/icons/pi16.png",
+    "48": "assets/icons/pi48.png",
+    "128": "assets/icons/pi128.png"
   }
 }
