@@ -61,15 +61,38 @@ const closeChallenges = document.getElementById('close-challenges');
 const challengesList = document.getElementById('challenges-list');
 
 // --- Challenge UI ---
-const dailyChallengeElem = document.createElement('div');
-dailyChallengeElem.id = 'daily-challenge';
-dailyChallengeElem.className = 'arcade-daily-challenge';
-document.querySelector('.arcade-panel').insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
+const arcadePanel = document.querySelector('.arcade-panel');
+let dailyChallengeElem = document.getElementById('daily-challenge');
+if (!dailyChallengeElem) {
+  dailyChallengeElem = document.createElement('div');
+  dailyChallengeElem.id = 'daily-challenge';
+  dailyChallengeElem.className = 'arcade-daily-challenge';
+  arcadePanel.insertBefore(dailyChallengeElem, document.getElementById('pi-sequence'));
+}
+let weeklyChallengeElem = document.getElementById('weekly-challenge');
+if (!weeklyChallengeElem) {
+  weeklyChallengeElem = document.createElement('div');
+  weeklyChallengeElem.id = 'weekly-challenge';
+  weeklyChallengeElem.className = 'arcade-daily-challenge';
+  arcadePanel.insertBefore(weeklyChallengeElem, document.getElementById('pi-sequence'));
+}
 
-const weeklyChallengeElem = document.createElement('div');
-weeklyChallengeElem.id = 'weekly-challenge';
-weeklyChallengeElem.className = 'arcade-daily-challenge';
-document.querySelector('.arcade-panel').insertBefore(weeklyChallengeElem, document.getElementById('pi-sequence'));
+// --- Challenge UI Update ---
+window.updateDailyChallengeUI = function() {
+  if (!window.getOrCreateDailyChallenge) return;
+  const daily = window.getOrCreateDailyChallenge();
+  const done = window.isDailyChallengeCompleted && window.isDailyChallengeCompleted();
+  dailyChallengeElem.innerHTML = `<strong>Daily Challenge:</strong> Type <span style="color:#ffb347">${daily}</span> digits<br>
+    <span style="color:${done ? '#39ff14' : '#ff2fd6'}">${done ? 'Completed!' : 'Not completed'}</span>`;
+};
+
+window.updateWeeklyChallengeUI = function() {
+  if (!window.getOrCreateWeeklyChallenge) return;
+  const weekly = window.getOrCreateWeeklyChallenge();
+  const done = window.isWeeklyChallengeCompleted && window.isWeeklyChallengeCompleted();
+  weeklyChallengeElem.innerHTML = `<strong>Weekly Challenge:</strong> Type <span style="color:#2fd6ff">${weekly}</span> digits<br>
+    <span style="color:${done ? '#39ff14' : '#ff2fd6'}">${done ? 'Completed!' : 'Not completed'}</span>`;
+};
 
 // --- Mode Management ---
 let modeCleanup = null;
@@ -370,12 +393,37 @@ function resetGame() {
   }
 }
 
+// --- Challenges List UI ---
+window.renderChallengesList = function() {
+  // Always use the correct element reference
+  const listElem = document.getElementById('challenges-list');
+  if (!listElem) return;
+  listElem.innerHTML = "";
+  const daily = window.getOrCreateDailyChallenge ? window.getOrCreateDailyChallenge() : null;
+  const weekly = window.getOrCreateWeeklyChallenge ? window.getOrCreateWeeklyChallenge() : null;
+  const dailyDone = window.isDailyChallengeCompleted ? window.isDailyChallengeCompleted() : false;
+  const weeklyDone = window.isWeeklyChallengeCompleted ? window.isWeeklyChallengeCompleted() : false;
+
+  if (daily !== null) {
+    const dailyDiv = document.createElement('div');
+    dailyDiv.innerHTML = `<strong>Daily Challenge:</strong> Type <span style="color:#ffb347">${daily}</span> digits<br>
+      <span style="color:${dailyDone ? '#39ff14' : '#ff2fd6'}">${dailyDone ? 'Completed!' : 'Not completed'}</span>`;
+    listElem.appendChild(dailyDiv);
+  }
+  if (weekly !== null) {
+    const weeklyDiv = document.createElement('div');
+    weeklyDiv.innerHTML = `<strong>Weekly Challenge:</strong> Type <span style="color:#2fd6ff">${weekly}</span> digits<br>
+      <span style="color:${weeklyDone ? '#39ff14' : '#ff2fd6'}">${weeklyDone ? 'Completed!' : 'Not completed'}</span>`;
+    listElem.appendChild(weeklyDiv);
+  }
+};
+
 // --- Event Listeners ---
 modeSelectElem.addEventListener('change', resetGame);
 restartBtn.addEventListener('click', resetGame);
 
 challengesBtn.addEventListener('click', () => {
-  renderChallengesList();
+  if (window.renderChallengesList) window.renderChallengesList();
   challengesModal.style.display = "flex";
 });
 closeChallenges.addEventListener('click', () => {
@@ -553,3 +601,5 @@ window.addEventListener('beforeunload', () => {
 resetGame();
 if (window.initSettingsUI) window.initSettingsUI();
 if (window.loadSettings) window.loadSettings();
+if (window.updateDailyChallengeUI) window.updateDailyChallengeUI();
+if (window.updateWeeklyChallengeUI) window.updateWeeklyChallengeUI();
