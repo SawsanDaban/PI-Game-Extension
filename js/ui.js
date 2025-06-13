@@ -45,6 +45,49 @@ window.animateCorrectInput = function(piSequenceElem, emojiFeedbackElem) {
   }, 150);
 };
 
+// Add shake animation to an element (e.g., input box) for wrong input
+function shakeElement(elem) {
+    if (!elem) return;
+    elem.classList.remove('shake');
+    void elem.offsetWidth; // trigger reflow
+    elem.classList.add('shake');
+    setTimeout(() => elem.classList.remove('shake'), 500);
+}
+
+// Add flash animation to an element for correct input
+function flashElement(elem) {
+    if (!elem) return;
+    elem.classList.remove('flash');
+    void elem.offsetWidth;
+    elem.classList.add('flash');
+    setTimeout(() => elem.classList.remove('flash'), 300);
+}
+
+// Enhanced confetti/emoji feedback for game over or win
+function showConfettiOrEmoji(type = 'confetti') {
+    // Simple emoji burst
+    const container = document.createElement('div');
+    container.className = 'emoji-burst';
+    container.style.position = 'absolute';
+    container.style.left = '50%';
+    container.style.top = '30%';
+    container.style.transform = 'translate(-50%, -50%)';
+    container.style.pointerEvents = 'none';
+    container.style.fontSize = '2.5rem';
+    container.style.zIndex = 9999;
+    let emojis = type === 'win' ? ['🎉','🏆','🥳'] : ['😅','💥','😢'];
+    container.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    document.body.appendChild(container);
+    setTimeout(() => container.remove(), 1200);
+}
+
+// Export for use in game modes
+window.PIUI = {
+    shakeElement,
+    flashElement,
+    showConfettiOrEmoji
+};
+
 // Confetti animation
 window.launchConfetti = function(confettiCanvas) {
   confettiCanvas.width = 250;

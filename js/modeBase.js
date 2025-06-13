@@ -23,14 +23,17 @@ window.PIModeBase = {
   }
 };
 
-function onCorrectInput() {
+function onCorrectInput(inputElem) {
     window.soundManager.play('correct');
+    if (window.PIUI && inputElem) window.PIUI.flashElement(inputElem);
 }
 
-function onWrongInput() {
+function onWrongInput(inputElem) {
     window.soundManager.play('wrong');
+    if (window.PIUI && inputElem) window.PIUI.shakeElement(inputElem);
 }
 
-function onGameOver() {
+function onGameOver(win = false) {
     window.soundManager.play('gameover');
+    if (window.PIUI) window.PIUI.showConfettiOrEmoji(win ? 'win' : 'confetti');
 }
