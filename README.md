@@ -7,8 +7,48 @@
 
 ---
 
-The **PI Game** challenges you to recall and enter as many digits of the mathematical constant PI (3.14...) as possible.  
-Enjoy a neon arcade UI, unlock achievements, and learn fun PI facts as you play!
+## 📁 Project Structure
+
+```
+PI-Game-Extension/
+│
+├── assets/
+│   ├── pi-logo.png
+│   ├── sound/
+│   │   ├── correct.mp3
+│   │   ├── wrong.mp3
+│   │   └── gameover.mp3
+│   └── (other images, icons, screenshots)
+│
+├── popup.html
+├── popup.css
+├── popup.js
+├── manifest.json
+│
+├── js/
+│   ├── modeBase.js
+│   ├── modeNormal.js
+│   ├── modeTimed.js
+│   ├── modeStreak.js
+│   ├── modeSpeedrun.js
+│   ├── achievements.js
+│   ├── dailyChallenge.js
+│   ├── trivia.js
+│   ├── facts.js
+│   ├── settings.js
+│   ├── ui.js
+│   └── sound.js
+│
+├── README.md
+└── LICENSE
+```
+
+- **assets/**: Images, icons, and sound files.
+- **popup.html / popup.css / popup.js**: Main extension popup UI and logic.
+- **manifest.json**: Chrome/Edge extension manifest.
+- **js/**: All JavaScript modules for game logic, modes, features, and utilities.
+- **README.md**: This file.
+- **LICENSE**: Open source license.
 
 ---
 
