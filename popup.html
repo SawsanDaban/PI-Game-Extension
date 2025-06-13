@@ -6,47 +6,54 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="arcade-header">
-    <span class="arcade-logo">π</span>
-    <span class="arcade-title">PI GAME</span>
-    <span id="emoji-feedback" aria-label="emoji"></span>
-  </div>
-  <canvas id="confetti-canvas"></canvas>
-  <div class="arcade-panel">
-    <div class="arcade-row">
-      <label for="mode-select" class="arcade-label">Mode:</label>
-      <select id="mode-select" class="arcade-select">
-        <option value="normal">Normal</option>
-        <option value="timed">Timed</option>
-        <option value="streak">Streak</option>
-        <option value="speedrun">Speedrun</option>
-      </select>
-    </div>
-    <!-- Challenges nicely styled and aligned left above progress bar -->
-    <div class="arcade-challenges-header">
-      <div id="daily-challenge" class="arcade-daily-challenge"></div>
-      <div id="weekly-challenge" class="arcade-weekly-challenge"></div>
-    </div>
-    <div id="timer" class="arcade-timer" style="display:none;">⏱ <span id="timer-value">0</span>s</div>
-    <div id="pi-sequence" class="arcade-sequence">3.</div>
-    <progress id="pi-progress" value="0" max="100" class="arcade-progress"></progress>
-    <input id="pi-input" type="text" autocomplete="off" maxlength="100" placeholder="Type next digits..." class="arcade-input" autofocus />
-    <div id="score" class="arcade-score">Score: 0</div>
-    <div id="highest-score" class="arcade-highscore"></div>
-    <div id="message" class="arcade-message"></div>
-    <div id="hint" class="arcade-hint"></div>
-    <div id="motivation" class="arcade-motivation"></div>
-    <button id="restart-btn" class="arcade-btn" style="display:none;">Restart</button>
-    <button id="achievements-btn" class="arcade-btn" type="button" style="margin-top:10px;">Achievements</button>
-    <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
-    <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;">Settings</button>
-    <button id="challenges-btn" class="arcade-btn" type="button" style="margin-top:10px;">View Challenges</button>
-    <button id="leaderboard-btn" class="arcade-btn" type="button" style="margin-top:10px;">Leaderboard</button>
-    <div id="settings-modal" class="arcade-modal" style="display:none;">
+  <header class="arcade-header" role="banner" aria-label="PI Game Header">
+    <span class="arcade-logo" aria-hidden="true">π</span>
+    <span class="arcade-title" id="main-title" tabindex="0">PI Game Extension</span>
+    <span id="emoji-feedback" aria-live="polite" aria-atomic="true"></span>
+  </header>
+
+  <main id="main-content" role="main">
+    <canvas id="confetti-canvas"></canvas>
+    <section class="arcade-panel" aria-label="Game Panel">
+      <div class="arcade-row">
+        <label for="mode-select" class="arcade-label">Mode:</label>
+        <select id="mode-select" class="arcade-select" tabindex="0">
+          <option value="normal">Normal</option>
+          <option value="timed">Timed</option>
+          <option value="streak">Streak</option>
+          <option value="speedrun">Speedrun</option>
+        </select>
+      </div>
+      <div class="arcade-challenges-header">
+        <div id="daily-challenge" class="arcade-daily-challenge"></div>
+        <div id="weekly-challenge" class="arcade-weekly-challenge"></div>
+      </div>
+      <div id="timer" class="arcade-timer" style="display:none;">⏱ <span id="timer-value">0</span>s</div>
+      <div class="arcade-row">
+        <label for="pi-input" class="arcade-label">Enter PI Digits:</label>
+        <input id="pi-input" class="arcade-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
+          aria-label="PI Digits Input" aria-describedby="pi-sequence" tabindex="0" maxlength="100" placeholder="Type next digits..." autofocus />
+      </div>
+      <div id="pi-sequence" class="arcade-sequence" aria-live="polite">3.</div>
+      <progress id="pi-progress" class="arcade-progress" value="0" max="100" aria-label="Progress"></progress>
+      <div id="score" class="arcade-score" aria-live="polite">Score: 0</div>
+      <div id="highest-score" class="arcade-highscore" aria-live="polite"></div>
+      <div id="message" class="arcade-message" aria-live="assertive"></div>
+      <div id="hint" class="arcade-hint"></div>
+      <div id="motivation" class="arcade-motivation" aria-live="polite"></div>
+      <button id="restart-btn" class="arcade-btn" style="display:none;" tabindex="0" aria-label="Restart Game">Restart</button>
+      <button id="achievements-btn" class="arcade-btn" type="button" style="margin-top:10px;" tabindex="0" aria-label="View Achievements">Achievements</button>
+      <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
+      <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;" tabindex="0" aria-label="Open Settings">Settings</button>
+      <button id="challenges-btn" class="arcade-btn" type="button" style="margin-top:10px;">View Challenges</button>
+      <button id="leaderboard-btn" class="arcade-btn" type="button" style="margin-top:10px;">Leaderboard</button>
+    </section>
+
+    <div id="settings-modal" class="arcade-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1" style="display:none;">
       <div class="arcade-modal-content">
-        <span id="close-settings" class="arcade-modal-close">&times;</span>
-        <h2 class="arcade-modal-title">Settings</h2>
-        <div class="arcade-settings-list">
+        <button id="close-settings" class="arcade-modal-close" aria-label="Close Settings">&times;</button>
+        <h2 id="settings-title" class="arcade-modal-title">Settings</h2>
+        <div class="arcade-settings-list" role="form" aria-label="Settings List">
           <label class="arcade-settings-row">
             <input type="checkbox" id="setting-sound" />
             <span>Enable Sound Effects</span>
@@ -81,6 +88,7 @@
         </div>
       </div>
     </div>
+
     <div id="challenges-modal" class="arcade-modal" style="display:none;">
       <div class="arcade-modal-content">
         <span id="close-challenges" class="arcade-modal-close">&times;</span>
@@ -88,6 +96,7 @@
         <div id="challenges-list" class="arcade-challenges-list"></div>
       </div>
     </div>
+
     <div id="leaderboard-modal" class="arcade-modal" style="display:none;">
       <div class="arcade-modal-content">
         <span id="close-leaderboard" class="arcade-modal-close">&times;</span>
@@ -95,24 +104,27 @@
         <div id="leaderboard-list" class="arcade-challenges-list"></div>
       </div>
     </div>
-  </div>
-  <div id="achievements-modal" class="arcade-modal" style="display:none;">
-    <div class="arcade-modal-content">
-      <span id="close-achievements" class="arcade-modal-close">&times;</span>
-      <h2 class="arcade-modal-title">Achievements</h2>
-      <div id="achievements-list" class="arcade-achievements-list"></div>
+
+    <div id="achievements-modal" class="arcade-modal" role="dialog" aria-modal="true" aria-labelledby="achievements-title" tabindex="-1" style="display:none;">
+      <div class="arcade-modal-content">
+        <button id="close-achievements" class="arcade-modal-close" aria-label="Close Achievements">&times;</button>
+        <h2 id="achievements-title" class="arcade-modal-title">Achievements</h2>
+        <div id="achievements-list" class="arcade-achievements-list" role="list" aria-label="Achievements List"></div>
+      </div>
     </div>
-  </div>
-  <div id="trivia-modal" class="arcade-modal" style="display:none;">
-    <div class="arcade-modal-content">
-      <span id="close-trivia" class="arcade-modal-close">&times;</span>
-      <h2 class="arcade-modal-title">PI Trivia</h2>
-      <div id="trivia-question" class="arcade-trivia-question"></div>
-      <div id="trivia-options" class="arcade-trivia-options"></div>
-      <div id="trivia-feedback" class="arcade-trivia-feedback"></div>
-      <button id="next-trivia-btn" class="arcade-btn" style="margin-top:12px;display:none;">Next Question</button>
+
+    <div id="trivia-modal" class="arcade-modal" style="display:none;">
+      <div class="arcade-modal-content">
+        <span id="close-trivia" class="arcade-modal-close">&times;</span>
+        <h2 class="arcade-modal-title">PI Trivia</h2>
+        <div id="trivia-question" class="arcade-trivia-question"></div>
+        <div id="trivia-options" class="arcade-trivia-options"></div>
+        <div id="trivia-feedback" class="arcade-trivia-feedback"></div>
+        <button id="next-trivia-btn" class="arcade-btn" style="margin-top:12px;display:none;">Next Question</button>
+      </div>
     </div>
-  </div>
+  </main>
+
   <div class="arcade-actions">
     <button id="share-btn" class="arcade-action-btn share-btn">Share Score</button>
     <button id="copy-score-btn" class="arcade-action-btn" style="margin-bottom:10px;">Copy Score Text</button>

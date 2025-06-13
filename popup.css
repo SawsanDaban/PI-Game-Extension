@@ -356,6 +356,7 @@ body.theme-dark .arcade-panel {
   margin-right: 10px;
   color: #fff;
   text-shadow: 0 0 4px #39ff14;
+  font-weight: bold; /* improve contrast */
 }
 
 .arcade-select {
@@ -522,6 +523,12 @@ body.theme-dark .arcade-select {
   letter-spacing: 2px;
   transition: background 0.2s, color 0.2s;
   margin-top: 4px;
+  outline: 2px solid transparent;
+}
+
+.arcade-btn:focus {
+  outline: 2px solid #ff2fd6;
+  outline-offset: 2px;
 }
 
 body.theme-dark .arcade-btn,
@@ -567,6 +574,12 @@ body.theme-dark .arcade-action-btn:hover {
   outline: none;
   cursor: pointer;
   display: inline-block;
+  outline: 2px solid transparent;
+}
+
+.arcade-action-btn:focus {
+  outline: 2px solid #ff2fd6;
+  outline-offset: 2px;
 }
 
 .share-btn {

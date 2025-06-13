@@ -80,14 +80,43 @@ window.initSettingsUI = function() {
       window.loadSettings();
       settingsModal.style.display = "flex";
       createSoundSettingsUI(); // Call to create sound settings UI
+      settingsModal.setAttribute('tabindex', '-1');
+      settingsModal.focus();
     });
   }
   if (closeSettings && settingsModal) {
     closeSettings.addEventListener('click', () => {
       settingsModal.style.display = "none";
+      settingsBtn && settingsBtn.focus();
     });
     settingsModal.addEventListener('click', function(e) {
-      if (e.target === settingsModal) settingsModal.style.display = "none";
+      if (e.target === settingsModal) {
+        settingsModal.style.display = "none";
+        settingsBtn && settingsBtn.focus();
+      }
+    });
+    // Trap focus inside modal
+    settingsModal.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        const focusable = settingsModal.querySelectorAll('button, [tabindex="0"], input, select, [tabindex]:not([tabindex="-1"])');
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+      if (e.key === 'Escape') {
+        settingsModal.style.display = "none";
+        settingsBtn && settingsBtn.focus();
+      }
     });
   }
 };
