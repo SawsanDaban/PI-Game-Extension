@@ -29,13 +29,14 @@
         <div id="weekly-challenge" class="arcade-weekly-challenge"></div>
       </div>
       <div id="timer" class="arcade-timer" style="display:none;">⏱ <span id="timer-value">0</span>s</div>
-      <div class="arcade-row">
-        <label for="pi-input" class="arcade-label">Enter PI Digits:</label>
-        <input id="pi-input" class="arcade-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
-          aria-label="PI Digits Input" aria-describedby="pi-sequence" tabindex="0" maxlength="100" placeholder="Type next digits..." autofocus />
-      </div>
       <div id="pi-sequence" class="arcade-sequence" aria-live="polite">3.</div>
       <progress id="pi-progress" class="arcade-progress" value="0" max="100" aria-label="Progress"></progress>
+      <div class="arcade-row">
+        <label for="pi-input" class="arcade-label">Enter PI Digits:</label>
+      </div>
+      <input id="pi-input" class="arcade-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
+        aria-label="PI Digits Input" aria-describedby="pi-sequence" tabindex="0" maxlength="100" placeholder="Type next digits..." autofocus />
+      <div id="hint-btn-row" class="arcade-hint-btn-row" style="display:none;"></div>
       <div id="score" class="arcade-score" aria-live="polite">Score: 0</div>
       <div id="highest-score" class="arcade-highscore" aria-live="polite"></div>
       <div id="message" class="arcade-message" aria-live="assertive"></div>
