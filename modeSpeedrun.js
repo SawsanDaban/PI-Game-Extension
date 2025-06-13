@@ -27,6 +27,7 @@ window.PIModeSpeedrun = function({
     window.PIModeBase.updateScore(scoreElem, score);
     window.PIModeBase.updateProgress(progressElem, currentIndex);
     timerValueElem.textContent = timeLeft;
+    if (window.showMotivationText) window.showMotivationText(score);
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 

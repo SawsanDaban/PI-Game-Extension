@@ -33,6 +33,7 @@ window.PIModeStreak = function({
       streakCountdownElem.textContent = "⏳ " + streakCountdown.toFixed(1) + "s left";
       streakCountdownElem.style.display = "";
     }
+    if (window.showMotivationText) window.showMotivationText(score);
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 

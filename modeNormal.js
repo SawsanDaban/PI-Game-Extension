@@ -23,6 +23,7 @@ window.PIModeNormal = function({
     window.PIModeBase.updateProgress(progressElem, currentIndex);
     if (_currentIndexRef) _currentIndexRef.value = currentIndex;
     window._currentIndex = currentIndex;
+    if (window.showMotivationText) window.showMotivationText(score);
     if (document.activeElement !== piInputElem) piInputElem.focus();
   }
 

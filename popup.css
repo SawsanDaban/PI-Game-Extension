@@ -195,6 +195,30 @@ body.theme-dark .arcade-select {
   animation: shake 0.2s 2;
 }
 
+.arcade-message,
+.arcade-hint,
+.arcade-motivation {
+  min-height: 0;
+  height: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  transition: height 0.2s, opacity 0.2s;
+  opacity: 0;
+  padding: 0;
+  /* Remove extra spacing when empty */
+}
+
+.arcade-message:not(:empty),
+.arcade-hint:not(:empty),
+.arcade-motivation:not(:empty) {
+  height: auto;
+  min-height: 18px;
+  margin-bottom: 8px;
+  opacity: 1;
+  padding: 0;
+  overflow: visible;
+}
+
 @keyframes shake {
   0% { transform: translateX(0);}
   25% { transform: translateX(-4px);}
@@ -272,7 +296,7 @@ body.theme-dark .arcade-action-btn:hover {
   border-radius: 10px;
   font-weight: bold;
   text-decoration: none;
-  letter-spacing: 1px;
+  letter-spacing: 1px !important;
   box-shadow: 0 0 10px #39ff14a0;
   transition: background 0.2s, color 0.2s;
   margin: 0 2px;
@@ -634,4 +658,30 @@ body.theme-dark .arcade-challenges-list {
 .arcade-powerup-btn:hover:not(:disabled) {
   background: linear-gradient(90deg, #ff2fd6 0%, #2fd6ff 100%);
   color: #fff;
+}
+
+.arcade-title,
+.arcade-label,
+.arcade-btn,
+.arcade-action-btn,
+.arcade-achievement-label,
+.arcade-modal-title,
+.arcade-settings-row,
+.arcade-daily-challenge,
+#weekly-challenge,
+.arcade-trivia-question,
+.arcade-trivia-option-btn,
+.arcade-message,
+.arcade-hint,
+.arcade-motivation,
+.arcade-score,
+.arcade-highscore,
+.arcade-streak,
+.arcade-streak-time,
+#streak-countdown,
+.arcade-achievement-row,
+.arcade-challenges-list,
+.arcade-badge {
+  text-transform: none !important;
+  letter-spacing: 1px !important;
 }

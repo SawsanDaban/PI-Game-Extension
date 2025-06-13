@@ -110,19 +110,19 @@ let powerupActive = false;
 function showHint(currentIndex) {
   const PI_DIGITS = PIModeBase.getPiDigits();
   if (hintUses < maxHints && currentIndex < PI_DIGITS.length) {
-    hintElem.textContent = "Hint: Next digit is " + PI_DIGITS[currentIndex];
+    showArcadeMessage(hintElem, "Hint: Next digit is " + PI_DIGITS[currentIndex]);
     hintElem.style.color = "#ffb347";
     hintUses++;
     updateHintPowerupButtons();
     setTimeout(() => {
-      hintElem.textContent = "";
+      showArcadeMessage(hintElem, "");
       hintElem.style.color = "";
     }, 2000);
   } else if (hintUses >= maxHints) {
-    hintElem.textContent = "No hints left!";
+    showArcadeMessage(hintElem, "No hints left!");
     hintElem.style.color = "#ff2fd6";
     setTimeout(() => {
-      hintElem.textContent = "";
+      showArcadeMessage(hintElem, "");
       hintElem.style.color = "";
     }, 1500);
   }
@@ -138,10 +138,10 @@ function activatePowerup(currentIndex) {
   for (let i = 0; i < 3 && currentIndex + i < PI_DIGITS.length; i++) {
     reveal += PI_DIGITS[currentIndex + i];
   }
-  hintElem.textContent = "Power-up: Next 3 digits: " + reveal;
+  showArcadeMessage(hintElem, "Power-up: Next 3 digits: " + reveal);
   hintElem.style.color = "#2fd6ff";
   setTimeout(() => {
-    hintElem.textContent = "";
+    showArcadeMessage(hintElem, "");
     hintElem.style.color = "";
     powerupActive = false;
     updateHintPowerupButtons();
@@ -231,6 +231,63 @@ function updateHighestScoreDisplay(mode) {
   }
 }
 
+// Utility to show/hide message/hint/motivation with proper spacing
+function showArcadeMessage(elem, text) {
+  elem.textContent = text || "";
+  if (text) {
+    elem.style.height = "";
+    elem.style.opacity = "1";
+    elem.style.marginBottom = "8px";
+  } else {
+    elem.style.height = "0";
+    elem.style.opacity = "0";
+    elem.style.marginBottom = "0";
+  }
+}
+
+// --- Motivation helper ---
+function showMotivationText(score) {
+  if (window.showMotivation) {
+    window.showMotivation(score, motivationElem);
+    // Also ensure spacing is correct
+    if (motivationElem.textContent) {
+      motivationElem.style.height = "";
+      motivationElem.style.opacity = "1";
+      motivationElem.style.marginBottom = "8px";
+    } else if (window.showRandomPIFact) {
+      // If no motivation, show a PI fact
+      window.showRandomPIFact(motivationElem);
+      if (motivationElem.textContent) {
+        motivationElem.style.height = "";
+        motivationElem.style.opacity = "1";
+        motivationElem.style.marginBottom = "8px";
+      } else {
+        motivationElem.style.height = "0";
+        motivationElem.style.opacity = "0";
+        motivationElem.style.marginBottom = "0";
+      }
+    } else {
+      motivationElem.style.height = "0";
+      motivationElem.style.opacity = "0";
+      motivationElem.style.marginBottom = "0";
+    }
+  } else if (window.showRandomPIFact) {
+    window.showRandomPIFact(motivationElem);
+    if (motivationElem.textContent) {
+      motivationElem.style.height = "";
+      motivationElem.style.opacity = "1";
+      motivationElem.style.marginBottom = "8px";
+    } else {
+      motivationElem.style.height = "0";
+      motivationElem.style.opacity = "0";
+      motivationElem.style.marginBottom = "0";
+    }
+  } else {
+    showArcadeMessage(motivationElem, "");
+  }
+}
+window.showMotivationText = showMotivationText;
+
 function resetGame() {
   // Reset all mode-related state and UI
   hintUses = 0;
@@ -248,12 +305,11 @@ function resetGame() {
   piInputElem.value = "";
   piInputElem.disabled = false;
   scoreElem.textContent = "Score: 0";
-  messageElem.textContent = "";
+  showArcadeMessage(messageElem, "");
   restartBtn.style.display = "none";
   progressElem.value = 0;
-  hintElem.textContent = "";
-  window.showEmoji && window.showEmoji("", emojiFeedbackElem);
-  motivationElem.textContent = "";
+  showArcadeMessage(hintElem, "");
+  showArcadeMessage(motivationElem, "");
   motivationElem.style.opacity = 0;
   confettiCanvas.style.display = 'none';
 
@@ -300,13 +356,15 @@ function resetGame() {
       scoreElem,
       progressElem,
       onEnd: (finalScore) => {
-        messageElem.textContent = "Game Over! Score: " + finalScore;
+        showArcadeMessage(messageElem, "Game Over! Score: " + finalScore);
         if (finalScore > highestScore) {
           highestScore = finalScore;
           localStorage.setItem('pi_highest_score', highestScore);
         }
         updateHighestScoreDisplay("normal");
         restartBtn.style.display = "inline-block";
+        // Show a PI fact if no motivation message
+        if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       },
       _currentIndexRef: currentIndexRef
     });
@@ -324,13 +382,14 @@ function resetGame() {
       timerElem,
       timerValueElem,
       onEnd: (finalScore, finalTime) => {
-        messageElem.textContent = "Game Over! Score: " + finalScore + " | Time: " + (finalTime || 0) + "s";
+        showArcadeMessage(messageElem, "Game Over! Score: " + finalScore + " | Time: " + (finalTime || 0) + "s");
         if (finalScore > highestScore) {
           highestScore = finalScore;
           localStorage.setItem('pi_highest_score', highestScore);
         }
         updateHighestScoreDisplay("timed");
         restartBtn.style.display = "inline-block";
+        if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       },
       _currentIndexRef: currentIndexRef
     });
@@ -347,19 +406,19 @@ function resetGame() {
       progressElem,
       streakCountdownElem: document.getElementById('streak-countdown'),
       onEnd: (finalScore) => {
-        messageElem.textContent = "Streak Over! Score: " + finalScore;
+        showArcadeMessage(messageElem, "Streak Over! Score: " + finalScore);
         if (finalScore > highestStreak) {
           highestStreak = finalScore;
           localStorage.setItem('pi_highest_streak', highestStreak);
         }
         updateHighestScoreDisplay("streak");
         restartBtn.style.display = "inline-block";
-        // Hide countdown after game ends
         const streakElem = document.getElementById('streak-countdown');
         if (streakElem) {
           streakElem.textContent = "";
           streakElem.style.display = "none";
         }
+        if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       },
       _currentIndexRef: currentIndexRef
     });
@@ -377,13 +436,14 @@ function resetGame() {
       timerElem,
       timerValueElem,
       onEnd: (finalScore) => {
-        messageElem.textContent = "Speedrun Over! Score: " + finalScore;
+        showArcadeMessage(messageElem, "Speedrun Over! Score: " + finalScore);
         if (finalScore > speedrunHighScore) {
           speedrunHighScore = finalScore;
           localStorage.setItem('pi_speedrun_highscore', speedrunHighScore);
         }
         updateHighestScoreDisplay("speedrun");
         restartBtn.style.display = "inline-block";
+        if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       },
       _currentIndexRef: currentIndexRef
     });
