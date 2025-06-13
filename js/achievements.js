@@ -40,6 +40,22 @@ window.checkAchievements = function(stats) {
   return unlocked;
 };
 
+// Helper to check and unlock challenge achievements
+window.checkChallengeAchievements = function() {
+  const stats = getAllModeScores();
+  // Daily challenge
+  if (stats.dailyChallenge && !window.PI_ACHIEVEMENT_STATE['daily-challenge']) {
+    window.PI_ACHIEVEMENT_STATE['daily-challenge'] = true;
+    showAchievementNotification(window.PI_ACHIEVEMENTS.find(a => a.id === 'daily-challenge'));
+  }
+  // Weekly challenge
+  if (stats.weeklyChallenge && !window.PI_ACHIEVEMENT_STATE['weekly-challenge']) {
+    window.PI_ACHIEVEMENT_STATE['weekly-challenge'] = true;
+    showAchievementNotification(window.PI_ACHIEVEMENTS.find(a => a.id === 'weekly-challenge'));
+  }
+  localStorage.setItem('pi_achievement_state', JSON.stringify(window.PI_ACHIEVEMENT_STATE));
+};
+
 // Show achievement notification
 function showAchievementNotification(achievement) {
   const notif = document.createElement('div');
@@ -82,6 +98,9 @@ function getAllModeScores() {
 
 window.getUnlockedAchievements = function() {
   const scores = getAllModeScores();
+  // Always check and unlock achievements before returning
+  window.checkAchievements(scores);
+  window.checkChallengeAchievements();
   return window.PI_ACHIEVEMENTS.filter(a => a.check(scores));
 };
 

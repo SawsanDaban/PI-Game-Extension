@@ -348,6 +348,21 @@ function resetGame() {
   if (window.updateDailyChallengeUI) window.updateDailyChallengeUI();
   if (window.updateWeeklyChallengeUI) window.updateWeeklyChallengeUI();
 
+  function checkAndMarkChallenges(finalScore) {
+    // Daily Challenge
+    const dailyTarget = window.getOrCreateDailyChallenge ? window.getOrCreateDailyChallenge() : null;
+    if (dailyTarget && finalScore >= dailyTarget && !window.isDailyChallengeCompleted()) {
+      window.markDailyChallengeCompleted();
+      if (window.checkChallengeAchievements) window.checkChallengeAchievements();
+    }
+    // Weekly Challenge
+    const weeklyTarget = window.getOrCreateWeeklyChallenge ? window.getOrCreateWeeklyChallenge() : null;
+    if (weeklyTarget && finalScore >= weeklyTarget && !window.isWeeklyChallengeCompleted()) {
+      window.markWeeklyChallengeCompleted();
+      if (window.checkChallengeAchievements) window.checkChallengeAchievements();
+    }
+  }
+
   if (mode === "normal" && window.PIModeNormal) {
     let currentIndexRef = { value: 0 };
     modeCleanup = window.PIModeNormal({
@@ -363,6 +378,8 @@ function resetGame() {
         }
         updateHighestScoreDisplay("normal");
         restartBtn.style.display = "inline-block";
+        // Check daily/weekly challenge completion and achievements
+        checkAndMarkChallenges(finalScore);
         // Show a PI fact if no motivation message
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       }),
@@ -389,6 +406,7 @@ function resetGame() {
         }
         updateHighestScoreDisplay("timed");
         restartBtn.style.display = "inline-block";
+        checkAndMarkChallenges(finalScore);
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       }),
       _currentIndexRef: currentIndexRef
@@ -418,6 +436,7 @@ function resetGame() {
           streakElem.textContent = "";
           streakElem.style.display = "none";
         }
+        checkAndMarkChallenges(finalScore);
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       }),
       _currentIndexRef: currentIndexRef
@@ -443,6 +462,7 @@ function resetGame() {
         }
         updateHighestScoreDisplay("speedrun");
         restartBtn.style.display = "inline-block";
+        checkAndMarkChallenges(finalScore);
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
       }),
       _currentIndexRef: currentIndexRef
