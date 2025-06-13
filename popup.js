@@ -480,10 +480,11 @@ function applyTheme(theme) {
   document.body.classList.remove('theme-dark', 'theme-light');
   if (theme === 'dark') document.body.classList.add('theme-dark');
   else if (theme === 'light') document.body.classList.add('theme-light');
-  else document.body.classList.remove('theme-dark', 'theme-light');
   // Save theme
   localStorage.setItem('pi_theme', theme);
 }
+
+// --- FIX: Always use saved theme and keep select in sync ---
 if (themeSelectElem) {
   // Add light theme option if not present
   if (!Array.from(themeSelectElem.options).some(opt => opt.value === 'light')) {
@@ -492,13 +493,34 @@ if (themeSelectElem) {
     opt.textContent = 'Light';
     themeSelectElem.appendChild(opt);
   }
-  // Load saved theme
-  const savedTheme = localStorage.getItem('pi_theme') || 'neon';
+  // Only use saved theme if valid, fallback to 'neon' if not set or invalid
+  let savedTheme = localStorage.getItem('pi_theme');
+  const validThemes = Array.from(themeSelectElem.options).map(opt => opt.value);
+  if (!savedTheme || !validThemes.includes(savedTheme)) {
+    savedTheme = themeSelectElem.options[0].value;
+    localStorage.setItem('pi_theme', savedTheme);
+  }
+  // Always set select and apply theme on popup open
   themeSelectElem.value = savedTheme;
   applyTheme(savedTheme);
+
+  // Listen for changes and save/apply immediately
   themeSelectElem.addEventListener('change', () => {
-    applyTheme(themeSelectElem.value);
+    const selected = themeSelectElem.value;
+    applyTheme(selected);
+    localStorage.setItem('pi_theme', selected);
   });
+
+  // Always re-sync select value and theme when settings modal is opened
+  if (settingsBtn && settingsModal) {
+    settingsBtn.addEventListener('click', () => {
+      const saved = localStorage.getItem('pi_theme');
+      if (saved && validThemes.includes(saved)) {
+        themeSelectElem.value = saved;
+        applyTheme(saved);
+      }
+    });
+  }
 } else {
   // fallback: apply saved theme on load
   const savedTheme = localStorage.getItem('pi_theme');
