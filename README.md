@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/SawsanDaban/PI-Game-Extension/main/assets/pi-logo.png" alt="PI Game Logo" width="36" style="vertical-align:middle;"> PI-Game-Extension
+# <img src="assets/pi-logo.png" alt="PI Game Logo" width="36" style="vertical-align:middle;"> PI-Game-Extension
 
 > **A retro arcade browser extension to test your memory of PI!**  
 > <img src="https://img.shields.io/badge/Arcade%20UI-%F0%9F%8E%B8%20Neon%20Retro-blueviolet?style=flat-square">
