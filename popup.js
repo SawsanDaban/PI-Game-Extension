@@ -395,10 +395,13 @@ function resetGame() {
 
 // --- Challenges List UI ---
 window.renderChallengesList = function() {
-  // Always use the correct element reference
   const listElem = document.getElementById('challenges-list');
   if (!listElem) return;
   listElem.innerHTML = "";
+
+  // Use a flex column like achievements
+  listElem.className = 'arcade-challenges-list';
+
   const daily = window.getOrCreateDailyChallenge ? window.getOrCreateDailyChallenge() : null;
   const weekly = window.getOrCreateWeeklyChallenge ? window.getOrCreateWeeklyChallenge() : null;
   const dailyDone = window.isDailyChallengeCompleted ? window.isDailyChallengeCompleted() : false;
@@ -406,14 +409,18 @@ window.renderChallengesList = function() {
 
   if (daily !== null) {
     const dailyDiv = document.createElement('div');
-    dailyDiv.innerHTML = `<strong>Daily Challenge:</strong> Type <span style="color:#ffb347">${daily}</span> digits<br>
-      <span style="color:${dailyDone ? '#39ff14' : '#ff2fd6'}">${dailyDone ? 'Completed!' : 'Not completed'}</span>`;
+    dailyDiv.className = 'arcade-achievement-row' + (dailyDone ? '' : ' locked');
+    dailyDiv.innerHTML = `<span class="arcade-badge">📅</span>
+      <span class="arcade-achievement-label"><strong>Daily Challenge:</strong> Type <span style="color:#ffb347">${daily}</span> digits<br>
+      <span style="color:${dailyDone ? '#39ff14' : '#ff2fd6'}">${dailyDone ? 'Completed!' : 'Not completed'}</span></span>`;
     listElem.appendChild(dailyDiv);
   }
   if (weekly !== null) {
     const weeklyDiv = document.createElement('div');
-    weeklyDiv.innerHTML = `<strong>Weekly Challenge:</strong> Type <span style="color:#2fd6ff">${weekly}</span> digits<br>
-      <span style="color:${weeklyDone ? '#39ff14' : '#ff2fd6'}">${weeklyDone ? 'Completed!' : 'Not completed'}</span>`;
+    weeklyDiv.className = 'arcade-achievement-row' + (weeklyDone ? '' : ' locked');
+    weeklyDiv.innerHTML = `<span class="arcade-badge">📆</span>
+      <span class="arcade-achievement-label"><strong>Weekly Challenge:</strong> Type <span style="color:#2fd6ff">${weekly}</span> digits<br>
+      <span style="color:${weeklyDone ? '#39ff14' : '#ff2fd6'}">${weeklyDone ? 'Completed!' : 'Not completed'}</span></span>`;
     listElem.appendChild(weeklyDiv);
   }
 };
