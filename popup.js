@@ -724,12 +724,17 @@ function showAchievementsModal() {
   // Use window.getUnlockedAchievements to get unlocked achievements
   const unlocked = window.getUnlockedAchievements();
   achievementsList.innerHTML = "";
+  // Get current language
+  const lang = document.documentElement.lang || 'en';
   window.PI_ACHIEVEMENTS.forEach(a => {
     const unlockedBadge = unlocked.some(u => u.id === a.id);
+    // Use translated label/desc if available
+    const label = typeof a.label === 'object' ? (a.label[lang] || a.label.en) : a.label;
+    const desc = typeof a.desc === 'object' ? (a.desc[lang] || a.desc.en) : (a.desc || '');
     const row = document.createElement('div');
     row.className = 'arcade-achievement-row' + (unlockedBadge ? '' : ' locked');
     row.innerHTML = `<span class="arcade-badge">${a.badge}</span>
-      <span class="arcade-achievement-label">${a.label}</span>`;
+      <span class="arcade-achievement-label"><strong>${label}</strong>${desc ? `<br><small>${desc}</small>` : ''}</span>`;
     achievementsList.appendChild(row);
   });
   achievementsModal.style.display = "flex";

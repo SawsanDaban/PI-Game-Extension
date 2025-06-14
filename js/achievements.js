@@ -1,24 +1,139 @@
 // Unified achievements list (digit, mode, feature, advanced)
 window.PI_ACHIEVEMENTS = [
-  { id: 'digits-10', label: '10 Digits', desc: 'Reach 10 digits of PI', badge: '🔟', check: s => s.maxDigits >= 10 },
-  { id: 'digits-25', label: '25 Digits', desc: 'Reach 25 digits of PI', badge: '2️⃣5️⃣', check: s => s.maxDigits >= 25 },
-  { id: 'digits-50', label: '50 Digits', desc: 'Reach 50 digits of PI', badge: '5️⃣0️⃣', check: s => s.maxDigits >= 50 },
-  { id: 'digits-75', label: '75 Digits', desc: 'Reach 75 digits of PI', badge: '7️⃣5️⃣', check: s => s.maxDigits >= 75 },
-  { id: 'digits-100', label: '100 Digits', desc: 'Reach 100 digits of PI', badge: '💯', check: s => s.maxDigits >= 100 },
-  { id: 'timed-20', label: 'Timed Novice', desc: '20+ in Timed Mode', badge: '⏱️', check: s => s.timed >= 20 },
-  { id: 'timed-40', label: 'Timed Pro', desc: '40+ in Timed Mode', badge: '⏱️', check: s => s.timed >= 40 },
-  { id: 'streak-10', label: 'Streak Starter', desc: '10+ Streak', badge: '🔥', check: s => s.streak >= 10 },
-  { id: 'streak-25', label: 'Streak Master', desc: '25+ Streak', badge: '🔥', check: s => s.streak >= 25 },
-  { id: 'speedrun-20', label: 'Speedrunner', desc: '20+ in Speedrun', badge: '⚡', check: s => s.speedrun >= 20 },
-  { id: 'speedrun-35', label: 'Speedrun Pro', desc: '35+ in Speedrun', badge: '⚡', check: s => s.speedrun >= 35 },
-  { id: 'perfect-game', label: 'Perfect Game', desc: 'Finish a game with no mistakes', badge: '🌟', check: s => s.lastGamePerfect },
-  { id: 'used-hint', label: 'Used a Hint', desc: 'Used a Hint', badge: '💡', check: s => s.usedHint },
-  { id: 'used-powerup', label: 'Used a Power-up', desc: 'Used a Power-up', badge: '🔋', check: s => s.usedPowerup },
-  { id: 'daily-challenge', label: 'Completed Daily Challenge', desc: 'Completed Daily Challenge', badge: '🎯', check: s => s.dailyChallenge },
-  { id: 'weekly-challenge', label: 'Completed Weekly Challenge', desc: 'Completed Weekly Challenge', badge: '🏅', check: s => s.weeklyChallenge },
-  { id: 'trivia-1', label: 'Answered a Trivia Question', desc: 'Answered a Trivia Question', badge: '❓', check: s => s.answeredTrivia },
-  { id: 'trivia-5', label: 'Trivia Buff', desc: 'Answer 5 PI trivia questions correctly', badge: '❓', check: s => s.triviaCorrect >= 5 },
-  { id: 'share', label: 'Social Sharer', desc: 'Share your score at least once', badge: '📤', check: s => s.sharedScore }
+  // English and Arabic labels/descriptions for each achievement
+  {
+    id: 'digits-10',
+    label: { en: '10 Digits', ar: '١٠ أرقام' },
+    desc: { en: 'Reach 10 digits of PI', ar: 'احصل على ١٠ أرقام من باي' },
+    badge: '🔟',
+    check: s => s.maxDigits >= 10
+  },
+  {
+    id: 'digits-25',
+    label: { en: '25 Digits', ar: '٢٥ رقمًا' },
+    desc: { en: 'Reach 25 digits of PI', ar: 'احصل على ٢٥ رقمًا من باي' },
+    badge: '2️⃣5️⃣',
+    check: s => s.maxDigits >= 25
+  },
+  {
+    id: 'digits-50',
+    label: { en: '50 Digits', ar: '٥٠ رقمًا' },
+    desc: { en: 'Reach 50 digits of PI', ar: 'احصل على ٥٠ رقمًا من باي' },
+    badge: '5️⃣0️⃣',
+    check: s => s.maxDigits >= 50
+  },
+  {
+    id: 'digits-75',
+    label: { en: '75 Digits', ar: '٧٥ رقمًا' },
+    desc: { en: 'Reach 75 digits of PI', ar: 'احصل على ٧٥ رقمًا من باي' },
+    badge: '7️⃣5️⃣',
+    check: s => s.maxDigits >= 75
+  },
+  {
+    id: 'digits-100',
+    label: { en: '100 Digits', ar: '١٠٠ رقم' },
+    desc: { en: 'Reach 100 digits of PI', ar: 'احصل على ١٠٠ رقم من باي' },
+    badge: '💯',
+    check: s => s.maxDigits >= 100
+  },
+  {
+    id: 'timed-20',
+    label: { en: 'Timed Novice', ar: 'مبتدئ المؤقت' },
+    desc: { en: '20+ in Timed Mode', ar: 'احصل على ٢٠ أو أكثر في وضع المؤقت' },
+    badge: '⏱️',
+    check: s => s.timed >= 20
+  },
+  {
+    id: 'timed-40',
+    label: { en: 'Timed Pro', ar: 'محترف المؤقت' },
+    desc: { en: '40+ in Timed Mode', ar: 'احصل على ٤٠ أو أكثر في وضع المؤقت' },
+    badge: '⏱️',
+    check: s => s.timed >= 40
+  },
+  {
+    id: 'streak-10',
+    label: { en: 'Streak Starter', ar: 'بداية السلسلة' },
+    desc: { en: '10+ Streak', ar: 'سلسلة من ١٠ أو أكثر' },
+    badge: '🔥',
+    check: s => s.streak >= 10
+  },
+  {
+    id: 'streak-25',
+    label: { en: 'Streak Master', ar: 'سيد السلسلة' },
+    desc: { en: '25+ Streak', ar: 'سلسلة من ٢٥ أو أكثر' },
+    badge: '🔥',
+    check: s => s.streak >= 25
+  },
+  {
+    id: 'speedrun-20',
+    label: { en: 'Speedrunner', ar: 'عداء السرعة' },
+    desc: { en: '20+ in Speedrun', ar: 'احصل على ٢٠ أو أكثر في سباق السرعة' },
+    badge: '⚡',
+    check: s => s.speedrun >= 20
+  },
+  {
+    id: 'speedrun-35',
+    label: { en: 'Speedrun Pro', ar: 'محترف سباق السرعة' },
+    desc: { en: '35+ in Speedrun', ar: 'احصل على ٣٥ أو أكثر في سباق السرعة' },
+    badge: '⚡',
+    check: s => s.speedrun >= 35
+  },
+  {
+    id: 'perfect-game',
+    label: { en: 'Perfect Game', ar: 'لعبة مثالية' },
+    desc: { en: 'Finish a game with no mistakes', ar: 'أنهِ اللعبة بدون أخطاء' },
+    badge: '🌟',
+    check: s => s.lastGamePerfect
+  },
+  {
+    id: 'used-hint',
+    label: { en: 'Used a Hint', ar: 'استخدمت تلميحًا' },
+    desc: { en: 'Used a Hint', ar: 'استخدمت تلميحًا' },
+    badge: '💡',
+    check: s => s.usedHint
+  },
+  {
+    id: 'used-powerup',
+    label: { en: 'Used a Power-up', ar: 'استخدمت تعزيزًا' },
+    desc: { en: 'Used a Power-up', ar: 'استخدمت تعزيزًا' },
+    badge: '🔋',
+    check: s => s.usedPowerup
+  },
+  {
+    id: 'daily-challenge',
+    label: { en: 'Completed Daily Challenge', ar: 'أكملت تحدي اليوم' },
+    desc: { en: 'Completed Daily Challenge', ar: 'أكملت تحدي اليوم' },
+    badge: '🎯',
+    check: s => s.dailyChallenge
+  },
+  {
+    id: 'weekly-challenge',
+    label: { en: 'Completed Weekly Challenge', ar: 'أكملت تحدي الأسبوع' },
+    desc: { en: 'Completed Weekly Challenge', ar: 'أكملت تحدي الأسبوع' },
+    badge: '🏅',
+    check: s => s.weeklyChallenge
+  },
+  {
+    id: 'trivia-1',
+    label: { en: 'Answered a Trivia Question', ar: 'أجبت على سؤال باي' },
+    desc: { en: 'Answered a Trivia Question', ar: 'أجبت على سؤال باي' },
+    badge: '❓',
+    check: s => s.answeredTrivia
+  },
+  {
+    id: 'trivia-5',
+    label: { en: 'Trivia Buff', ar: 'خبير أسئلة باي' },
+    desc: { en: 'Answer 5 PI trivia questions correctly', ar: 'أجب على ٥ أسئلة باي بشكل صحيح' },
+    badge: '❓',
+    check: s => s.triviaCorrect >= 5
+  },
+  {
+    id: 'share',
+    label: { en: 'Social Sharer', ar: 'مشارك اجتماعي' },
+    desc: { en: 'Share your score at least once', ar: 'شارك نتيجتك مرة واحدة على الأقل' },
+    badge: '📤',
+    check: s => s.sharedScore
+  }
 ];
 
 // Achievement state
@@ -58,9 +173,13 @@ window.checkChallengeAchievements = function() {
 
 // Show achievement notification
 function showAchievementNotification(achievement) {
+  // Use current language for label/desc
+  const lang = document.documentElement.lang || 'en';
+  const label = typeof achievement.label === 'object' ? (achievement.label[lang] || achievement.label.en) : achievement.label;
+  const desc = typeof achievement.desc === 'object' ? (achievement.desc[lang] || achievement.desc.en) : achievement.desc;
   const notif = document.createElement('div');
   notif.className = 'arcade-achievement-toast';
-  notif.innerHTML = `<span class="arcade-badge">${achievement.badge}</span> <strong>${achievement.label}</strong><br><small>${achievement.desc}</small>`;
+  notif.innerHTML = `<span class="arcade-badge">${achievement.badge}</span> <strong>${label}</strong><br><small>${desc}</small>`;
   notif.style.position = 'fixed';
   notif.style.bottom = '32px';
   notif.style.left = '50%';
@@ -106,7 +225,9 @@ window.getUnlockedAchievements = function() {
 
 window.showAchievement = function(achievement, messageElem) {
   if (!achievement) return;
-  messageElem.textContent = `Achievement Unlocked! ${achievement.badge} ${achievement.label}`;
+  const lang = document.documentElement.lang || 'en';
+  const label = typeof achievement.label === 'object' ? (achievement.label[lang] || achievement.label.en) : achievement.label;
+  messageElem.textContent = `Achievement Unlocked! ${achievement.badge} ${label}`;
   messageElem.style.color = "#FFD700";
   setTimeout(() => {
     messageElem.textContent = "";
