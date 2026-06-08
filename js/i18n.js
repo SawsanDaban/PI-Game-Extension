@@ -6,7 +6,6 @@ window.PI_TRANSLATIONS = {
     themeLabel: "Theme:",
     soundLabel: "Enable Sound Effects",
     animationsLabel: "Enable Animations",
-    leaderboardLabel: "Enable Competitive Leaderboard",
     keyboardShortcuts: "Keyboard Shortcuts:",
     restartGame: "Restart game",
     showAchievements: "Show achievements",
@@ -33,7 +32,6 @@ window.PI_TRANSLATIONS = {
     piTrivia: "PI Trivia",
     settings: "Settings",
     viewChallenges: "View Challenges",
-    leaderboard: "Leaderboard",
     statistics: "Statistics",
     // Challenges
     dailyChallenge: "Daily Challenge",
@@ -98,7 +96,6 @@ window.PI_TRANSLATIONS = {
     no: "No",
     // Modal titles
     challengesTitle: "Challenges",
-    leaderboardTitle: "Leaderboard",
     achievementsTitle: "Achievements",
     piTriviaTitle: "PI Trivia",
     // Motivation
@@ -118,7 +115,6 @@ window.PI_TRANSLATIONS = {
     themeLabel: "السمة:",
     soundLabel: "تفعيل المؤثرات الصوتية",
     animationsLabel: "تفعيل الحركات",
-    leaderboardLabel: "تفعيل لوحة المتصدرين التنافسية",
     keyboardShortcuts: "اختصارات لوحة المفاتيح:",
     restartGame: "إعادة اللعبة",
     showAchievements: "عرض الإنجازات",
@@ -145,7 +141,6 @@ window.PI_TRANSLATIONS = {
     piTrivia: "أسئلة باي",
     settings: "الإعدادات",
     viewChallenges: "عرض التحديات",
-    leaderboard: "لوحة المتصدرين",
     statistics: "الإحصائيات",
     // Challenges
     dailyChallenge: "تحدي اليوم",
@@ -210,7 +205,6 @@ window.PI_TRANSLATIONS = {
     no: "لا",
     // Modal titles
     challengesTitle: "التحديات",
-    leaderboardTitle: "لوحة المتصدرين",
     achievementsTitle: "الإنجازات",
     piTriviaTitle: "أسئلة باي",
     // Motivation

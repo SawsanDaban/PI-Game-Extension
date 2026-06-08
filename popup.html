@@ -47,7 +47,6 @@
       <button id="trivia-btn" class="arcade-btn" type="button" style="margin-top:10px;">PI Trivia</button>
       <button id="settings-btn" class="arcade-btn" type="button" style="margin-top:10px;" tabindex="0" aria-label="Open Settings">Settings</button>
       <button id="challenges-btn" class="arcade-btn" type="button" style="margin-top:10px;">View Challenges</button>
-      <button id="leaderboard-btn" class="arcade-btn" type="button" style="margin-top:10px;">Leaderboard</button>
       <button id="statistics-btn" class="arcade-btn" type="button" style="margin-top:10px;" tabindex="0" aria-label="View Statistics">Statistics</button>
     </section>
 
@@ -71,10 +70,6 @@
               <option value="dark">Dark</option>
               <option value="light">Light</option>
             </select>
-          </label>
-          <label class="arcade-settings-row">
-            <input type="checkbox" id="setting-leaderboard" />
-            <span>Enable Competitive Leaderboard</span>
           </label>
           <label class="arcade-settings-row">
             <span data-i18n="languageLabel">Language:</span>
@@ -103,14 +98,6 @@
         <span id="close-challenges" class="arcade-modal-close">&times;</span>
         <h2 class="arcade-modal-title">Challenges</h2>
         <div id="challenges-list" class="arcade-challenges-list"></div>
-      </div>
-    </div>
-
-    <div id="leaderboard-modal" class="arcade-modal" style="display:none;">
-      <div class="arcade-modal-content">
-        <span id="close-leaderboard" class="arcade-modal-close">&times;</span>
-        <h2 class="arcade-modal-title">Leaderboard</h2>
-        <div id="leaderboard-list" class="arcade-challenges-list"></div>
       </div>
     </div>
 
@@ -171,7 +158,6 @@
   <script src="js/modeTimed.js"></script>
   <script src="js/modeStreak.js"></script>
   <script src="js/modeSpeedrun.js"></script>
-  <script src="js/leaderboard.js"></script>
   <script src="js/i18n.js"></script>
   <script src="popup.js"></script>
 </body>

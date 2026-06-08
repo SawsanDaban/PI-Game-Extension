@@ -370,7 +370,7 @@ function resetGame() {
       piSequenceElem,
       scoreElem,
       progressElem,
-      onEnd: patchGameOverForLeaderboard((finalScore) => {
+      onEnd: (finalScore) => {
         showArcadeMessage(messageElem, "Game Over! Score: " + finalScore);
         if (finalScore > highestScore) {
           highestScore = finalScore;
@@ -382,7 +382,7 @@ function resetGame() {
         checkAndMarkChallenges(finalScore);
         // Show a PI fact if no motivation message
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      }),
+      },
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -398,7 +398,7 @@ function resetGame() {
       progressElem,
       timerElem,
       timerValueElem,
-      onEnd: patchGameOverForLeaderboard((finalScore, finalTime) => {
+      onEnd: (finalScore, finalTime) => {
         showArcadeMessage(messageElem, "Game Over! Score: " + finalScore + " | Time: " + (finalTime || 0) + "s");
         if (finalScore > highestScore) {
           highestScore = finalScore;
@@ -408,7 +408,7 @@ function resetGame() {
         restartBtn.style.display = "inline-block";
         checkAndMarkChallenges(finalScore);
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      }),
+      },
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -423,7 +423,7 @@ function resetGame() {
       scoreElem,
       progressElem,
       streakCountdownElem: document.getElementById('streak-countdown'),
-      onEnd: patchGameOverForLeaderboard((finalScore) => {
+      onEnd: (finalScore) => {
         showArcadeMessage(messageElem, "Streak Over! Score: " + finalScore);
         if (finalScore > highestStreak) {
           highestStreak = finalScore;
@@ -438,7 +438,7 @@ function resetGame() {
         }
         checkAndMarkChallenges(finalScore);
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      }),
+      },
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -454,7 +454,7 @@ function resetGame() {
       progressElem,
       timerElem,
       timerValueElem,
-      onEnd: patchGameOverForLeaderboard((finalScore) => {
+      onEnd: (finalScore) => {
         showArcadeMessage(messageElem, "Speedrun Over! Score: " + finalScore);
         if (finalScore > speedrunHighScore) {
           speedrunHighScore = finalScore;
@@ -464,7 +464,7 @@ function resetGame() {
         restartBtn.style.display = "inline-block";
         checkAndMarkChallenges(finalScore);
         if (window.showRandomPIFact && !motivationElem.textContent) window.showRandomPIFact(motivationElem);
-      }),
+      },
       _currentIndexRef: currentIndexRef
     });
     patchModeCleanupWithIndex(modeCleanup, () => currentIndexRef.value);
@@ -602,8 +602,6 @@ function applyTranslations(lang) {
   if (settingSound && dict.soundLabel) settingSound.textContent = dict.soundLabel;
   const settingAnimations = document.querySelector('label[for="setting-animations"] span, #setting-animations + span');
   if (settingAnimations && dict.animationsLabel) settingAnimations.textContent = dict.animationsLabel;
-  const settingLeaderboard = document.querySelector('label[for="setting-leaderboard"] span, #setting-leaderboard + span');
-  if (settingLeaderboard && dict.leaderboardLabel) settingLeaderboard.textContent = dict.leaderboardLabel;
   const themeLabel = document.querySelector('label.arcade-settings-row > span:not([data-i18n]):not(:has(select))');
   if (themeLabel && dict.themeLabel) themeLabel.textContent = dict.themeLabel;
 
@@ -631,7 +629,6 @@ function applyTranslations(lang) {
     { id: 'trivia-btn', key: 'piTrivia' },
     { id: 'settings-btn', key: 'settings' },
     { id: 'challenges-btn', key: 'viewChallenges' },
-    { id: 'leaderboard-btn', key: 'leaderboard' },
     { id: 'statistics-btn', key: 'statistics' },
     { id: 'share-btn', key: 'shareScore' },
     { id: 'copy-score-btn', key: 'copyScoreText' },
@@ -1015,41 +1012,6 @@ document.addEventListener('keydown', function(e) {
 window.addEventListener('beforeunload', () => {
   if (modeCleanup) modeCleanup();
 });
-
-// --- Leaderboard logic (API-based, streak mode only for upload) ---
-const leaderboardBtn = document.getElementById('leaderboard-btn');
-const leaderboardModal = document.getElementById('leaderboard-modal');
-const closeLeaderboard = document.getElementById('close-leaderboard');
-const leaderboardList = document.getElementById('leaderboard-list');
-
-// Patch game over to maybe add to leaderboard (only for streak mode)
-function patchGameOverForLeaderboard(origOnEnd) {
-  return function(finalScore, ...args) {
-    const mode = modeSelectElem.value;
-    // Ensure settings are loaded before checking
-    if (typeof window.loadSettings === "function") window.loadSettings();
-    if (mode === "streak") {
-      window.submitStreakScoreToLeaderboard(finalScore);
-    }
-    origOnEnd(finalScore, ...args);
-  };
-}
-
-// Show leaderboard modal
-if (leaderboardBtn && leaderboardModal) {
-  leaderboardBtn.addEventListener('click', () => {
-    window.renderLeaderboard(leaderboardList);
-    leaderboardModal.style.display = "flex";
-  });
-}
-if (closeLeaderboard && leaderboardModal) {
-  closeLeaderboard.addEventListener('click', () => {
-    leaderboardModal.style.display = "none";
-  });
-  leaderboardModal.addEventListener('click', function(e) {
-    if (e.target === leaderboardModal) leaderboardModal.style.display = "none";
-  });
-}
 
 // --- Export/Import Data ---
 const exportDataBtn = document.getElementById('export-data-btn');

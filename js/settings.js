@@ -2,8 +2,7 @@
 window.PI_SETTINGS = {
   sound: true,
   animations: true,
-  theme: 'neon',
-  leaderboard: false // new: competitive leaderboard toggle
+  theme: 'neon'
 };
 
 // --- SETTINGS LOAD/SAVE ---
@@ -14,16 +13,13 @@ window.loadSettings = function() {
   // Theme: prefer pi_theme if set, else saved.theme, else 'neon'
   const piTheme = localStorage.getItem('pi_theme');
   window.PI_SETTINGS.theme = piTheme || saved.theme || 'neon';
-  window.PI_SETTINGS.leaderboard = saved.leaderboard === true; // new
 
   const settingSound = document.getElementById('setting-sound');
   const settingAnimations = document.getElementById('setting-animations');
-  const settingLeaderboard = document.getElementById('setting-leaderboard'); // new
   const themeSelect = document.getElementById('theme-select');
   const languageSelect = document.getElementById('language-select');
   if (settingSound) settingSound.checked = window.PI_SETTINGS.sound;
   if (settingAnimations) settingAnimations.checked = window.PI_SETTINGS.animations;
-  if (settingLeaderboard) settingLeaderboard.checked = window.PI_SETTINGS.leaderboard; // new
   if (themeSelect) themeSelect.value = window.PI_SETTINGS.theme;
   if (languageSelect) languageSelect.value = localStorage.getItem('pi_language') || 'en';
 };
@@ -48,7 +44,6 @@ window.applyTheme = function(theme) {
 window.initSettingsUI = function() {
   const settingSound = document.getElementById('setting-sound');
   const settingAnimations = document.getElementById('setting-animations');
-  const settingLeaderboard = document.getElementById('setting-leaderboard'); // new
   const settingsBtn = document.getElementById('settings-btn');
   const settingsModal = document.getElementById('settings-modal');
   const closeSettings = document.getElementById('close-settings');
@@ -64,12 +59,6 @@ window.initSettingsUI = function() {
   if (settingAnimations) {
     settingAnimations.addEventListener('change', () => {
       window.PI_SETTINGS.animations = settingAnimations.checked;
-      window.saveSettings();
-    });
-  }
-  if (settingLeaderboard) {
-    settingLeaderboard.addEventListener('change', () => {
-      window.PI_SETTINGS.leaderboard = settingLeaderboard.checked;
       window.saveSettings();
     });
   }
